@@ -1,8 +1,8 @@
 import { listProjects, insertProject } from "./projects-logic";
 
 class Project {
-  constructor(name, description) {
-    this.name = name;
+  constructor(title, description) {
+    this.title = title;
     this.description = description;
   }
 
