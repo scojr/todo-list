@@ -1,38 +1,8 @@
 import "./style.css";
 
-const projects = [];
-
-export function getProjects() {
-  return projects;
-}
-
-export function insertProject(input) {
-  projects.push(input);
-}
-
-class Project {
-  constructor(name, description) {
-    this.name = name;
-    this.description = description;
-  }
-
-  tasks = [];
-
-  get tasks() {
-    return tasks;
-  }
-
-  addTask(task) {
-    this.tasks.push(task);
-  }
-}
-
-function newProject(name, description) {
-  insertProject(new Project(name, description));
-}
+import { newProject, newTask } from "./user-input";
+import { listProjects } from "./projects-logic";
 
 newProject("Chores", "Daily chores to complete.");
 
-getProjects()[0].addTask("clean room");
-
-console.log(getProjects());
+newTask(listProjects()[0], "clean room");
