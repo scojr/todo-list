@@ -1,4 +1,8 @@
+import "./style.css";
+
 const tasks = [];
+
+const taskList = document.querySelector(".task-list");
 
 class Task {
   constructor(objective, details, deadline) {
@@ -19,3 +23,14 @@ function newTask(objective, details, deadline) {
 
 newTask("clean room", "clean up my roomn", "tonight");
 console.log(listTasks());
+
+
+function refreshList() {
+  for (const task of tasks) {
+    const taskItem = document.createElement("li");
+    taskItem.textContent = task.title;
+    taskList.appendChild(taskItem);
+  }
+}
+
+refreshList()
