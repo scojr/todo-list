@@ -2,16 +2,35 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 :root {
-  --primary-color: orange;
+  --primary-color: #FF772D;
+  --secondary-color: #89D2FF;
+  --light-gray: #C0C0C0;
+  --dark-gray: #666666;
 }
 
 html {
   line-height: 1.5;
   font-size: 20px;
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
+}
+
+button,
+input,
+textarea,
+select,
+input:active,
+textarea:active {
+  outline: none;
+  border: none;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: inherit;
+  background: none;
 }
 
 ol[role="list"],
@@ -42,4 +61,101 @@ body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
+}
+
+.add-task-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+  background-color: black;
+  background-color: hsla(0, 0%, 5%, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-task-form {
+  background-color: white;
+  color: rgb(109, 109, 109);
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: min-content min-content min-content;
+  border-radius: 8px;
+  width: min-content;
+}
+
+.form-title input,
+.form-description textarea {
+  font-size: 1.6em;
+  overflow: auto;
+  margin: 12px;
+  background: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--dark-gray);
+}
+
+.form-description textarea {
+  font-size: 1.2em;
+  resize: none;
+  min-width: 96%;
+  min-height: 87%;
+}
+
+.form-title,
+.form-description {
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px;
+}
+
+.form-buttons button {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.form-buttons button:not(.form-add-task-button) {
+  color: var(--dark-gray);
+  border: 1px solid var(--light-gray);
+}
+
+.form-buttons button:hover {
+  color: rgb(0, 0, 0);
+  border: 1px solid black;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.form-add-task-button {
+  background: fixed;
+  background-color: var(--primary-color);
+  color: white;
+  border: 1px solid var(--primary-color);
+}
+
+.form-cancel-button-span {
+  position: relative;
+}
+
+.form-cancel-button {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  color: var(--dark-gray);
+}
+
+.form-cancel-button:hover {
+  cursor: pointer;
+  color: black;
 }
