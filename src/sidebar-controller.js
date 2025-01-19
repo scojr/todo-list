@@ -1,6 +1,7 @@
 import { getFolders, newFolder, taskToFolder, getTasks, newTask } from "./tasks-handler.js";
 import { elements } from "./dom-interface.js";
 import { getCurrentDate } from "./date-handler.js";
+import { showModal } from "./form-handler.js";
 
 
 export function refreshSidebar() {
@@ -45,6 +46,11 @@ function clearChildrenOf(node) {
     node.removeChild(node.firstChild);
   }
 }
+
+
+elements.sidebar.addTaskButton.addEventListener("click", () => {
+  showModal();
+})
 
 // function refreshInputs() {
 //   const taskSelect = document.querySelector("#task-select");

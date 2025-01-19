@@ -4,9 +4,12 @@ export const elements = (function () {
     const taskList = document.querySelector(".task-list");
     const headerDay = document.querySelector(".side-bar-day");
     const headerDate = document.querySelector(".side-bar-date");
-    return { taskList, headerDay, headerDate };
+    const addTaskButton = document.querySelector(".side-bar-add-task")
+    return { taskList, headerDay, headerDate, addTaskButton };
   })();
 
-  return { sidebar };
+  const addTaskModal = document.querySelector(".add-task-modal");
+
+  return { sidebar, addTaskModal };
 
 })();
