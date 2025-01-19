@@ -4,6 +4,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  list-style-type: none;
 }
 
 :root {
@@ -61,6 +62,32 @@ body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  grid-template-rows: 1fr;
+  background-color: rgb(214, 223, 226);
+}
+
+h2 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.task-list,
+.folder-list {
+  font-size: 1em;
+}
+
+.task-list ul,
+.folder-list ul {
+  font-size: 0.8em;
+  margin-left: 12px;
+}
+
+.side-bar {
+  background-color: white;
+  height: 100%;
+  grid-column: 1 / 2;
 }
 
 .add-task-modal {
@@ -75,6 +102,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  visibility: hidden;
 }
 
 .add-task-form {

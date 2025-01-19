@@ -1,4 +1,5 @@
 import "./style.css";
-import { refreshList } from "./display-handler";
+import { refreshSidebar, displayDate } from "./sidebar-controller";
 
-refreshList();
+refreshSidebar();
+displayDate();
