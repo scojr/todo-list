@@ -63,30 +63,56 @@ body {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: 20% 1fr;
+  grid-template-columns: minmax(max-content, 15%) 1fr;
   grid-template-rows: 1fr;
   background-color: rgb(214, 223, 226);
 }
 
 h2 {
   font-size: 1.2rem;
-  font-weight: 500;
 }
 
-.task-list,
-.folder-list {
-  font-size: 1em;
+h3 {
+  font-size: 1rem;
 }
 
-.task-list ul,
-.folder-list ul {
-  font-size: 0.8em;
-  margin-left: 12px;
+.side-bar-header {
+  text-align: right;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.side-bar-buttons button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--dark-gray);
+  margin-bottom: 12px;
+  margin-top: 12px;
+  gap: 12px;
+}
+
+.side-bar-buttons {
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.task-list>li {
+  font-size: 1.4rem;
+}
+
+.task-list ul {
+  font-size: 1rem;
+  margin-bottom: 12px;
+  border-left: 1px solid var(--light-gray);
+  border-top: 1px solid var(--light-gray);
+  padding-left: 6px;
+  padding-top: 3px;
+  border-radius: 8px 0px 0px 0px;
 }
 
 .side-bar {
-  background-color: white;
+  background-color: #fcfcfc;
   height: 100%;
+  padding: 6px 12px;
   grid-column: 1 / 2;
 }
 
@@ -186,4 +212,8 @@ textarea::placeholder {
 .form-cancel-button:hover {
   cursor: pointer;
   color: black;
+}
+
+button:hover {
+  cursor: pointer;
 }
