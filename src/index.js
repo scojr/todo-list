@@ -1,11 +1,7 @@
 import "./style.css";
+import { refreshSidebar, displayDate } from "./sidebar-controller";
+import { refreshContainer } from "./container-controller.js";
+import { elements } from "./dom-interface.js";
 
-import { newProject, newTask } from "./user-input";
-import { listProjects } from "./projects-logic";
-import { refreshList } from "./display-controller";
-
-newProject("Chores", "Daily chores to complete.");
-
-newTask(listProjects()[0], "clean room");
-
-refreshList();
+refreshSidebar();
+displayDate();
