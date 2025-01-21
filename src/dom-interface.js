@@ -10,14 +10,32 @@ export const elements = (function () {
 
   const container = (function () {
     const main = document.querySelector(".container");
-    const dailyCard = document.querySelector(".daily-card");
+    const weekCard = document.querySelector(".this-week-card");
     const todayCard = document.querySelector(".today-card");
     const upcomingCard = document.querySelector(".upcoming-card");
     const notesCard = document.querySelector(".notes-card");
-    return { main, dailyCard, todayCard, upcomingCard, notesCard };
+    return { main, weekCard, todayCard, upcomingCard, notesCard };
   })();
 
-  const addTaskModal = document.querySelector(".add-task-modal");
+
+
+  const addTaskModal = (function () {
+    const main = document.querySelector(".add-task-modal");
+    const form = document.querySelector(".add-task-form");
+    const titleInput = document.querySelector(".title-input");
+    const descriptionInput = document.querySelector(".description-input");
+    const buttons = (function () {
+      const folder = document.querySelector(".folder-button");
+      const deadline = document.querySelector(".deadline-button");
+      const priority = document.querySelector(".priority-button");
+      const addTask = document.querySelector(".form-add-task-button");
+      const close = document.querySelector(".form-cancel-button");
+
+      return { folder, deadline, priority, addTask, close };
+    })();
+
+    return { main, form, titleInput, descriptionInput, buttons };
+  })();
 
   return { sidebar, addTaskModal, container };
 

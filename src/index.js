@@ -5,6 +5,3 @@ import { elements } from "./dom-interface.js";
 
 refreshSidebar();
 displayDate();
-refreshContainer(elements.container.dailyCard);
-refreshContainer(elements.container.todayCard);
-refreshContainer(elements.container.upcomingCard);

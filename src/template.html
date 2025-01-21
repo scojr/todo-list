@@ -14,30 +14,31 @@
       <h2 class="side-bar-date"></h2>
     </div>
     <div class="side-bar-buttons">
-      <button class="side-bar-button side-bar-add-task"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-          stroke-linejoin="round" class="feather feather-plus">
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-        </svg>Add Task</button>
       <button class="side-bar-button side-bar-search"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
           stroke-linejoin="round" class="feather feather-search">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>Search</button>
+      <button class="side-bar-button side-bar-add-task"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" class="feather feather-plus-square">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="12" y1="8" x2="12" y2="16"></line>
+          <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>New Item</button>
     </div>
     <ul class="task-list"></ul>
   </div>
 
   <div class="container">
     <div class="card-container">
-      <h1>Daily</h1>
-      <div class="daily-card"></div>
-    </div>
-    <div class="card-container">
       <h1>Today</h1>
       <div class="today-card"></div>
+    </div>
+    <div class="card-container">
+      <h1>This week</h1>
+      <div class="this-week-card"></div>
     </div>
     <div class="card-container">
       <h1>Upcoming</h1>
@@ -52,10 +53,11 @@
         <span class="form-cancel-button-span"><button class="form-cancel-button">&#x2715</button></span>
       </div>
       <div class="form-row form-description">
-        <textarea id="description" aria-label="Description" name="description" placeholder="Description"></textarea>
+        <textarea class="description-input" id="description" aria-label="Description" name="description"
+          placeholder="Description"></textarea>
       </div>
       <div class="form-row form-buttons">
-        <button class="folder"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+        <button class="folder-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             class="feather feather-folder">
             <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>

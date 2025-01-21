@@ -7,6 +7,10 @@ class Task {
     this.description = description;
     this.deadline = deadline;
     this.id = filterString(title);
+    this.folder = undefined;
+  }
+  set setFolder(folderIndex) {
+    this.folder = folders[folderIndex];
   }
 }
 
@@ -56,12 +60,33 @@ function filterString(string) {
 }
 
 export function taskToFolder(taskIndex, folderIndex) {
+  tasks[taskIndex].setFolder = folderIndex;
   folders[folderIndex].insert(tasks[taskIndex]);
-  tasks.splice(taskIndex, 1)
 }
 
 export function getTasks() {
   return tasks;
+}
+
+export function getTasksByDate() {
+  return tasks.toSorted(function (a, b) {
+    const keyA = new Date(a.deadline),
+      keyB = new Date(b.deadline);
+
+    if (keyA < keyB) return -1;
+    if (keyA > keyB) return 1;
+    return 0;
+  });
+}
+
+export function getUnsortedTasks() {
+  const unsortedTasks = [];
+  tasks.forEach((task) => {
+    if (task.folder === undefined) {
+      unsortedTasks.push(task);
+    }
+  })
+  return unsortedTasks;
 }
 
 export function getFolders() {
@@ -70,22 +95,24 @@ export function getFolders() {
 
 // Placeholder items
 const placeHolderTasks = [
-  { title: "Submit project report", description: "", deadline: "", folder: "work" },
-  { title: "Prepare presentation slides", description: "", deadline: "", folder: "work" },
-  { title: "Schedule meeting", description: "", deadline: "", folder: "work" },
-  { title: "Make dentist appointment", description: "", deadline: "", folder: "personal" },
-  { title: "Research new information", description: "", deadline: "", folder: "personal" },
-  { title: "Pay utilities", description: "", deadline: "", folder: "chores" },
-  { title: "Book holiday flight", description: "", deadline: "", folder: "personal" },
-  { title: "Grocery shopping", description: "", deadline: "", folder: "chores" },
-  { title: "Take out trash", description: "", deadline: "", folder: "chores" },
-  { title: "Wash dishes", description: "", deadline: "", folder: "chores" },
-  { title: "Research tickets", description: "", deadline: "", folder: "personal" },
-  { title: "Buy supplies for project", description: "", deadline: "", folder: "shopping" },
-  { title: "30-minute jog", description: "", deadline: "", folder: "hobbies" },
-  { title: "Organize closet", description: "", deadline: "", folder: "personal" },
-  { title: "Water plants", description: "", deadline: "", folder: "chores" },
-  { title: "Read chapter of current book", description: "", deadline: "", folder: "hobbies" },
+  { title: "Pick up medicine!!!", deadline: "2025-01-31" },
+  { title: "Submit project report", deadline: "2025-01-31", folder: "work" },
+  { title: "Prepare presentation slides", deadline: "2025-01-31", folder: "work" },
+  { title: "DONUTS ON SALE", deadline: "2025-01-31" },
+  { title: "Schedule meeting", deadline: "2025-01-31", folder: "work" },
+  { title: "Make dentist appointment", deadline: "2025-01-31", folder: "personal" },
+  { title: "Research new information", deadline: "2025-01-31", folder: "personal" },
+  { title: "Pay utilities", deadline: "2025-06-01", folder: "chores" },
+  { title: "Book holiday flight", deadline: "2025-02-01", folder: "personal" },
+  { title: "Grocery shopping", deadline: "2025-01-02", folder: "chores" },
+  { title: "Take out trash", deadline: "2025-05-25", folder: "chores" },
+  { title: "Wash dishes", deadline: "2025-03-13", folder: "chores" },
+  { title: "Research tickets", deadline: "2025-04-03", folder: "personal" },
+  { title: "Buy supplies for project", deadline: "2025-01-31", folder: "shopping" },
+  { title: "30-minute jog", deadline: "2025-01-23", folder: "hobbies" },
+  { title: "Organize closet", deadline: "2025-01-27", folder: "personal" },
+  { title: "Water plants", deadline: "2025-01-20", folder: "chores" },
+  { title: "Read chapter of current book", deadline: "2025-01-31", folder: "hobbies" },
 ];
 const placeHolderFolders = [
   { title: "Work", description: "" },
@@ -100,7 +127,11 @@ const placeholders = (function () {
     newFolder(folder.title)
   }
   for (const task of placeHolderTasks) {
-    newTask(task.title, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-    taskToFolder(getTaskIndexFromTitle(task.title), getFolderIndexFromTitle(task.folder))
+    newTask(task.title, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", task.deadline);
+    if (task.folder) {
+      taskToFolder(getTaskIndexFromTitle(task.title), getFolderIndexFromTitle(task.folder))
+    }
   }
 })();
+
+console.log({ tasks, folders });
