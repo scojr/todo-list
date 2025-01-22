@@ -81,7 +81,7 @@ h3 {
 
 .sidebar-header {
   text-align: right;
-  border-bottom: 1px solid var(--light-gray);
+  margin: 12px, 0px;
 }
 
 .sidebar-buttons button {
@@ -100,11 +100,11 @@ h3 {
 
 .project-list li {
   font-size: 1.2rem;
-  margin: 12px 0px;
+  margin: 12px 12px;
   border: 1px solid var(--light-gray);
-  padding-left: 6px;
-  padding-top: 3px;
+  padding: .3em 0px 0px 6px;
   border-radius: 8px;
+  height: 50px;
 }
 
 
@@ -127,6 +127,7 @@ h3 {
 }
 
 .sidebar>h2 {
+  border-top: 1px solid var(--light-gray);
   text-align: center;
 }
 

@@ -91,17 +91,19 @@ class Todo extends Card {
 
 // For Testing
 
-createProject("Clean room", "", true);
+const folderTemplate = ["Concept", "To Do", "In Progress", "Complete"]
+
 createProject("Make sandwich", "", "");
+createProject("Clean room", "", true);
 createProject("Todo list web app", "", true);
-console.log(projects[0]);
-projects[0].newFolder("List");
-projects[0].folders[0].newTodo("todo");
-projects[0].folders[0].todos[0].priority = true;
+
+for (const folder of folderTemplate) {
+  projects[0].newFolder(folder);
+}
 
 export function tester() {
   console.log(projects);
-  console.log(getProjectFromName("clean room"))
+  console.log(getProjectFromName("makesandwich"))
 }
 
 

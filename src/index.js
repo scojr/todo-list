@@ -1,6 +1,7 @@
 import "./style.css";
 import { tester } from "./logic";
-import { displayProjects } from "./display";
+import { listProjects, displayDate } from "./display";
 
 window.test = tester();
-displayProjects();
+listProjects();
+displayDate();
