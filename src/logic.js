@@ -1,15 +1,15 @@
 const projects = [];
 
-function createProject(name, deadline, priority) {
+export function createProject(name, deadline, priority) {
   const newProject = new Project(name, deadline, priority);
   projects.push(newProject);
 }
 
-function getProjects() {
+export function getProjects() {
   return projects;
 }
 
-function getProjectFromName(string) {
+export function getProjectFromName(string) {
   const unparsedString = string;
   const unparsedSearch = projects.find(project => project.name === unparsedString);
   if (unparsedSearch) return unparsedSearch;
@@ -92,6 +92,8 @@ class Todo extends Card {
 // For Testing
 
 createProject("Clean room", "", true);
+createProject("Make sandwich", "", "");
+createProject("Todo list web app", "", true);
 console.log(projects[0]);
 projects[0].newFolder("List");
 projects[0].folders[0].newTodo("todo");
