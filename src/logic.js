@@ -92,6 +92,7 @@ class Todo extends Card {
 // For Testing
 
 const folderTemplate = ["Concept", "To Do", "In Progress", "Complete"]
+const todosTemplate = ["Peanut butter", "Jelly", "Ham", "Cheese", "Bagel", "White bread", "Sourdough", "Whole wheat",]
 
 createProject("Make sandwich", "", "");
 createProject("Clean room", "", true);
@@ -99,6 +100,12 @@ createProject("Todo list web app", "", true);
 
 for (const folder of folderTemplate) {
   projects[0].newFolder(folder);
+}
+
+for (const folder of projects[0].folders) {
+  for (const todo of todosTemplate) {
+    folder.newTodo(todo);
+  }
 }
 
 export function tester() {
