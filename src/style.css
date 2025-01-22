@@ -79,12 +79,12 @@ h3 {
   font-size: 1rem;
 }
 
-.side-bar-header {
+.sidebar-header {
   text-align: right;
   border-bottom: 1px solid var(--light-gray);
 }
 
-.side-bar-buttons button {
+.sidebar-buttons button {
   display: flex;
   color: var(--dark-gray);
   margin-bottom: 12px;
@@ -92,7 +92,7 @@ h3 {
   gap: 12px;
 }
 
-.side-bar-buttons {
+.sidebar-buttons {
   border-bottom: 1px solid var(--light-gray);
 }
 
@@ -120,7 +120,7 @@ h3 {
   border-radius: 5px;
 }
 
-.side-bar {
+.sidebar {
   position: sticky;
   top: 0;
   background-color: var(--off-white);
@@ -233,15 +233,15 @@ textarea::placeholder {
   color: black;
 }
 
-.side-bar-add-task,
-.side-bar-search {
+.sidebar-add-task,
+.sidebar-search {
   border-radius: 5px;
   padding: 3px 0px;
   width: 100%;
 }
 
-.side-bar-add-task:hover,
-.side-bar-search:hover {
+.sidebar-add-task:hover,
+.sidebar-search:hover {
   cursor: pointer;
   background-color: var(--lightest-gray);
 }

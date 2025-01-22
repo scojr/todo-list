@@ -1,9 +1,0 @@
-const projects = [];
-
-export function listProjects() {
-  return projects;
-}
-
-export function insertProject(input) {
-  projects.push(input);
-}
