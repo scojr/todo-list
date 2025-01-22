@@ -67,7 +67,7 @@ body {
   display: grid;
   grid-template-columns: minmax(max-content, 15%) 1fr;
   grid-template-rows: 1fr;
-  background-color: #e2e2e2;
+  background-color: rgb(218, 222, 233);
   position: relative;
 }
 
@@ -143,9 +143,30 @@ h3 {
 }
 
 .container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
-  margin: 0px 48px;
-  gap: 48px;
-  overflow: auto;
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20%, 1fr)); */
+  display: flex;
+  align-items: top;
+  justify-content: space-evenly;
+}
+
+.folder-container {
+  width: 23%;
+  min-height: 500px;
+  border-radius: 12px;
+  height: min-content;
+}
+
+.folder {
+  width: 100%;
+  min-height: 500px;
+  background-color: var(--off-white);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  border-radius: 12px;
+  height: min-content;
+}
+
+.folder-container>h1 {
+  font-size: 1.8rem;
+  border-radius: 12px 12px 0px 0px;
 }

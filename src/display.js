@@ -1,4 +1,4 @@
-import { getProjects } from "./logic";
+import { getProjects, getProjectFromName } from "./logic";
 import { getCurrentDate } from "./date.js";
 
 
@@ -19,13 +19,28 @@ const dom = (function () {
   return { make, container, sidebar, projectList, headerDate, headerDay };
 })();
 
+// Container //
+
+export function displayFoldersOf(project) {
+  const activeProject = getProjectFromName(project);
+  for (const folder of activeProject.folders) {
+    const card = dom.make("div");
+    card.classList.add("folder-container");
+    const cardFolders = dom.make("div");
+    cardFolders.classList.add("folder");
+    const cardTitle = dom.make("h1", folder.name);
+    card.append(cardTitle, cardFolders);
+    dom.container.appendChild(card);
+  }
+}
+
 // Sidebar //
 
 export function listProjects() {
   const projects = getProjects();
   for (const project of projects) {
-    const card = dom.make("li", project.name)
-    dom.projectList.appendChild(card);
+    const li = dom.make("li", project.name)
+    dom.projectList.appendChild(li);
   }
 }
 
