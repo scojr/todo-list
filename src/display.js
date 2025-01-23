@@ -76,13 +76,26 @@ function todoDragging(event, element) {
   element.id = "dragging";
   document.onmousemove = dragElement;
   document.onmouseup = closeDragElement;
+  var activeFolders = document.querySelectorAll(".folder")
 
   function dragElement(e) {
     const elementWidth = element.clientWidth;
     const elementHeight = element.clientHeight;
     document.body.style.cursor = "grabbing";
     element.style.setProperty("--mouse-x", `${e.clientX - elementWidth / 2}px`)
-    element.style.setProperty("--mouse-y", `${e.clientY - elementHeight / 2}px`)
+    element.style.setProperty("--mouse-y", `${e.clientY + elementHeight / 2}px`)
+    for (const folder of activeFolders) {
+      folder.addEventListener("mouseenter", folderMouseEnter);
+      folder.addEventListener("mouseleave", folderMouseLeave);
+    }
+  }
+
+  function folderMouseEnter() {
+    this.style.backgroundColor = "blue";
+  }
+
+  function folderMouseLeave() {
+    this.style.backgroundColor = "white";
   }
 
   function closeDragElement() {
@@ -90,6 +103,10 @@ function todoDragging(event, element) {
     document.onmousemove = null;
     element.id = "";
     document.body.style.cursor = "default";
+    for (const folder of activeFolders) {
+      folder.removeEventListener("mouseenter", folderMouseEnter);
+      folder.removeEventListener("mouseleave", folderMouseLeave);
+    }
   }
 
 }
