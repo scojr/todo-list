@@ -82,6 +82,10 @@ class Folder extends Card {
     this.#todos.push(todoItem);
   }
 
+  dragIn(todoObject, index) {
+    this.#todos.splice(todoObject, index);
+  }
+
   newTodo(name) {
     const todo = new Todo(name);
     this.insert(todo);
