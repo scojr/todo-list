@@ -1,4 +1,4 @@
-import { getProjects, getProjectFromName } from "./logic";
+import { getProjects, getProjectFromName, getActiveProject } from "./logic";
 import { getCurrentDate } from "./date.js";
 
 const dom = (function () {
@@ -17,6 +17,21 @@ const dom = (function () {
   }
   return { make, container, sidebar, projectList, headerDate, headerDay };
 })();
+
+// Sidebar //
+
+export function listProjects() {
+  const projects = getProjects();
+  for (const project of projects) {
+    const li = dom.make("li", project.name)
+    dom.projectList.appendChild(li);
+  }
+}
+
+export function displayDate() {
+  dom.headerDay.textContent = `${getCurrentDate.weekday()}`;
+  dom.headerDate.textContent = `${getCurrentDate.month()} ${getCurrentDate.day()} ${getCurrentDate.year()}`;
+}
 
 // Container //
 
@@ -41,8 +56,10 @@ function displayTodosOf(folderTodos, domElement) {
   for (const todo of activeFolder) {
     const card = dom.make("div");
     card.classList.add("todo-container");
-    const cardTitle = dom.make("h2", todo.name);
-    card.append(cardTitle);
+    const todoBox = dom.make("div", todo.name);
+    todoBox.classList.add("todo-box");
+    todoBox.addEventListener("mousedown", (event) => todoDragging(event, todoBox));
+    card.append(todoBox);
     domElement.appendChild(card);
   }
   const cardFooter = dom.make("div");
@@ -52,18 +69,27 @@ function displayTodosOf(folderTodos, domElement) {
   domElement.appendChild(cardFooter);
 }
 
-// Sidebar //
+// Todo Dragging //
 
-export function listProjects() {
-  const projects = getProjects();
-  for (const project of projects) {
-    const li = dom.make("li", project.name)
-    dom.projectList.appendChild(li);
+function todoDragging(event, element) {
+  event.preventDefault();
+  element.id = "dragging";
+  document.onmousemove = dragElement;
+  document.onmouseup = closeDragElement;
+
+  function dragElement(e) {
+    const elementWidth = element.clientWidth;
+    const elementHeight = element.clientHeight;
+    document.body.style.cursor = "grabbing";
+    element.style.setProperty("--mouse-x", `${e.clientX - elementWidth / 2}px`)
+    element.style.setProperty("--mouse-y", `${e.clientY - elementHeight / 2}px`)
   }
-}
 
-export function displayDate() {
-  dom.headerDay.textContent = `${getCurrentDate.weekday()}`;
-  dom.headerDate.textContent = `${getCurrentDate.month()} ${getCurrentDate.day()} ${getCurrentDate.year()}`;
-}
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+    element.id = "";
+    document.body.style.cursor = "default";
+  }
 
+}

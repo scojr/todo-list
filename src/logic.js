@@ -1,8 +1,13 @@
 const projects = [];
+let activeProject;
 
 export function createProject(name, deadline, priority) {
   const newProject = new Project(name, deadline, priority);
   projects.push(newProject);
+}
+
+export function getActiveProject() {
+  return activeProject;
 }
 
 export function getProjects() {
@@ -107,6 +112,8 @@ for (const folder of projects[0].folders) {
     folder.newTodo(todo);
   }
 }
+
+activeProject = projects[0];
 
 export function tester() {
   console.log(projects);

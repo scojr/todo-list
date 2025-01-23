@@ -69,7 +69,6 @@ body {
   grid-template-columns: minmax(max-content, 15%) 1fr;
   grid-template-rows: 1fr;
   background-color: var(--lightest-gray);
-  position: relative;
 }
 
 h2 {
@@ -175,27 +174,35 @@ h3 {
 
 .todo-container {
   margin: 4px;
-  border: 1px solid var(--gray);
-  background-color: var(--off-white);
   border-radius: 6px;
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 5px 0px;
 }
 
-.todo-container>h2 {
+.todo-box {
   font-size: 1.2rem;
   padding: 2px 6px;
   border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 5px 0px;
+  border: 1px solid var(--gray);
+  background-color: var(--off-white);
 }
 
-.todo-container>h2:hover {
-  cursor: pointer;
+.todo-box:not(#dragging):hover {
+  cursor: grab;
   background-color: var(--lightest-gray);
 }
 
-.todo-add-button>h2 {
+.todo-add-button {
   font-size: 1.4rem;
   text-align: center;
   position: relative;
   z-index: 0;
   top: -2px;
+}
+
+#dragging {
+  --mouse-x: ;
+  --mouse-y: ;
+  position: absolute;
+  left: var(--mouse-x);
+  top: var(--mouse-y);
 }
