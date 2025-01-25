@@ -108,15 +108,17 @@ class Todo extends Card {
 
 // For Testing
 
-const folderTemplate = ["To Do", "Doing", "Done"];
-const todosTemplate1 = ["declutter desk", "organize bookshelf", "dust surfaces", "vacuum", "wipe suprfaces",];
-const todosTemplate2 = ["sanitize", "organize closet", "make bed", "take out trash",];
-const todosTemplate3 = ["clean mirror", "fold clothes",];
-const todosTemplates = [todosTemplate1, todosTemplate2, todosTemplate3];
+const folderTemplate = ["Ideas", "To Do", "Doing", "Done"];
 
-createProject("Make sandwich", "", "");
-createProject("Clean room", "", true);
-createProject("Todo list web app", "", true);
+const todosTemplate1 = ["animation", "notepad", "dark mode", "custom themes",];
+const todosTemplate2 = ["project form", "folder form", "localStorage saving", "project data to json", "color",];
+const todosTemplate3 = ["todo form",];
+const todosTemplate4 = ["drag & drop todos", "basic styling",];
+const todosTemplates = [todosTemplate1, todosTemplate2, todosTemplate3, todosTemplate4];
+
+createProject("Todo List App", "", true);
+createProject("Lorem ipsum", "", true);
+createProject("magna aliqua", "", true);
 
 activeProject = projects[1];
 
