@@ -64,6 +64,7 @@ function displayTodosOf(folderTodos, domElement) {
     const card = dom.make("div");
     card.classList.add("todo-container");
     card.style.order = activeFolder.indexOf(todo);
+    // console.log(activeFolder.indexOf(todo))
     const todoBox = dom.make("div", todo.name);
     todoBox.classList.add("todo-box");
     todoBox.setAttribute("data-index", activeFolder.indexOf(todo));
@@ -74,74 +75,96 @@ function displayTodosOf(folderTodos, domElement) {
   const cardFooter = dom.make("div");
   const cardFooterText = dom.make("h2", "+");
   cardFooter.classList.add("todo-add-button");
+  cardFooter.style.order = activeFolder.length;
   cardFooter.appendChild(cardFooterText);
   domElement.appendChild(cardFooter);
 }
 
 // Todo Dragging //
+// I promise I'll refactor this into its own module but wow it works!! //
 
 function todoDragging(event, element) {
   event.preventDefault();
+  let activeFolders = document.querySelectorAll(".folder")
+  let hoveredFolder = event.currentTarget.parentElement.parentElement;
+  let hoveredTodo = event.currentTarget;
+  let grabbedTodo = event.currentTarget;
+
   const draggedClonedElement = element.cloneNode(true);
+  draggedClonedElement.style.setProperty("width", `${element.clientWidth}px`);
   draggedClonedElement.id = "dragging";
   draggedClonedElement.setAttribute("data-index", "null");
+
   const folderClonedElement = element.parentElement.cloneNode(true);
-  folderClonedElement.id = "folder-cloned-element"
+  folderClonedElement.id = "folder-cloned-element";
+  hoveredFolder.appendChild(folderClonedElement);
+
+  element.parentElement.style.setProperty("display", "none");
+  document.body.style.setProperty("cursor", "grabbing", "important");
+  dom.container.appendChild(draggedClonedElement);
+  draggedClonedElement.style.setProperty("--mouse-x", (event.clientX - draggedClonedElement.clientWidth / 2) + "px")
+  draggedClonedElement.style.setProperty("--mouse-y", (event.clientY + 24) + "px")
   document.onmousemove = dragElement;
   document.onmouseup = closeDragElement;
-  var activeFolders = document.querySelectorAll(".folder")
+
 
   function dragElement(e) {
-    element.parentElement.style.visibility = "collapse";
-    element.parentElement.style.position = "absolute";
-    const elementWidth = draggedClonedElement.clientWidth;
-    const elementHeight = draggedClonedElement.clientHeight;
-    document.body.style.cursor = "grabbing";
-    draggedClonedElement.style.setProperty("--mouse-x", `${e.clientX - elementWidth / 2}px`)
-    draggedClonedElement.style.setProperty("--mouse-y", `${e.clientY + elementHeight / 2}px`)
-    dom.container.appendChild(draggedClonedElement);
+    draggedClonedElement.style.setProperty("--mouse-x", (e.clientX - draggedClonedElement.clientWidth / 2) + "px")
+    draggedClonedElement.style.setProperty("--mouse-y", (e.clientY + 24) + "px")
     for (const folder of activeFolders) {
-      folder.addEventListener("mouseenter", folderMouseEnter);
+      folder.addEventListener("mouseover", folderMouseEnter);
       folder.addEventListener("mouseleave", folderMouseLeave);
       for (const todo of folder.querySelectorAll(".todo-box:not(#folder-cloned-element)")) {
-        todo.addEventListener("mouseover", taskMouseEnter)
+        todo.addEventListener("mouseover", todoMouseEnter)
       }
     }
   }
 
-  function taskMouseEnter(e) {
-    let indexOfHoveredTask = e.srcElement.attributes[1].nodeValue;
-    if (indexOfHoveredTask) {
-      folderClonedElement.style.order = (indexOfHoveredTask - 1);
+  function todoMouseEnter(e) {
+    hoveredTodo = e.currentTarget;
+    const hoveredTodoIndex = hoveredTodo.dataset.index;
+    const todoBox = e.target.getBoundingClientRect();
+    const y = e.y - todoBox.top;
+    if (hoveredTodoIndex) {
+      if (y > todoBox.height / 2) {
+        // Mouse enters from bottom //
+        folderClonedElement.style.setProperty("order", hoveredTodoIndex - 1);
+      } else {
+        // Mouse enters from top //
+        folderClonedElement.style.setProperty("order", hoveredTodoIndex);
+      }
     }
   }
 
   function folderMouseEnter(e) {
-    console.log(e.srcElement);
-    e.srcElement.appendChild(folderClonedElement);
+    hoveredFolder = e.currentTarget;
+    hoveredFolder.appendChild(folderClonedElement);
   }
 
   function folderMouseLeave(e) {
-    folderClonedElement.remove();
+    hoveredFolder = null;
+    document.querySelector("#folder-cloned-element").remove();
   }
 
   function closeDragElement() {
+    if (hoveredFolder) {
+      const indexOfHoveredFolder = hoveredFolder.dataset.index;
+      const placeholderIndex = parseInt(folderClonedElement.style.order) + 1;
+      console.log(placeholderIndex);
+
+      const indexOfFromFolder = grabbedTodo.parentElement.parentElement.dataset.index;
+      const fromFolder = getActiveProject().folders[indexOfFromFolder]
+      const indexOfGrabbedTodo = grabbedTodo.dataset.index;
+
+      console.log({ fromFolder, grabbedTodo, hoveredFolder })
+
+      fromFolder.transferTodo(indexOfGrabbedTodo, indexOfHoveredFolder, placeholderIndex);
+    }
+    document.onmousemove = null;
+    document.onmouseup = null;
+    document.body.style.cursor = "default";
     clearInterface();
     displayFoldersOf(getActiveProject());
-    document.onmouseup = null;
-    document.onmousemove = null;
-    draggedClonedElement.remove();
-    folderClonedElement.remove();
-    document.body.style.cursor = "default";
-    element.parentElement.style.visibility = "visible";
-    element.parentElement.style.position = "inherit";
-    for (const folder of activeFolders) {
-      folder.removeEventListener("mouseenter", folderMouseEnter);
-      folder.removeEventListener("mouseleave", folderMouseLeave);
-      for (const todo of folder.querySelectorAll(".todo-box:not(#folder-cloned-element)")) {
-        todo.removeEventListener("mouseover", taskMouseEnter);
-      }
-    }
   }
-
+  return;
 }

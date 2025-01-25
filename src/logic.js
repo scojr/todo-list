@@ -82,8 +82,15 @@ class Folder extends Card {
     this.#todos.push(todoItem);
   }
 
-  dragIn(todoObject, index) {
-    this.#todos.splice(todoObject, index);
+  spliceTodo(todo, index) {
+    this.#todos.splice(index, 0, todo[0]);
+  }
+
+  transferTodo(todoIndex, toFolderIndex, newTodoIndex) {
+    const toFolder = getActiveProject().folders[toFolderIndex];
+    const todoCopy = this.#todos.slice(todoIndex, parseInt(todoIndex) + 1);
+    this.#todos.splice(todoIndex, 1);
+    toFolder.spliceTodo(todoCopy, newTodoIndex);
   }
 
   newTodo(name) {
@@ -93,8 +100,9 @@ class Folder extends Card {
 }
 
 class Todo extends Card {
-  toFolder(folderIndex) {
-    folders[folderIndex].insert(this);
+  #unique = Math.random();
+  makeUnique() {
+    this.#unique = Math.random();
   }
 }
 
@@ -120,8 +128,8 @@ for (const folder of projects[0].folders) {
 activeProject = projects[0];
 
 export function tester() {
-  console.log(projects);
-  console.log(getProjectFromName("makesandwich"))
+  // console.log(projects);
+  // console.log(getProjectFromName("makesandwich"))
 }
 
 

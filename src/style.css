@@ -69,6 +69,7 @@ body {
   grid-template-columns: minmax(max-content, 15%) 1fr;
   grid-template-rows: 1fr;
   background-color: var(--lightest-gray);
+  user-select: none;
 }
 
 h2 {
@@ -137,10 +138,14 @@ h3 {
   width: 100%;
 }
 
-.sidebar-add-task:hover {
+button {
+  cursor: pointer;
+}
+
+/* .sidebar-add-task:hover {
   cursor: pointer;
   background-color: var(--lightest-gray);
-}
+} */
 
 .container {
   /* display: grid;
@@ -196,7 +201,11 @@ h3 {
 .todo-add-button {
   font-size: 1.4rem;
   text-align: center;
-  order: 100;
+}
+
+.being-dragged {
+  pointer-events: none;
+  display: none;
 }
 
 #dragging {
