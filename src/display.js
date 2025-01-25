@@ -73,10 +73,11 @@ function displayTodosOf(folderTodos, domElement) {
     domElement.appendChild(card);
   }
   const cardFooter = dom.make("div");
-  const cardFooterText = dom.make("h2", "+");
+  const cardInternal = dom.make("button", "+");
+  const cardFooterText = dom.make("h2");
   cardFooter.classList.add("todo-add-button");
-  cardFooter.style.order = activeFolder.length;
-  cardFooter.appendChild(cardFooterText);
+  cardFooter.style.setProperty("order", "9999");
+  cardFooter.append(cardInternal, cardFooterText);
   domElement.appendChild(cardFooter);
 }
 
@@ -97,6 +98,7 @@ function todoDragging(event, element) {
 
   const folderClonedElement = element.parentElement.cloneNode(true);
   folderClonedElement.id = "folder-cloned-element";
+  folderClonedElement.lastElementChild.id = "inset"
   hoveredFolder.appendChild(folderClonedElement);
 
   element.parentElement.style.setProperty("display", "none");

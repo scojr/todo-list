@@ -8,19 +8,21 @@
 }
 
 :root {
-  --primary-color: #FF772D;
-  --secondary-color: #89D2FF;
-  --off-white: #fcfcfc;
-  --lightest-gray: #eeeeee;
-  --light-gray: #dadada;
-  --gray: #acacac;
-  --dark-gray: #636363;
+  --alpha: #2364AA;
+  --beta: #3DA5D9;
+  --gamma: #73BFB8;
+  --epsilon: #FEC601;
+  --zeta: #EA7317;
+  --eta: #acacac;
+  --theta: #636363;
 }
 
 html {
   line-height: 1.5;
   font-size: 20px;
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
+  font-family: Arial, sans-serif;
+  font-weight: 400;
+  font-weight: normal;
 }
 
 button,
@@ -64,11 +66,9 @@ svg {
 body {
   min-height: 100vh;
   margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: minmax(max-content, 15%) 1fr;
-  grid-template-rows: 1fr;
-  background-color: var(--lightest-gray);
+  display: flexbox;
+  flex-direction: column;
+  background-color: rgb(255, 249, 233);
   user-select: none;
 }
 
@@ -81,7 +81,6 @@ h3 {
 }
 
 .sidebar-header {
-  text-align: right;
   margin: 12px, 0px;
 }
 
@@ -99,37 +98,84 @@ h3 {
   border-bottom: 1px solid var(--gray);
 }
 
-.project-list li {
-  font-size: 1.2rem;
-  margin: 12px 12px;
-  border: 1px solid var(--gray);
-  padding: .3em 0px 0px 6px;
-  border-radius: 8px;
-  height: 50px;
+.project-list {
+  display: flex;
 }
 
+.project-list li {
+  position: relative;
+  font-size: 1rem;
+  margin-right: 24px;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  padding: 0px 12px;
+  height: 50px;
+  background-color: rgb(255, 249, 233);
+}
+
+/* .project-list li>span {
+  position: absolute;
+  content: "";
+  background-color: rgb(255, 249, 233);
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  width: 30px;
+  height: 15px;
+  left: 0px;
+  z-index: 1;
+  box-shadow: black 3px 1px 0px -1px;
+} */
+
+/* .project-list li::before {
+  position: absolute;
+  content: "";
+  background-color: rgb(255, 249, 233);
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  width: 26%;
+  height: 15px;
+  right: 75%;
+  z-index: 1;
+  box-shadow: black 3px 1px 0px -1px;
+} */
+
+
+/* .project-list li::after {
+  position: absolute;
+  content: "";
+  background-color: rgb(224, 220, 205);
+  border: 1px solid black;
+  width: 50%;
+  height: 15%;
+  top: -15%;
+  left: calc(30px - 2px);
+  z-index: 2;
+  box-shadow: black 3px 1px 0px -1px;
+} */
 
 .project-list li:hover {
-  background-color: var(--lightest-gray);
   cursor: pointer;
-  border-radius: 5px;
 }
 
 .sidebar {
-  position: sticky;
-  top: 0;
+  display: flex;
+  justify-content: left;
+  align-items: end;
   background-color: var(--off-white);
-  height: 100vh;
-  padding: 6px 12px;
-  grid-column: 1 / 2;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 0px 5px 1px;
-  border-right: 1px solid var(--gray);
+  height: min-content;
+  margin-bottom: 48px;
+  border-bottom: 3px solid black;
   overflow: auto;
 }
 
-.sidebar>h2 {
-  border-top: 1px solid var(--gray);
-  text-align: center;
+.sidebar h2 {
+  font-size: 1rem;
+}
+
+.sidebar h3 {
+  font-size: 1.2rem;
 }
 
 .sidebar-add-task {
@@ -142,55 +188,56 @@ button {
   cursor: pointer;
 }
 
-/* .sidebar-add-task:hover {
-  cursor: pointer;
-  background-color: var(--lightest-gray);
-} */
-
 .container {
-  /* display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20%, 1fr)); */
   display: flex;
   align-items: top;
-  justify-content: space-evenly;
+  justify-content: center;
+  gap: 96px;
 }
 
 .folder-container {
-  width: 23%;
+  width: 20%;
   min-height: 500px;
-  border-radius: 12px;
   height: min-content;
 }
 
 .folder {
   width: 100%;
-  background-color: var(--off-white);
-  border: 1px solid var(--gray);
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 1px 5px 1px;
-  border-radius: 12px;
+  background-color: rgb(213, 235, 255);
+  border: 3px solid black;
+  box-shadow: black 6px 6px 0px 0px;
   height: min-content;
-  padding: 4px;
+  padding: 4px 8px;
   display: flex;
   flex-direction: column;
 }
 
 .folder-container>h1 {
   font-size: 1.8rem;
-  border-radius: 12px 12px 0px 0px;
+  border: 3px solid black;
+  border-bottom: none;
+  box-shadow: black 6px 6px 0px 0px;
+  background-color: rgb(255, 189, 192);
+  padding: 0px 4px;
+  margin-top: 24px;
+  padding-left: 10px;
+  border-radius: 15px 15px 0px 0px;
 }
 
 .todo-container {
-  margin: 4px;
-  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.folder {
+  padding-bottom: 10px;
 }
 
 .todo-box {
   font-size: 1.2rem;
   padding: 2px 6px;
-  border-radius: 6px;
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 5px 0px;
-  border: 1px solid var(--gray);
-  background-color: var(--off-white);
+  border: 3px solid black;
+  box-shadow: black 4px 4px 0px 0px;
+  background-color: rgb(213, 235, 255);
 }
 
 .todo-box:not(#dragging):hover {
@@ -198,9 +245,21 @@ button {
   background-color: var(--lightest-gray);
 }
 
-.todo-add-button {
-  font-size: 1.4rem;
-  text-align: center;
+.todo-add-button>h2 {
+  font-size: 2rem;
+}
+
+.todo-add-button>button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 40px;
+  border: 3px solid black;
+  box-shadow: black 2px 2px 0px 0px;
+  background-color: rgb(218, 240, 255);
+  border-radius: 100%;
+  margin: 2px auto;
 }
 
 .being-dragged {
@@ -214,8 +273,16 @@ button {
   position: absolute;
   left: var(--mouse-x);
   top: var(--mouse-y);
+  box-shadow: none;
 }
 
+
 #folder-cloned-element {
-  visibility: hidden;
+  color: transparent;
+  pointer-events: none;
+}
+
+#inset {
+  box-shadow: black 2px 2px 0px 0px inset;
+  background-color: rgba(0, 0, 0, 0.15);
 }
