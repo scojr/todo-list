@@ -108,28 +108,29 @@ class Todo extends Card {
 
 // For Testing
 
-const folderTemplate = ["Concept", "To Do", "In Progress", "Complete"]
-const todosTemplate = ["Peanut butter", "Jelly", "Ham", "Cheese", "Bagel", "White bread", "Sourdough", "Whole wheat",]
+const folderTemplate = ["To Do", "Doing", "Done"];
+const todosTemplate1 = ["declutter desk", "organize bookshelf", "dust surfaces", "vacuum", "wipe suprfaces",];
+const todosTemplate2 = ["sanitize", "organize closet", "make bed", "take out trash",];
+const todosTemplate3 = ["clean mirror", "fold clothes",];
+const todosTemplates = [todosTemplate1, todosTemplate2, todosTemplate3];
 
 createProject("Make sandwich", "", "");
 createProject("Clean room", "", true);
 createProject("Todo list web app", "", true);
 
+activeProject = projects[1];
+
 for (const folder of folderTemplate) {
-  projects[0].newFolder(folder);
+  projects[1].newFolder(folder);
 }
 
-for (const folder of projects[0].folders) {
-  for (const todo of todosTemplate) {
+for (const folder of projects[1].folders) {
+  console.log(folder)
+  for (const todo of todosTemplates[activeProject.folders.indexOf(folder)]) {
     folder.newTodo(todo);
   }
 }
 
-activeProject = projects[0];
 
-export function tester() {
-  // console.log(projects);
-  // console.log(getProjectFromName("makesandwich"))
-}
 
 
