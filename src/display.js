@@ -24,6 +24,8 @@ export function listProjects() {
   const projects = getProjects();
   for (const project of projects) {
     const li = dom.make("li", project.name)
+    const stylingSpan = dom.make("span");
+    li.appendChild(stylingSpan);
     dom.projectList.appendChild(li);
   }
 }

@@ -8,13 +8,26 @@
 }
 
 :root {
-  --alpha: #2364AA;
+  --alpha: #ffe079;
   --beta: #3DA5D9;
   --gamma: #73BFB8;
-  --epsilon: #FEC601;
-  --zeta: #EA7317;
+  --epsilon: #eefcff;
+  --zeta: #ffa4a9;
   --eta: #acacac;
   --theta: #636363;
+  --background: #eefcff;
+  --sidebar: white;
+
+  /* temp */
+  --alpha: white;
+  --beta: white;
+  --gamma: white;
+  --epsilon: white;
+  --zeta: white;
+  --eta: white;
+  --theta: white;
+  --background: white;
+  --sidebar: white;
 }
 
 html {
@@ -66,9 +79,9 @@ svg {
 body {
   min-height: 100vh;
   margin: 0;
-  display: flexbox;
+  display: flex;
   flex-direction: column;
-  background-color: rgb(255, 249, 233);
+  background-color: var(--background);
   user-select: none;
 }
 
@@ -80,98 +93,25 @@ h3 {
   font-size: 1rem;
 }
 
-.sidebar-header {
-  margin: 12px, 0px;
-}
-
-.sidebar-buttons button {
-  display: flex;
-  color: var(--gray);
-  margin-bottom: 12px;
-  margin-top: 12px;
-  gap: 12px;
-}
-
-.sidebar-buttons,
-.project-list,
-.sidebar>h2 {
-  border-bottom: 1px solid var(--gray);
-}
-
-.project-list {
-  display: flex;
-}
-
-.project-list li {
-  position: relative;
-  font-size: 1rem;
-  margin-right: 24px;
-  border-left: 2px solid black;
-  border-right: 2px solid black;
-  padding: 0px 12px;
-  height: 50px;
-  background-color: rgb(255, 249, 233);
-}
-
-/* .project-list li>span {
-  position: absolute;
-  content: "";
-  background-color: rgb(255, 249, 233);
-  border-top: 1px solid black;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
-  width: 30px;
-  height: 15px;
-  left: 0px;
-  z-index: 1;
-  box-shadow: black 3px 1px 0px -1px;
-} */
-
-/* .project-list li::before {
-  position: absolute;
-  content: "";
-  background-color: rgb(255, 249, 233);
-  border-top: 1px solid black;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
-  width: 26%;
-  height: 15px;
-  right: 75%;
-  z-index: 1;
-  box-shadow: black 3px 1px 0px -1px;
-} */
-
-
-/* .project-list li::after {
-  position: absolute;
-  content: "";
-  background-color: rgb(224, 220, 205);
-  border: 1px solid black;
-  width: 50%;
-  height: 15%;
-  top: -15%;
-  left: calc(30px - 2px);
-  z-index: 2;
-  box-shadow: black 3px 1px 0px -1px;
-} */
-
-.project-list li:hover {
-  cursor: pointer;
-}
-
 .sidebar {
+  position: relative;
   display: flex;
-  justify-content: left;
-  align-items: end;
-  background-color: var(--off-white);
-  height: min-content;
-  margin-bottom: 48px;
-  border-bottom: 3px solid black;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 24px;
+  border-bottom: 3px dashed black;
   overflow: auto;
+  background-color: var(--sidebar);
+}
+
+.sidebar-header {
+  margin-right: 48px;
 }
 
 .sidebar h2 {
   font-size: 1rem;
+  font-weight: bold;
+  margin-top: -8px;
 }
 
 .sidebar h3 {
@@ -184,26 +124,95 @@ h3 {
   width: 100%;
 }
 
+
+.sidebar-buttons {
+  display: flex;
+  justify-content: end;
+}
+
+.project-list {
+  display: flex;
+  flex-grow: 1;
+  gap: 24px;
+  margin-top: 8px;
+  padding-left: 25px;
+}
+
+.project-list li {
+  font-size: 0.9rem;
+  text-decoration: u;
+  position: relative;
+  border: 2px solid black;
+  padding: 2px 8px 0px 8px;
+  height: 36px;
+  background-color: var(--alpha);
+  box-shadow: black 2px 2px 0px 0px;
+}
+
+.project-list li>span {
+  position: absolute;
+  content: "";
+  background-color: var(--alpha);
+  width: calc(100% - 46px);
+  height: 6px;
+  left: 48px;
+  top: -8px;
+  z-index: 1;
+  border-top: 2px solid black;
+  border-right: 2px solid black;
+  box-shadow: black 2px 2px 0px 0px;
+}
+
+.project-list li::after {
+  position: absolute;
+  content: "";
+  background-color: black;
+  width: 2px;
+  height: 8px;
+  left: 50px;
+  top: -10px;
+}
+
+.project-list li::before {
+  position: absolute;
+  content: "";
+  background-color: var(--alpha);
+  width: 50px;
+  height: 12px;
+  left: 0px;
+  top: -12px;
+  border: 2px solid black;
+  border-bottom: none;
+  border-left: none;
+  box-shadow: black -3px -1px 0px -1px;
+  z-index: 2;
+}
+
+.project-list li:hover {
+  cursor: pointer;
+}
+
+
+
 button {
   cursor: pointer;
 }
 
 .container {
-  display: flex;
-  align-items: top;
-  justify-content: center;
-  gap: 96px;
+  display: grid;
+  flex-grow: 1;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 48px;
+  margin: 48px 48px;
 }
 
 .folder-container {
-  width: 20%;
-  min-height: 500px;
-  height: min-content;
+  width: 100%;
 }
 
 .folder {
   width: 100%;
-  background-color: rgb(213, 235, 255);
+  background-color: var(--alpha);
   border: 3px solid black;
   box-shadow: black 6px 6px 0px 0px;
   height: min-content;
@@ -213,15 +222,13 @@ button {
 }
 
 .folder-container>h1 {
-  font-size: 1.8rem;
+  font-size: 2rem;
   border: 3px solid black;
   border-bottom: none;
   box-shadow: black 6px 6px 0px 0px;
-  background-color: rgb(255, 189, 192);
-  padding: 0px 4px;
-  margin-top: 24px;
+  background-color: var(--zeta);
   padding-left: 10px;
-  border-radius: 15px 15px 0px 0px;
+  border-radius: 12px 12px 0px 0px;
 }
 
 .todo-container {
@@ -229,7 +236,7 @@ button {
 }
 
 .folder {
-  padding-bottom: 10px;
+  padding: 12px;
 }
 
 .todo-box {
@@ -237,12 +244,11 @@ button {
   padding: 2px 6px;
   border: 3px solid black;
   box-shadow: black 4px 4px 0px 0px;
-  background-color: rgb(213, 235, 255);
+  background-color: var(--alpha);
 }
 
-.todo-box:not(#dragging):hover {
+.todo-box:hover {
   cursor: grab;
-  background-color: var(--lightest-gray);
 }
 
 .todo-add-button>h2 {
@@ -257,9 +263,12 @@ button {
   width: 40px;
   border: 3px solid black;
   box-shadow: black 2px 2px 0px 0px;
-  background-color: rgb(218, 240, 255);
   border-radius: 100%;
   margin: 2px auto;
+}
+
+.todo-add-button>button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .being-dragged {
