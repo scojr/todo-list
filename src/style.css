@@ -239,7 +239,6 @@ button {
 .todo-container {
   margin-bottom: 8px;
   position: relative;
-  z-index: 2;
 }
 
 .todo-container>img {
@@ -253,7 +252,6 @@ button {
   padding: 0px 4px;
   opacity: 25%;
   background-color: white;
-  z-index: -1;
 }
 
 
@@ -268,6 +266,7 @@ button {
   border: 3px solid black;
   box-shadow: black 4px 4px 0px 0px;
   height: 46px;
+  background-color: white;
 }
 
 .todo-box:hover {
@@ -341,6 +340,7 @@ button {
   left: var(--mouse-x);
   top: var(--mouse-y);
   box-shadow: none;
+
 }
 
 
@@ -352,4 +352,8 @@ button {
 #inset {
   box-shadow: black 2px 2px 0px 0px inset;
   background-color: rgba(0, 0, 0, 0.15);
+
+  +img {
+    opacity: 0%;
+  }
 }
