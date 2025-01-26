@@ -1,7 +1,8 @@
 import { getProjects, getProjectFromName, getActiveProject } from "./logic";
 import { getCurrentDate } from "./date.js";
-
 import chevron from "./icons/chevron-down.svg";
+import drag from "./icons/drag.svg";
+import dragHorizontal from "./icons/drag-horizontal.svg";
 
 const dom = (function () {
   const container = get(".container");
@@ -82,12 +83,13 @@ function displayTodosOf(folderTodos, domElement) {
     const card = dom.make("div");
     card.classList.add("todo-container");
     card.style.order = activeFolder.indexOf(todo);
-    // console.log(activeFolder.indexOf(todo))
     const todoBox = dom.make("div", todo.name);
+    const todoDragIcon = dom.make("img");
+    todoDragIcon.src = dragHorizontal;
     todoBox.classList.add("todo-box");
     todoBox.setAttribute("data-index", activeFolder.indexOf(todo));
     todoBox.addEventListener("mousedown", (event) => todoDragging(event, todoBox));
-    card.append(todoBox);
+    card.append(todoBox, todoDragIcon);
     domElement.appendChild(card);
   }
   const todoFooter = dom.make("div");
@@ -125,7 +127,7 @@ function todoDragging(event, element) {
 
   const folderClonedElement = element.parentElement.cloneNode(true);
   folderClonedElement.id = "folder-cloned-element";
-  folderClonedElement.lastElementChild.id = "inset"
+  folderClonedElement.firstElementChild.id = "inset"
   hoveredFolder.appendChild(folderClonedElement);
 
   element.parentElement.style.setProperty("display", "none");
