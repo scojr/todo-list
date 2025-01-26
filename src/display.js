@@ -37,6 +37,11 @@ export function displayDate() {
 
 // Container //
 
+export function refreshContainer() {
+  clearInterface();
+  displayFoldersOf(getActiveProject());
+}
+
 export function displayFoldersOf(project) {
   const activeProject = getActiveProject();
   for (const folder of activeProject.folders) {
@@ -46,7 +51,7 @@ export function displayFoldersOf(project) {
     cardFolders.classList.add("folder");
     cardFolders.setAttribute("data-index", activeProject.folders.indexOf(folder));
     const cardTitle = dom.make("h1", folder.name);
-    displayTodosOf(folder.todos, cardFolders);
+    displayTodosOf(folder, cardFolders);
     card.append(cardTitle, cardFolders);
     dom.container.appendChild(card);
   }
@@ -61,7 +66,7 @@ function clearInterface() {
 // Todos //
 
 function displayTodosOf(folderTodos, domElement) {
-  const activeFolder = folderTodos;
+  const activeFolder = folderTodos.todos;
   for (const todo of activeFolder) {
     const card = dom.make("div");
     card.classList.add("todo-container");
@@ -74,18 +79,25 @@ function displayTodosOf(folderTodos, domElement) {
     card.append(todoBox);
     domElement.appendChild(card);
   }
-  const cardFooter = dom.make("div");
-  const cardInternal = dom.make("button", "+");
-  const cardFooterText = dom.make("h2");
-  cardFooter.classList.add("todo-add-button");
-  cardFooter.style.setProperty("order", "9999");
-  cardFooter.append(cardInternal, cardFooterText);
-  domElement.appendChild(cardFooter);
+  const todoFooter = dom.make("div");
+  const cardFooterInput = dom.make("input");
+  cardFooterInput.type = "text";
+  const cardFooterButton = dom.make("button", "+");
+  cardFooterButton.classList.add("todo-add-button");
+  cardFooterButton.addEventListener("click", (e) => {
+    if (cardFooterInput.value) {
+      folderTodos.newTodo(cardFooterInput.value);
+      refreshContainer();
+    }
+  });
+  todoFooter.classList.add("todo-footer");
+  todoFooter.style.setProperty("order", "9999");
+  todoFooter.append(cardFooterInput, cardFooterButton);
+  domElement.appendChild(todoFooter);
 }
 
 // Todo Dragging //
 // I promise I'll refactor this into its own module but wow it works!! //
-
 function todoDragging(event, element) {
   event.preventDefault();
   let activeFolders = document.querySelectorAll(".folder")
@@ -167,8 +179,7 @@ function todoDragging(event, element) {
     document.onmousemove = null;
     document.onmouseup = null;
     document.body.style.cursor = "default";
-    clearInterface();
-    displayFoldersOf(getActiveProject());
+    refreshContainer();
   }
   return;
 }

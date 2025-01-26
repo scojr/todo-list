@@ -245,30 +245,48 @@ button {
   border: 3px solid black;
   box-shadow: black 4px 4px 0px 0px;
   background-color: var(--alpha);
+  height: 46px;
 }
 
 .todo-box:hover {
   cursor: grab;
 }
 
-.todo-add-button>h2 {
-  font-size: 2rem;
+.todo-footer {
+  margin-top: 3px;
+  margin-bottom: -5px;
+  border-top: 2px dashed black;
+  padding-top: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.todo-add-button>button {
+.todo-footer>button {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 40px;
   width: 40px;
+  flex-shrink: 0;
+  margin-left: 12px;
   border: 3px solid black;
   box-shadow: black 2px 2px 0px 0px;
   border-radius: 100%;
-  margin: 2px auto;
+  font-size: 1.8rem;
 }
 
-.todo-add-button>button:hover {
+.todo-footer>button:hover {
   background-color: rgba(0, 0, 0, 0.1);
+}
+
+.todo-footer>input {
+  width: 100%;
+  border: 3px solid black;
+  height: 46px;
+  box-shadow: black 2px 2px 0px 0px inset;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0px 8px;
 }
 
 .being-dragged {

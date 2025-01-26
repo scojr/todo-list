@@ -111,7 +111,7 @@ class Todo extends Card {
 const folderTemplate = ["Ideas", "To Do", "Doing", "Done"];
 
 const todosTemplate1 = ["animation", "notepad", "dark mode", "custom themes",];
-const todosTemplate2 = ["project form", "folder form", "localStorage saving", "project data to json", "color",];
+const todosTemplate2 = ["deadlines", "priority status", "labels", "project form", "folder form", "localStorage saving", "project data to json", "color",];
 const todosTemplate3 = ["todo form",];
 const todosTemplate4 = ["drag & drop todos", "basic styling",];
 const todosTemplates = [todosTemplate1, todosTemplate2, todosTemplate3, todosTemplate4];
