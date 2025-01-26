@@ -206,10 +206,6 @@ button {
   margin: 48px 48px;
 }
 
-.folder-container {
-  width: 100%;
-}
-
 .folder {
   width: 100%;
   background-color: var(--alpha);
@@ -221,15 +217,24 @@ button {
   flex-direction: column;
 }
 
-.folder-container>h1 {
-  font-size: 2rem;
+
+.folder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   border: 3px solid black;
   border-bottom: none;
   box-shadow: black 6px 6px 0px 0px;
-  background-color: var(--zeta);
-  padding-left: 10px;
+  background-color: var(--alpha);
+  padding: 0px 12px;
   border-radius: 12px 12px 0px 0px;
 }
+
+.folder-header>h1 {
+  font-size: 2rem;
+}
+
 
 .todo-container {
   margin-bottom: 8px;
@@ -262,22 +267,36 @@ button {
   align-items: center;
 }
 
-.todo-footer>button {
+.todo-footer>button,
+.folder-header>div>button {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 40px;
   width: 40px;
   flex-shrink: 0;
-  margin-left: 12px;
+  margin-left: 6px;
   border: 3px solid black;
   box-shadow: black 2px 2px 0px 0px;
   border-radius: 100%;
   font-size: 1.8rem;
 }
 
+.folder-header>div>button {
+  height: 30px;
+  width: 30px;
+  box-shadow: black 1px 1px 0px 0px;
+}
+
+.folder-header>div>button:hover,
 .todo-footer>button:hover {
   background-color: rgba(0, 0, 0, 0.1);
+}
+
+.todo-footer>.settings {
+  width: 16px;
+  border-radius: 7px;
+  margin-left: 6px;
 }
 
 .todo-footer>input {

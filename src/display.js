@@ -1,6 +1,8 @@
 import { getProjects, getProjectFromName, getActiveProject } from "./logic";
 import { getCurrentDate } from "./date.js";
 
+import chevron from "./icons/chevron-down.svg";
+
 const dom = (function () {
   const container = get(".container");
   const sidebar = get(".sidebar");
@@ -50,9 +52,18 @@ export function displayFoldersOf(project) {
     const cardFolders = dom.make("div");
     cardFolders.classList.add("folder");
     cardFolders.setAttribute("data-index", activeProject.folders.indexOf(folder));
+    const folderHeader = dom.make("div")
+    folderHeader.classList.add("folder-header");
     const cardTitle = dom.make("h1", folder.name);
+    const folderButtons = dom.make("div");
+    const folderButtonArrow = dom.make("button");
+    const img = dom.make("img");
+    img.src = chevron;
+    folderButtonArrow.appendChild(img);
+    folderButtons.append(folderButtonArrow);
+    folderHeader.append(cardTitle, folderButtons)
     displayTodosOf(folder, cardFolders);
-    card.append(cardTitle, cardFolders);
+    card.append(folderHeader, cardFolders);
     dom.container.appendChild(card);
   }
 }
@@ -82,9 +93,11 @@ function displayTodosOf(folderTodos, domElement) {
   const todoFooter = dom.make("div");
   const cardFooterInput = dom.make("input");
   cardFooterInput.type = "text";
-  const cardFooterButton = dom.make("button", "+");
-  cardFooterButton.classList.add("todo-add-button");
-  cardFooterButton.addEventListener("click", (e) => {
+  const cardFooterAddButton = dom.make("button", "+");
+  const cardFooterSettingsButton = dom.make("button", "⋮");
+  cardFooterAddButton.classList.add("todo-add-button");
+  cardFooterSettingsButton.classList.add("todo-add-button", "settings");
+  cardFooterAddButton.addEventListener("click", (e) => {
     if (cardFooterInput.value) {
       folderTodos.newTodo(cardFooterInput.value);
       refreshContainer();
@@ -92,7 +105,7 @@ function displayTodosOf(folderTodos, domElement) {
   });
   todoFooter.classList.add("todo-footer");
   todoFooter.style.setProperty("order", "9999");
-  todoFooter.append(cardFooterInput, cardFooterButton);
+  todoFooter.append(cardFooterInput, cardFooterSettingsButton, cardFooterAddButton);
   domElement.appendChild(todoFooter);
 }
 
