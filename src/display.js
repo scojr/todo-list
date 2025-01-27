@@ -52,6 +52,7 @@ export function displayFoldersOf(project) {
     card.classList.add("folder-container");
     const cardFolders = dom.make("div");
     cardFolders.classList.add("folder");
+    cardFolders.classList.add("footer-toggle");
     cardFolders.setAttribute("data-index", activeProject.folders.indexOf(folder));
     const folderHeader = dom.make("div")
     folderHeader.classList.add("folder-header");
@@ -60,6 +61,15 @@ export function displayFoldersOf(project) {
     const folderButtonArrow = dom.make("button");
     const img = dom.make("img");
     img.src = chevron;
+    folderButtonArrow.addEventListener("click", () => {
+      if (cardFolders.classList.contains("footer-toggle")) {
+        cardFolders.classList.remove("footer-toggle");
+        img.style.setProperty("transform", "rotate(180deg)");
+      } else {
+        img.style.setProperty("transform", "rotate(0deg)");
+        cardFolders.classList.add("footer-toggle");
+      }
+    });
     folderButtonArrow.appendChild(img);
     folderButtons.append(folderButtonArrow);
     folderHeader.append(cardTitle, folderButtons)
