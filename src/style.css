@@ -279,11 +279,10 @@ button {
 
 .todo-footer {
   margin-top: 6px;
-  margin-bottom: -5px;
+  margin-bottom: -2px;
   border-top: 2px dashed black;
   padding-top: 10px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -313,10 +312,12 @@ button {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.todo-footer>.settings {
-  width: 16px;
-  border-radius: 7px;
+.todo-footer .settings {
   margin-left: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .todo-footer>input {
@@ -330,6 +331,41 @@ button {
 
 .footer-toggle>.todo-footer {
   display: none;
+}
+
+input[type="color"] {
+  height: 24px;
+  width: 24px;
+  border-radius: 100%;
+  border: 3px solid black;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+}
+
+input[type="date"]::-webkit-datetime-edit {
+  display: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: url(./icons/calendar.svg) center no-repeat;
+}
+
+input[type="color"]::-webkit-color-swatch:hover,
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  cursor: pointer;
+}
+
+.modal-container {
+
+  background-color: white;
+  border: 3px solid black;
+  box-shadow: black 4px 4px 0px 0px;
 }
 
 .being-dragged {

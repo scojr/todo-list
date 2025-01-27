@@ -1,7 +1,6 @@
 import { getProjects, getProjectFromName, getActiveProject } from "./logic";
 import { getCurrentDate } from "./date.js";
 import chevron from "./icons/chevron-down.svg";
-import drag from "./icons/drag.svg";
 import dragHorizontal from "./icons/drag-horizontal.svg";
 
 const dom = (function () {
@@ -105,10 +104,15 @@ function displayTodosOf(folderTodos, domElement) {
   const todoFooter = dom.make("div");
   const cardFooterInput = dom.make("input");
   cardFooterInput.type = "text";
+  const footerSettings = dom.make("div");
+  footerSettings.classList.add("settings");
+  const colorSetting = dom.make("input");
+  colorSetting.type = "color";
+  const dateSetting = dom.make("input")
+  dateSetting.type = "date";
+  footerSettings.append(colorSetting, dateSetting)
   const cardFooterAddButton = dom.make("button", "+");
-  const cardFooterSettingsButton = dom.make("button", "⋮");
   cardFooterAddButton.classList.add("todo-add-button");
-  cardFooterSettingsButton.classList.add("todo-add-button", "settings");
   cardFooterAddButton.addEventListener("click", (e) => {
     if (cardFooterInput.value) {
       folderTodos.newTodo(cardFooterInput.value);
@@ -117,7 +121,7 @@ function displayTodosOf(folderTodos, domElement) {
   });
   todoFooter.classList.add("todo-footer");
   todoFooter.style.setProperty("order", "9999");
-  todoFooter.append(cardFooterInput, cardFooterSettingsButton, cardFooterAddButton);
+  todoFooter.append(cardFooterInput, footerSettings, cardFooterAddButton);
   domElement.appendChild(todoFooter);
 }
 
