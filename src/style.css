@@ -93,7 +93,11 @@ h3 {
   font-size: 1rem;
 }
 
-.sidebar {
+button:hover {
+  cursor: pointer;
+}
+
+.header-container {
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -104,20 +108,6 @@ h3 {
   background-color: var(--sidebar);
 }
 
-.sidebar-header {
-  margin-right: 48px;
-}
-
-.sidebar h2 {
-  font-size: 1rem;
-  font-weight: bold;
-  margin-top: -8px;
-}
-
-.sidebar h3 {
-  font-size: 1.2rem;
-}
-
 .sidebar-add-task {
   border-radius: 5px;
   padding: 3px 0px;
@@ -125,7 +115,7 @@ h3 {
 }
 
 
-.sidebar-buttons {
+.header.buttons {
   display: flex;
   justify-content: end;
 }
@@ -192,12 +182,6 @@ h3 {
   cursor: pointer;
 }
 
-
-
-button {
-  cursor: pointer;
-}
-
 .container {
   display: grid;
   flex-grow: 1;
@@ -206,7 +190,7 @@ button {
   margin: 48px 48px;
 }
 
-.folder {
+.task-container {
   width: 100%;
   background-color: var(--alpha);
   border: 3px solid black;
@@ -218,7 +202,7 @@ button {
 }
 
 
-.folder-header {
+.table-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -231,12 +215,12 @@ button {
   border-radius: 12px 12px 0px 0px;
 }
 
-.folder-header>h1 {
-  font-size: 2rem;
+.table-header>h2 {
+  font-size: 1.8rem;
 }
 
 
-.todo-container {
+.task {
   margin-bottom: 8px;
   position: relative;
 }
@@ -259,7 +243,7 @@ button {
   padding: 12px;
 }
 
-.todo-box {
+.task {
   position: relative;
   font-size: 1.2rem;
   padding: 2px 6px;
@@ -269,7 +253,7 @@ button {
   background-color: white;
 }
 
-.todo-box:hover {
+.task:hover {
   cursor: grab;
 
   +img {

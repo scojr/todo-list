@@ -4,7 +4,24 @@ import { getCurrentDate } from "./date.js";
 // import chevron from "./icons/chevron-down.svg";
 // import dragHorizontal from "./icons/drag-horizontal.svg";
 
-// Sidebar //
+function makeCard(object) {
+  const container = dom.make("div");
+  container.classList.add(object.constructor.name.toLowerCase());
+  const header = dom.make("div");
+  header.classList.add(`${object.constructor.name.toLowerCase()}-header`);
+  const title = dom.make("h2", object.title);
+  header.appendChild(title);
+  container.appendChild(header);
+  return container;
+}
+
+function clearInterface() {
+  while (dom.container.lastElementChild) {
+    dom.container.removeChild(dom.container.lastElementChild);
+  }
+}
+
+// Header //
 
 export function displayHeader() {
   const projects = controller.getProjects();
@@ -17,52 +34,23 @@ export function displayHeader() {
     dom.headerDate.textContent = `${getCurrentDate.month()} ${getCurrentDate.day()} ${getCurrentDate.year()}`;
   }
 }
-// // Container //
 
-// export function refreshContainer() {
-//   clearInterface();
-//   displayFoldersOf(getActiveProject());
-// }
+// Container //
+displayTablesOf(controller.getProjectByIndex(0))
 
-// export function displayFoldersOf(project) {
-//   const activeProject = getActiveProject();
-//   for (const folder of activeProject.folders) {
-//     const card = dom.make("div");
-//     card.classList.add("folder-container");
-//     const cardFolders = dom.make("div");
-//     cardFolders.classList.add("folder");
-//     cardFolders.classList.add("footer-toggle");
-//     cardFolders.setAttribute("data-index", activeProject.folders.indexOf(folder));
-//     const folderHeader = dom.make("div")
-//     folderHeader.classList.add("folder-header");
-//     const cardTitle = dom.make("h1", folder.name);
-//     const folderButtons = dom.make("div");
-//     const folderButtonArrow = dom.make("button");
-//     const img = dom.make("img");
-//     img.src = chevron;
-//     folderButtonArrow.addEventListener("click", () => {
-//       if (cardFolders.classList.contains("footer-toggle")) {
-//         cardFolders.classList.remove("footer-toggle");
-//         img.style.setProperty("transform", "rotate(180deg)");
-//       } else {
-//         img.style.setProperty("transform", "rotate(0deg)");
-//         cardFolders.classList.add("footer-toggle");
-//       }
-//     });
-//     folderButtonArrow.appendChild(img);
-//     folderButtons.append(folderButtonArrow);
-//     folderHeader.append(cardTitle, folderButtons)
-//     displayTodosOf(folder, cardFolders);
-//     card.append(folderHeader, cardFolders);
-//     dom.container.appendChild(card);
-//   }
-// }
+function displayTablesOf(project) {
+  for (const table of project.children) {
+    const tableContainer = makeCard(table);
+    const taskContainer = dom.make("div");
+    taskContainer.classList.add("task-container")
+    for (const task of table.children) {
+      taskContainer.appendChild(makeCard(task))
+    }
+    tableContainer.appendChild(taskContainer);
+    dom.container.appendChild(tableContainer);
+  };
+}
 
-// function clearInterface() {
-//   while (dom.container.lastElementChild) {
-//     dom.container.removeChild(dom.container.lastElementChild);
-//   }
-// }
 // // Todos //
 
 // function displayTodosOf(folderTodos, domElement) {
