@@ -1,8 +1,9 @@
 import "./style.css";
 import { controller } from "./logic";
+import { displayHeader } from "./display";
 // // import { listProjects, displayDate, displayFoldersOf } from "./display";
 
-// listProjects();
+displayHeader();
 // displayDate();
 // displayFoldersOf(getActiveProject());
 

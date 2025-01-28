@@ -175,18 +175,3 @@ for (const table of tableTemplate) {
     controller.getProjectByIndex(0).children[tableTemplate.indexOf(table)].newTask(taskTemplate);
   }
 }
-
-// for (const table of controller.getProjectByIndex(0).children) {
-//   console.log(table)
-//   for (const )
-// }
-
-// for (const taskTemplate of taskTemplates) {
-//   console.log(taskTemplates.indexOf(taskTemplate));
-// }
-
-// for (const taskTemplate of taskTemplates) {
-//   for (const task of taskTemplate) {
-//     console.log(task);
-//   };
-// }
