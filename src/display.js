@@ -20,6 +20,18 @@ const dom = (function () {
   return { make, container, sidebar, projectList, headerDate, headerDay };
 })();
 
+function makeInput(inputType, inputName, labelString) {
+  const input = dom.make("input");
+  input.type = inputType;
+  input.id = inputName;
+  input.name = inputName;
+  const label = dom.make("label", labelString);
+  label.for = inputName;
+  label.append(input);
+  return { input, label };
+}
+
+
 // Sidebar //
 
 export function listProjects() {
@@ -83,7 +95,6 @@ function clearInterface() {
     dom.container.removeChild(dom.container.lastElementChild);
   }
 }
-
 // Todos //
 
 function displayTodosOf(folderTodos, domElement) {
@@ -102,8 +113,7 @@ function displayTodosOf(folderTodos, domElement) {
     domElement.appendChild(card);
   }
   const todoFooter = dom.make("div");
-  const cardFooterInput = dom.make("input");
-  cardFooterInput.type = "text";
+  const taskInput = makeInput("text", "newtask", "Add new task");
   const footerSettings = dom.make("div");
   footerSettings.classList.add("settings");
   const colorSetting = dom.make("input");
@@ -114,14 +124,14 @@ function displayTodosOf(folderTodos, domElement) {
   const cardFooterAddButton = dom.make("button", "+");
   cardFooterAddButton.classList.add("todo-add-button");
   cardFooterAddButton.addEventListener("click", (e) => {
-    if (cardFooterInput.value) {
-      folderTodos.newTodo(cardFooterInput.value);
+    if (taskInput.input.value) {
+      folderTodos.newTodo(taskInput.input.value);
       refreshContainer();
     }
   });
   todoFooter.classList.add("todo-footer");
   todoFooter.style.setProperty("order", "9999");
-  todoFooter.append(cardFooterInput, footerSettings, cardFooterAddButton);
+  todoFooter.append(taskInput.label, footerSettings, cardFooterAddButton);
   domElement.appendChild(todoFooter);
 }
 

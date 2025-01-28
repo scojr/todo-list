@@ -320,7 +320,7 @@ button {
   align-items: center;
 }
 
-.todo-footer>input {
+#newtask {
   width: 100%;
   border: 3px solid black;
   height: 46px;
