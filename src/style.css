@@ -196,9 +196,11 @@ button:hover {
   border: 3px solid black;
   box-shadow: black 6px 6px 0px 0px;
   height: min-content;
-  padding: 4px 8px;
+  padding: 8px;
+  padding-bottom: 12px;
   display: flex;
   flex-direction: column;
+  gap: 12px
 }
 
 
@@ -211,18 +213,12 @@ button:hover {
   border-bottom: none;
   box-shadow: black 6px 6px 0px 0px;
   background-color: var(--alpha);
-  padding: 0px 12px;
+  padding: 0px 8px;
   border-radius: 12px 12px 0px 0px;
 }
 
 .table-header>h2 {
   font-size: 1.8rem;
-}
-
-
-.task {
-  margin-bottom: 8px;
-  position: relative;
 }
 
 .todo-container>img {

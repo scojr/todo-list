@@ -1,60 +1,107 @@
-import { controller } from "./logic";
-import { dom } from "./dom-interface";
-import { getCurrentDate } from "./date.js";
-import { enableDragAndDrop } from "./drag-and-drop.js";
-// import chevron from "./icons/chevron-down.svg";
-// import dragHorizontal from "./icons/drag-horizontal.svg";
 
-function makeCard(object) {
-  const container = dom.make("div");
-  container.classList.add(object.constructor.name.toLowerCase());
-  const header = dom.make("div");
-  header.classList.add(`${object.constructor.name.toLowerCase()}-header`);
-  const title = dom.make("h2", object.title);
-  header.appendChild(title);
-  container.appendChild(header);
-  return container;
+export function enableDragAndDrop(element) {
+  element.addEventListener("mousedown", (event) => elementDragging(event, element));
 }
 
-function clearInterface() {
-  while (dom.container.lastElementChild) {
-    dom.container.removeChild(dom.container.lastElementChild);
-  }
-}
+function elementDragging(event, element) {
+  event.preventDefault();
 
-// Header //
+  let activeFolders = document.querySelectorAll(".folder")
+  let hoveredFolder = event.currentTarget.parentElement.parentElement;
+  let hoveredTodo = event.currentTarget;
+  let grabbedTodo = event.currentTarget;
 
-export function displayHeader() {
-  const projects = controller.getProjects();
-  for (const project of projects) {
-    const li = dom.make("li", project.title);
-    const stylingSpan = dom.make("span");
-    li.appendChild(stylingSpan);
-    dom.projectList.appendChild(li);
-    dom.headerDay.textContent = `${getCurrentDate.weekday()}`;
-    dom.headerDate.textContent = `${getCurrentDate.month()} ${getCurrentDate.day()} ${getCurrentDate.year()}`;
-  }
-}
+  const draggingClone = cloneElement(element);
+  const parentClone = cloneParent(element);
 
-// Container //
-displayTablesOf(controller.getProjectByIndex(0))
+  hoveredFolder.appendChild(folderClonedElement);
+  const folderClonedElement = element.parentElement.cloneNode(true);
 
-function displayTablesOf(project) {
-  for (const table of project.children) {
-    const tableContainer = makeCard(table);
-    const taskContainer = dom.make("div");
-    taskContainer.classList.add("task-container")
-    for (const task of table.children) {
-      taskContainer.appendChild(makeCard(task))
-      enableDragAndDrop(taskContainer);
+  element.style.setProperty("display", "none");
+  document.body.style.setProperty("cursor", "grabbing", "important");
 
+
+  dom.container.appendChild(draggedClonedElement);
+  draggedClonedElement.style.setProperty("--mouse-x", (event.clientX - draggedClonedElement.clientWidth / 2) + "px")
+  draggedClonedElement.style.setProperty("--mouse-y", (event.clientY + 24) + "px")
+  document.onmousemove = dragElement;
+  document.onmouseup = closeDragElement;
+
+
+  function dragElement(e) {
+    draggedClonedElement.style.setProperty("--mouse-x", (e.clientX - draggedClonedElement.clientWidth / 2) + "px")
+    draggedClonedElement.style.setProperty("--mouse-y", (e.clientY + 24) + "px")
+    for (const folder of activeFolders) {
+      folder.addEventListener("mouseover", folderMouseEnter);
+      folder.addEventListener("mouseleave", folderMouseLeave);
+      for (const todo of folder.querySelectorAll(".todo-box:not(#folder-cloned-element)")) {
+        todo.addEventListener("mouseover", todoMouseEnter)
+      }
     }
-    tableContainer.appendChild(taskContainer);
-    dom.container.appendChild(tableContainer);
-  };
+  }
+
+  function todoMouseEnter(e) {
+    hoveredTodo = e.currentTarget;
+    const hoveredTodoIndex = hoveredTodo.dataset.index;
+    const todoBox = e.target.getBoundingClientRect();
+    const y = e.y - todoBox.top;
+    if (hoveredTodoIndex) {
+      if (y > todoBox.height / 2) {
+        // Mouse enters from bottom //
+        folderClonedElement.style.setProperty("order", hoveredTodoIndex - 1);
+      } else {
+        // Mouse enters from top //
+        folderClonedElement.style.setProperty("order", hoveredTodoIndex);
+      }
+    }
+  }
+
+  function folderMouseEnter(e) {
+    hoveredFolder = e.currentTarget;
+    hoveredFolder.appendChild(folderClonedElement);
+  }
+
+  function folderMouseLeave(e) {
+    hoveredFolder = null;
+    document.querySelector("#folder-cloned-element").remove();
+  }
+
+  function closeDragElement() {
+    if (hoveredFolder) {
+      const indexOfHoveredFolder = hoveredFolder.dataset.index;
+      const placeholderIndex = parseInt(folderClonedElement.style.order) + 1;
+      console.log(placeholderIndex);
+
+      const indexOfFromFolder = grabbedTodo.parentElement.parentElement.dataset.index;
+      const fromFolder = getActiveProject().folders[indexOfFromFolder]
+      const indexOfGrabbedTodo = grabbedTodo.dataset.index;
+
+      console.log({ fromFolder, grabbedTodo, hoveredFolder })
+
+      fromFolder.transferTodo(indexOfGrabbedTodo, indexOfHoveredFolder, placeholderIndex);
+    }
+    document.onmousemove = null;
+    document.onmouseup = null;
+    document.body.style.cursor = "default";
+    refreshContainer();
+  }
+  return;
 }
 
-// // Todos //
+
+function cloneElement(element) {
+  const clone = element.cloneNode(true);
+  clone.style.setProperty("width", `${element.clientWidth}px`);
+  clone.style.setProperty("height", `${element.clientWidth}px`);
+  return clone;
+}
+
+function cloneParent(element) {
+  const parentclone = element.parentElement.cloneNode(true);
+  parentclone.id = "folder-cloned-element";
+  parentclone.firstElementChild.id = "inset"
+}
+
 
 // function displayTodosOf(folderTodos, domElement) {
 //   const activeFolder = folderTodos.todos;
