@@ -1,138 +1,192 @@
-const projects = [];
-let activeProject;
+let projects = [];
+let activeProject = "";
 
-export function createProject(name, deadline, priority) {
-  const newProject = new Project(name, deadline, priority);
-  projects.push(newProject);
-}
+export const controller = {
+  newProject: function (name) {
+    const newProject = new Project(name);
+    projects.push(newProject);
+  },
 
-export function getActiveProject() {
-  return activeProject;
-}
+  getProjects: function () {
+    return projects;
+  },
 
-export function getProjects() {
-  return projects;
-}
+  setActiveProject: function (index) {
+    activeProject = projects[index];
+  },
 
-export function getProjectFromName(string) {
-  const unparsedString = string;
-  const unparsedSearch = projects.find(project => project.name === unparsedString);
-  if (unparsedSearch) return unparsedSearch;
-  const parsedString = string.replaceAll(" ", "").toLowerCase();
-  const parsedSearch = projects.find(project => project.name.replaceAll(" ", "").toLowerCase() === parsedString)
-  if (parsedSearch) return parsedSearch;
-  else return console.log("No project found");
-}
+  getActiveProject: function (index) {
+    return activeProject;
+  },
 
-function parseDate(stringDate) {
-  const regex = /^\d{4}-\d{2}-\d{2}$/;
-  return regex.test(stringDate);
-}
+  getProjectByIndex: function (index) {
+    return projects[index];
+  },
+};
 
-class Card {
-  constructor(name) {
-    this.name = name;
-  }
-
-  #deadline = undefined;
-  #priority = false;
-
-  set deadline(date) {
-    if (parseDate(date)) {
-      this.#deadline = date;
-    } else {
-      console.log("YYYY-MM-DD Format Required")
-    }
-  }
-
-  set priority(boolean) {
-    if (typeof (boolean) === "boolean") {
-      this.#priority = boolean;
-    } else {
-      this.#priority = false;
-    }
+// Behaviors
+const CanMakeTable = {
+  newTable(title) {
+    const child = new Table(title, this);
+    this.children.push(child);
   }
 }
 
-class Project extends Card {
-  #folders = [];
-
-  get folders() {
-    return this.#folders;
-  }
-
-  insert(folder) {
-    this.#folders.push(folder);
-  }
-
-  newFolder(name) {
-    const folder = new Folder(name);
-    this.insert(folder);
+const CanMakeTask = {
+  newTask(title) {
+    const child = new Task(title, this);
+    this.children.push(child);
   }
 }
 
-class Folder extends Card {
-  #todos = [];
-
-  get todos() {
-    return this.#todos;
-  }
-
-  insert(todoItem) {
-    this.#todos.push(todoItem);
-  }
-
-  spliceTodo(todo, index) {
-    this.#todos.splice(index, 0, todo[0]);
-  }
-
-  transferTodo(todoIndex, toFolderIndex, newTodoIndex) {
-    const toFolder = getActiveProject().folders[toFolderIndex];
-    const todoCopy = this.#todos.slice(todoIndex, parseInt(todoIndex) + 1);
-    this.#todos.splice(todoIndex, 1);
-    toFolder.spliceTodo(todoCopy, newTodoIndex);
-  }
-
-  newTodo(name) {
-    const todo = new Todo(name);
-    this.insert(todo);
+const HasDescription = {
+  newDescription(string) {
+    this.description = string;
   }
 }
 
-class Todo extends Card {
-  #unique = Math.random();
-  makeUnique() {
-    this.#unique = Math.random();
+// Classes
+
+class Project {
+  constructor(title) {
+    this.title = title;
+  }
+  #children = [];
+  #deadline;
+  #label;
+  get children() {
+    return this.#children;
   }
 }
+
+Object.assign(Project.prototype, CanMakeTable, HasDescription);
+
+class Table extends Project {
+  constructor(title, parent) {
+    super(title);
+    this.parentObject = parent;
+  }
+}
+
+Object.assign(Table.prototype, CanMakeTask);
+
+class Task extends Table {
+  constructor(title, parent) {
+    super(title, parent);
+  }
+}
+
+// class Card {
+//   constructor(name) {
+//     this.name = name;
+//   }
+
+//   #deadline = undefined;
+//   #priority = false;
+
+//   set deadline(date) {
+//     if (parseDate(date)) {
+//       this.#deadline = date;
+//     } else {
+//       console.log("YYYY-MM-DD Format Required")
+//     }
+//   }
+
+//   set priority(boolean) {
+//     if (typeof (boolean) === "boolean") {
+//       this.#priority = boolean;
+//     } else {
+//       this.#priority = false;
+//     }
+//   }
+// }
+
+// class Project extends Card {
+//   #folders = [];
+
+//   get folders() {
+//     return this.#folders;
+//   }
+
+//   insert(folder) {
+//     this.#folders.push(folder);
+//   }
+
+//   newFolder(name) {
+//     const folder = new Folder(name);
+//     this.insert(folder);
+//   }
+// }
+
+// class Folder extends Card {
+//   #todos = [];
+
+//   get todos() {
+//     return this.#todos;
+//   }
+
+//   insert(todoItem) {
+//     this.#todos.push(todoItem);
+//   }
+
+//   spliceTodo(todo, index) {
+//     this.#todos.splice(index, 0, todo[0]);
+//   }
+
+//   transferTodo(todoIndex, toFolderIndex, newTodoIndex) {
+//     const toFolder = getActiveProject().folders[toFolderIndex];
+//     const todoCopy = this.#todos.slice(todoIndex, parseInt(todoIndex) + 1);
+//     this.#todos.splice(todoIndex, 1);
+//     toFolder.spliceTodo(todoCopy, newTodoIndex);
+//   }
+
+//   newTodo(name) {
+//     const todo = new Todo(name);
+//     this.insert(todo);
+//   }
+// }
+
+// class Todo extends Card {
+//   #unique = Math.random();
+//   makeUnique() {
+//     this.#unique = Math.random();
+//   }
+// }
 
 // For Testing
 
-const folderTemplate = ["Ideas", "To Do", "Doing", "Done"];
+const tableTemplate = ["Ideas", "To Do", "Doing", "Done"];
 
-const todosTemplate1 = ["animation", "notepad", "dark mode", "custom themes",];
-const todosTemplate2 = ["deadlines", "priority status", "labels", "project form", "folder form", "localStorage saving", "project data to json", "color",];
-const todosTemplate3 = ["todo form",];
-const todosTemplate4 = ["drag & drop todos", "basic styling",];
-const todosTemplates = [todosTemplate1, todosTemplate2, todosTemplate3, todosTemplate4];
+const taskTemplate1 = ["animation", "notepad", "dark mode", "custom themes",];
+const taskTemplate2 = ["deadlines", "priority status", "labels", "project form", "folder form", "localStorage saving", "project data to json", "color",];
+const taskTemplate3 = ["todo form",];
+const taskTemplate4 = ["drag & drop todos", "basic styling",];
+const taskTemplates = [taskTemplate1, taskTemplate2, taskTemplate3, taskTemplate4];
 
-createProject("Todo List App", "", true);
-createProject("Lorem ipsum", "", true);
-createProject("magna aliqua", "", true);
+controller.newProject("Todo List App", "", true);
+controller.newProject("Lorem ipsum", "", true);
+controller.newProject("magna aliqua", "", true);
 
-activeProject = projects[1];
+activeProject = projects[0];
 
-for (const folder of folderTemplate) {
-  projects[1].newFolder(folder);
-}
-
-for (const folder of projects[1].folders) {
-  console.log(folder)
-  for (const todo of todosTemplates[activeProject.folders.indexOf(folder)]) {
-    folder.newTodo(todo);
+for (const table of tableTemplate) {
+  controller.getProjectByIndex(0).newTable(table);
+  for (const taskTemplate of taskTemplates[tableTemplate.indexOf(table)]) {
+    controller.getProjectByIndex(0).children[tableTemplate.indexOf(table)].newTask(taskTemplate);
   }
 }
 
+// for (const table of controller.getProjectByIndex(0).children) {
+//   console.log(table)
+//   for (const )
+// }
 
+// for (const taskTemplate of taskTemplates) {
+//   console.log(taskTemplates.indexOf(taskTemplate));
+// }
 
-
+// for (const taskTemplate of taskTemplates) {
+//   for (const task of taskTemplate) {
+//     console.log(task);
+//   };
+// }
