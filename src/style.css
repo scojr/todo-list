@@ -200,9 +200,13 @@ button:hover {
   padding-bottom: 12px;
   display: flex;
   flex-direction: column;
-  gap: 12px
+  gap: 12px;
 }
 
+.table {
+  max-height: max-content;
+  pointer-events: none;
+}
 
 .table-header {
   display: flex;
@@ -249,7 +253,13 @@ button:hover {
   background-color: white;
 }
 
-.task:hover {
+.task,
+.table-header {
+  pointer-events: all;
+}
+
+.task:hover,
+.table-header:hover {
   cursor: grab;
 
   +img {
@@ -360,11 +370,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   left: var(--mouse-x);
   top: var(--mouse-y);
   box-shadow: none;
-
+  pointer-events: none;
 }
 
-
-#folder-cloned-element {
+#placeholder {
   color: transparent;
   pointer-events: none;
 }
