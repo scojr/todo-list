@@ -29,7 +29,7 @@ function elementDragging(event, element) {
   let activeTasks = document.querySelectorAll(".task")
   if (type === "task") {
     for (const task of activeTasks) {
-      task.addEventListener("mouseover", mouseHover);
+      task.addEventListener("mouseover", taskHover);
     }
     for (const table of activeTables) {
       table.addEventListener("mouseover", tableHover);
@@ -42,19 +42,31 @@ function elementDragging(event, element) {
   }
 
   function tableHover(e) {
-    console.log("tabletable hover");
     const hoveredtable = e.currentTarget;
     hoveredtable.querySelector(".task-container").appendChild(placeholder);
   }
 
   function containerHover(e) {
-    console.log("tabletable hover");
-    const hoveredtable = e.currentTarget;
-    dom.container.appendChild(placeholder);
+    e.stopPropagation();
+    const hoveredElement = e.currentTarget;
+    console.log(e);
+    const hoveredElementIndex = hoveredElement.dataset.index;
+    const targetBox = e.target.getBoundingClientRect();
+    const x = e.x - targetBox.left;
+    if (hoveredElementIndex) {
+      if (x > targetBox.width / 2) {
+        // Mouse enters from bottom //
+        placeholder.style.setProperty("order", hoveredElementIndex - 1);
+      } else {
+        // Mouse enters from top //
+        placeholder.style.setProperty("order", hoveredElementIndex);
+      }
+    }
   }
 
-  function mouseHover(e) {
+  function taskHover(e) {
     const hoveredElement = e.currentTarget;
+    console.log(e);
     const hoveredElementIndex = hoveredElement.dataset.index;
     const targetBox = e.target.getBoundingClientRect();
     const y = e.y - targetBox.top;
@@ -88,6 +100,7 @@ function createCloneToDrag(event, element) {
   const clonedElement = element.cloneNode(true);
   clonedElement.id = "dragging";
   clonedElement.setAttribute("data-index", "null");
+  clonedElement.style.setProperty("pointer-events", "none");
   clonedElement.style.setProperty("width", element.clientWidth + "px");
   clonedElement.style.setProperty("--mouse-x", (event.clientX - clonedElement.clientWidth / 2) + "px")
   clonedElement.style.setProperty("--mouse-y", (event.clientY + 24) + "px")
@@ -98,6 +111,16 @@ function createPlaceholder(event, element) {
   const placeholder = element.cloneNode(true);
   placeholder.id = "placeholder";
   return placeholder;
+}
+
+function objectOfElement(element, type) {
+  objectIndex = element.dataset.index;
+  if (type = "table") {
+
+  } else {
+
+  }
+
 }
 
 

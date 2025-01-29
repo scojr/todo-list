@@ -254,7 +254,7 @@ button:hover {
 }
 
 .task,
-.table-header {
+.table:not(#placeholder) {
   pointer-events: all;
 }
 
@@ -351,18 +351,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   cursor: pointer;
 }
 
-.modal-container {
-
-  background-color: white;
-  border: 3px solid black;
-  box-shadow: black 4px 4px 0px 0px;
-}
-
-.being-dragged {
-  pointer-events: none;
-  display: none;
-}
-
 #dragging {
   --mouse-x: ;
   --mouse-y: ;
@@ -371,18 +359,42 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   top: var(--mouse-y);
   box-shadow: none;
   pointer-events: none;
+  z-index: 2;
 }
 
-#placeholder {
-  color: transparent;
+#dragging> {
   pointer-events: none;
 }
 
-#inset {
+#placeholder:not(.table) {
+  color: transparent;
+  pointer-events: none;
+  box-shadow: black 2px 2px 0px 0px inset;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+#placeholder:not(.task)>.task-container {
+  pointer-events: none;
   box-shadow: black 2px 2px 0px 0px inset;
   background-color: rgba(0, 0, 0, 0.15);
 
-  +img {
-    opacity: 0%;
+  .task {
+    color: transparent;
+    mix-blend-mode: darken;
   }
+}
+
+#placeholder .table-header {
+  pointer-events: none;
+  box-shadow: black 2px 2px 0px 0px inset;
+  background-color: rgba(0, 0, 0, 0.15);
+  color: transparent;
+}
+
+#placeholder {
+  pointer-events: none;
+}
+
+#placeholder * {
+  pointer-events: none;
 }
