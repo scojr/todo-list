@@ -10,14 +10,16 @@ function elementDragging(event, element) {
   event.preventDefault();
   event.stopPropagation();
 
-
   const type = element.dataset.type;
   const grabbedElement = element;
   const grabbedObject = getObjectOf(element);
 
   let hoveredElement = element;
+  let hoveredElementParent = element.parentElement;
 
-  const placeholder = createPlaceholder(event, grabbedElement);
+  const placeholder = element.cloneNode(true);
+  placeholder.id = "placeholder";
+
   element.parentElement.appendChild(placeholder);
   const clonedElement = createCloneToDrag(event, grabbedElement);
   dom.container.appendChild(clonedElement);
@@ -31,24 +33,28 @@ function elementDragging(event, element) {
   document.onmouseup = endDragElement;
 
   function mouseLeave(e) {
-    // const hoveredTable = e.currentTarget;
-    // const hoveredElement = e.currentTarget;
+    hoveredElement = null;
+    document.querySelector("#placeholder").remove();
   }
 
   function tableHover(e) {
-    hoveredElement = e.currentTarget;
-    hoveredElement.querySelector(".task-container").appendChild(placeholder);
+    event.stopPropagation();
+    hoveredElementParent = e.currentTarget;
+    hoveredElementParent.querySelector(".task-container").appendChild(placeholder);
   }
 
   function mouseHover(e) {
-    hoveredElement = e.currentTarget;
-    console.log(hoveredElement);
+    console.log({ e });
+    event.stopPropagation();
+    hoveredElement = e.srcElement;
     const hoveredElementIndex = hoveredElement.dataset.index;
+    console.log(hoveredElementIndex);
     const targetBox = e.target.getBoundingClientRect();
     const y = e.y - targetBox.top;
     const x = e.x - targetBox.left;
 
     if (hoveredElementIndex && type === "task") {
+      console.log("type is task");
       if (y > targetBox.height / 2) {
         // Mouse enters from bottom //
         placeholder.style.setProperty("order", hoveredElementIndex - 1);
@@ -59,6 +65,7 @@ function elementDragging(event, element) {
     }
 
     if (hoveredElementIndex && type === "table") {
+      console.log("type is table");
       if (x > targetBox.width / 2) {
         // Mouse enters from left //
         placeholder.style.setProperty("order", hoveredElementIndex - 1);
@@ -70,22 +77,20 @@ function elementDragging(event, element) {
   }
 
   function dragElement(dragEvent) {
-    let activeTables = document.querySelectorAll(".table")
-    let activeTasks = document.querySelectorAll(".task")
+    let activeTables = document.querySelectorAll(".table:not(#placeholder)")
+    let activeTasks = document.querySelectorAll(".task:not(#placeholder)")
     if (type === "task") {
       for (const task of activeTasks) {
-        task.addEventListener("mouseover", mouseHover);
-        task.addEventListener("mouseleave", mouseLeave);
+        task.addEventListener("mouseenter", mouseHover);
       }
       for (const table of activeTables) {
-        table.addEventListener("mouseover", tableHover);
+        table.addEventListener("mouseenter", tableHover);
         table.addEventListener("mouseleave", mouseLeave);
       }
     }
     if (type === "table") {
       for (const table of activeTables) {
-        table.addEventListener("mouseover", mouseHover);
-        table.addEventListener("mouseleave", mouseLeave);
+        table.addEventListener("mouseenter", mouseHover);
       }
     }
     clonedElement.style.setProperty("--mouse-x", (dragEvent.clientX - clonedElement.clientWidth / 2) + "px")
@@ -96,19 +101,18 @@ function elementDragging(event, element) {
     document.onmousedown = null;
     document.onmousemove = null;
     document.onmouseup = null;
+    if (hoveredElement) {
 
-    const placeholderParent = placeholder.parentElement;
-    const placeholderParentChildren = [...placeholderParent.children]
-    const newElementIndex = placeholderParentChildren.indexOf(placeholder);
-    console.log(placeholderParent);
-    console.log(placeholder.style.order);
+      console.log(hoveredElement);
 
-    getObjectOf(placeholder.parentElement.parentElement).relocateChild(
-      grabbedObject,
-      placeholder.style.order,
-    )
+      const placeholderIndex = parseInt(placeholder.style.order) + 1;
 
+      getObjectOf(placeholder.parentElement.parentElement).relocateChild(
+        grabbedObject,
+        placeholderIndex,
+      )
 
+    }
     resetDisplay();
   }
 }
@@ -120,12 +124,6 @@ function createCloneToDrag(event, element) {
   clonedElement.style.setProperty("pointer-events", "none");
   clonedElement.style.setProperty("width", element.clientWidth + "px");
   return clonedElement;
-}
-
-function createPlaceholder(event, element) {
-  const placeholder = element.cloneNode(true);
-  placeholder.id = "placeholder";
-  return placeholder;
 }
 
 function getObjectOf(element) {
