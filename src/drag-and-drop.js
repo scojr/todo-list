@@ -1,5 +1,6 @@
 import { dom } from "./dom-interface";
 import { resetDisplay } from "./display";
+import { controller } from "./logic";
 
 export function enableDragAndDrop(element) {
   element.addEventListener("mousedown", (event) => elementDragging(event, element));
@@ -9,68 +10,45 @@ function elementDragging(event, element) {
   event.preventDefault();
   event.stopPropagation();
 
+
+  const type = element.dataset.type;
   const grabbedElement = element;
+  const grabbedObject = getObjectOf(element);
 
   let hoveredElement = element;
-  let hoveredSlot = element.parentElement;
 
   const placeholder = createPlaceholder(event, grabbedElement);
-  hoveredSlot.appendChild(placeholder);
+  element.parentElement.appendChild(placeholder);
   const clonedElement = createCloneToDrag(event, grabbedElement);
   dom.container.appendChild(clonedElement);
+
+  clonedElement.style.setProperty("--mouse-x", (event.clientX - clonedElement.clientWidth / 2) + "px")
+  clonedElement.style.setProperty("--mouse-y", (event.clientY - 12) + "px")
 
   element.style.setProperty("display", "none");
 
   document.onmousemove = dragElement;
   document.onmouseup = endDragElement;
 
-  const type = element.dataset.type;
-  let activeTables = document.querySelectorAll(".table")
-  let activeTasks = document.querySelectorAll(".task")
-  if (type === "task") {
-    for (const task of activeTasks) {
-      task.addEventListener("mouseover", taskHover);
-    }
-    for (const table of activeTables) {
-      table.addEventListener("mouseover", tableHover);
-    }
-  }
-  if (type === "table") {
-    for (const table of activeTables) {
-      table.addEventListener("mouseover", containerHover);
-    }
+  function mouseLeave(e) {
+    // const hoveredTable = e.currentTarget;
+    // const hoveredElement = e.currentTarget;
   }
 
   function tableHover(e) {
-    const hoveredtable = e.currentTarget;
-    hoveredtable.querySelector(".task-container").appendChild(placeholder);
+    hoveredElement = e.currentTarget;
+    hoveredElement.querySelector(".task-container").appendChild(placeholder);
   }
 
-  function containerHover(e) {
-    e.stopPropagation();
-    const hoveredElement = e.currentTarget;
-    console.log(e);
-    const hoveredElementIndex = hoveredElement.dataset.index;
-    const targetBox = e.target.getBoundingClientRect();
-    const x = e.x - targetBox.left;
-    if (hoveredElementIndex) {
-      if (x > targetBox.width / 2) {
-        // Mouse enters from bottom //
-        placeholder.style.setProperty("order", hoveredElementIndex - 1);
-      } else {
-        // Mouse enters from top //
-        placeholder.style.setProperty("order", hoveredElementIndex);
-      }
-    }
-  }
-
-  function taskHover(e) {
-    const hoveredElement = e.currentTarget;
-    console.log(e);
+  function mouseHover(e) {
+    hoveredElement = e.currentTarget;
+    console.log(hoveredElement);
     const hoveredElementIndex = hoveredElement.dataset.index;
     const targetBox = e.target.getBoundingClientRect();
     const y = e.y - targetBox.top;
-    if (hoveredElementIndex) {
+    const x = e.x - targetBox.left;
+
+    if (hoveredElementIndex && type === "task") {
       if (y > targetBox.height / 2) {
         // Mouse enters from bottom //
         placeholder.style.setProperty("order", hoveredElementIndex - 1);
@@ -79,19 +57,58 @@ function elementDragging(event, element) {
         placeholder.style.setProperty("order", hoveredElementIndex);
       }
     }
+
+    if (hoveredElementIndex && type === "table") {
+      if (x > targetBox.width / 2) {
+        // Mouse enters from left //
+        placeholder.style.setProperty("order", hoveredElementIndex - 1);
+      } else {
+        // Mouse enters from right //
+        placeholder.style.setProperty("order", hoveredElementIndex);
+      }
+    }
   }
 
   function dragElement(dragEvent) {
-    console.log("dragging");
+    let activeTables = document.querySelectorAll(".table")
+    let activeTasks = document.querySelectorAll(".task")
+    if (type === "task") {
+      for (const task of activeTasks) {
+        task.addEventListener("mouseover", mouseHover);
+        task.addEventListener("mouseleave", mouseLeave);
+      }
+      for (const table of activeTables) {
+        table.addEventListener("mouseover", tableHover);
+        table.addEventListener("mouseleave", mouseLeave);
+      }
+    }
+    if (type === "table") {
+      for (const table of activeTables) {
+        table.addEventListener("mouseover", mouseHover);
+        table.addEventListener("mouseleave", mouseLeave);
+      }
+    }
     clonedElement.style.setProperty("--mouse-x", (dragEvent.clientX - clonedElement.clientWidth / 2) + "px")
     clonedElement.style.setProperty("--mouse-y", (dragEvent.clientY - 12) + "px")
   }
 
   function endDragElement() {
-    console.log("dragging end");
     document.onmousedown = null;
     document.onmousemove = null;
     document.onmouseup = null;
+
+    const placeholderParent = placeholder.parentElement;
+    const placeholderParentChildren = [...placeholderParent.children]
+    const newElementIndex = placeholderParentChildren.indexOf(placeholder);
+    console.log(placeholderParent);
+    console.log(placeholder.style.order);
+
+    getObjectOf(placeholder.parentElement.parentElement).relocateChild(
+      grabbedObject,
+      placeholder.style.order,
+    )
+
+
     resetDisplay();
   }
 }
@@ -102,8 +119,6 @@ function createCloneToDrag(event, element) {
   clonedElement.setAttribute("data-index", "null");
   clonedElement.style.setProperty("pointer-events", "none");
   clonedElement.style.setProperty("width", element.clientWidth + "px");
-  clonedElement.style.setProperty("--mouse-x", (event.clientX - clonedElement.clientWidth / 2) + "px")
-  clonedElement.style.setProperty("--mouse-y", (event.clientY + 24) + "px")
   return clonedElement;
 }
 
@@ -113,84 +128,20 @@ function createPlaceholder(event, element) {
   return placeholder;
 }
 
-function objectOfElement(element, type) {
-  objectIndex = element.dataset.index;
-  if (type = "table") {
-
-  } else {
-
+function getObjectOf(element) {
+  const objectType = element.dataset.type;
+  const objectIndex = element.dataset.index;
+  if (objectType === "table") {
+    return controller.getActiveProject().children[objectIndex];
   }
-
+  if (objectType === "task") {
+    return controller.getActiveProject().children[element.parentElement.parentElement.dataset.index].children[objectIndex];
+  }
+  else {
+    return controller.getActiveProject();
+  }
 }
 
-
-
-
-// // Todo Dragging //
-// // I promise I'll refactor this into its own module but wow it works!! //
-// function todoDragging(event, element) {
-//   event.preventDefault();
-//   let activeFolders = document.querySelectorAll(".folder")
-//   let hoveredFolder = event.currentTarget.parentElement.parentElement;
-//   let hoveredTodo = event.currentTarget;
-//   let grabbedTodo = event.currentTarget;
-
-//   const draggedClonedElement = element.cloneNode(true);
-//   draggedClonedElement.style.setProperty("width", `${element.clientWidth}px`);
-//   draggedClonedElement.id = "dragging";
-//   draggedClonedElement.setAttribute("data-index", "null");
-
-//   const folderClonedElement = element.parentElement.cloneNode(true);
-//   folderClonedElement.id = "folder-cloned-element";
-//   folderClonedElement.firstElementChild.id = "inset"
-//   hoveredFolder.appendChild(folderClonedElement);
-
-//   element.parentElement.style.setProperty("display", "none");
-//   document.body.style.setProperty("cursor", "grabbing", "important");
-//   dom.container.appendChild(draggedClonedElement);
-//   draggedClonedElement.style.setProperty("--mouse-x", (event.clientX - draggedClonedElement.clientWidth / 2) + "px")
-//   draggedClonedElement.style.setProperty("--mouse-y", (event.clientY + 24) + "px")
-//   document.onmousemove = dragElement;
-//   document.onmouseup = closeDragElement;
-
-
-//   function dragElement(e) {
-//     draggedClonedElement.style.setProperty("--mouse-x", (e.clientX - draggedClonedElement.clientWidth / 2) + "px")
-//     draggedClonedElement.style.setProperty("--mouse-y", (e.clientY + 24) + "px")
-//     for (const folder of activeFolders) {
-//       folder.addEventListener("mouseover", folderMouseEnter);
-//       folder.addEventListener("mouseleave", folderMouseLeave);
-//       for (const todo of folder.querySelectorAll(".todo-box:not(#folder-cloned-element)")) {
-//         todo.addEventListener("mouseover", todoMouseEnter)
-//       }
-//     }
-//   }
-
-//   function todoMouseEnter(e) {
-//     hoveredTodo = e.currentTarget;
-//     const hoveredTodoIndex = hoveredTodo.dataset.index;
-//     const todoBox = e.target.getBoundingClientRect();
-//     const y = e.y - todoBox.top;
-//     if (hoveredTodoIndex) {
-//       if (y > todoBox.height / 2) {
-//         // Mouse enters from bottom //
-//         folderClonedElement.style.setProperty("order", hoveredTodoIndex - 1);
-//       } else {
-//         // Mouse enters from top //
-//         folderClonedElement.style.setProperty("order", hoveredTodoIndex);
-//       }
-//     }
-//   }
-
-//   function folderMouseEnter(e) {
-//     hoveredFolder = e.currentTarget;
-//     hoveredFolder.appendChild(folderClonedElement);
-//   }
-
-//   function folderMouseLeave(e) {
-//     hoveredFolder = null;
-//     document.querySelector("#folder-cloned-element").remove();
-//   }
 
 //   function closeDragElement() {
 //     if (hoveredFolder) {
@@ -205,49 +156,3 @@ function objectOfElement(element, type) {
 //       console.log({ fromFolder, grabbedTodo, hoveredFolder })
 
 //       fromFolder.transferTodo(indexOfGrabbedTodo, indexOfHoveredFolder, placeholderIndex);
-//     }
-//     document.onmousemove = null;
-//     document.onmouseup = null;
-//     document.body.style.cursor = "default";
-//     refreshContainer();
-//   }
-//   return;
-// }
-
-// function displayTodosOf(folderTodos, domElement) {
-//   const activeFolder = folderTodos.todos;
-//   for (const todo of activeFolder) {
-//     const card = dom.make("div");
-//     card.classList.add("todo-container");
-//     card.style.order = activeFolder.indexOf(todo);
-//     const todoBox = dom.make("div", todo.name);
-//     const todoDragIcon = dom.make("img");
-//     todoDragIcon.src = dragHorizontal;
-//     todoBox.classList.add("todo-box");
-//     todoBox.setAttribute("data-index", activeFolder.indexOf(todo));
-//     todoBox.addEventListener("mousedown", (event) => todoDragging(event, todoBox));
-//     card.append(todoBox, todoDragIcon);
-//     domElement.appendChild(card);
-//   }
-//   const todoFooter = dom.make("div");
-//   const taskInput = makeInput("text", "newtask", "Add new task");
-//   const footerSettings = dom.make("div");
-//   footerSettings.classList.add("settings");
-//   const colorSetting = dom.make("input");
-//   colorSetting.type = "color";
-//   const dateSetting = dom.make("input")
-//   dateSetting.type = "date";
-//   footerSettings.append(colorSetting, dateSetting)
-//   const cardFooterAddButton = dom.make("button", "+");
-//   cardFooterAddButton.classList.add("todo-add-button");
-//   cardFooterAddButton.addEventListener("click", (e) => {
-//     if (taskInput.input.value) {
-//       folderTodos.newTodo(taskInput.input.value);
-//       refreshContainer();
-//     }
-//   });
-//   todoFooter.classList.add("todo-footer");
-//   todoFooter.style.setProperty("order", "9999");
-//   todoFooter.append(taskInput.label, footerSettings, cardFooterAddButton);
-//   domElement.appendChild(todoFooter);
-// }

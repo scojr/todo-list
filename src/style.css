@@ -83,6 +83,7 @@ body {
   flex-direction: column;
   background-color: var(--background);
   user-select: none;
+  overflow: hidden;
 }
 
 h2 {

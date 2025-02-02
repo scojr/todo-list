@@ -57,6 +57,13 @@ class Project {
   get children() {
     return this.#children;
   }
+
+  relocateChild(childObject, newIndex) {
+    console.log({ childObject, newIndex })
+    const objectIndex = childObject.parentObject.children.indexOf(childObject);
+    childObject.parentObject.children.splice(objectIndex, 1);
+    this.children.splice(newIndex, 0, childObject);
+  }
 }
 
 Object.assign(Project.prototype, CanMakeTable, HasDescription);
@@ -66,6 +73,7 @@ class Table extends Project {
     super(title);
     this.parentObject = parent;
   }
+
 }
 
 Object.assign(Table.prototype, CanMakeTask);
