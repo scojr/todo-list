@@ -84,6 +84,7 @@ body {
   background-color: var(--background);
   user-select: none;
   overflow: hidden;
+  cursor: default;
 }
 
 h2 {
@@ -205,11 +206,13 @@ button:hover {
 }
 
 .table {
+  position: relative;
   max-height: max-content;
   pointer-events: none;
 }
 
 .table-header {
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -267,15 +270,6 @@ button:hover {
   pointer-events: auto;
 }
 
-.task:hover,
-.table-header:hover {
-  cursor: grab;
-
-  +img {
-    opacity: 50%;
-  }
-}
-
 .todo-footer {
   margin-top: 6px;
   margin-bottom: -2px;
@@ -317,6 +311,37 @@ button:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.drag-icon {
+  position: absolute;
+  left: 50%;
+  opacity: 30%;
+}
+
+.drag-icon:hover,
+#dragging .drag-icon {
+  cursor: grab;
+}
+
+#dragging {
+
+  & .table-header>.drag-icon,
+  >.task-header>.drag-icon {
+    opacity: 100%;
+  }
+}
+
+#placeholder .drag-icon {
+  opacity: 0%;
+}
+
+.task-header>.drag-icon {
+  transform: translate(-50%, 20%);
+}
+
+.table-header>.drag-icon {
+  transform: translate(-50%, -140%);
 }
 
 #newtask {

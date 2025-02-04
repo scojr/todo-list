@@ -1,14 +1,22 @@
 import { dom } from "./dom-interface";
 import { resetDisplay } from "./display";
 import { controller } from "./logic";
+import dragHorizontal from "./icons/drag-horizontal.svg";
 
 export function enableDragAndDrop(element) {
-  element.addEventListener("mousedown", (event) => elementDragging(event, element));
+  const indicator = dom.make("img");
+  indicator.src = dragHorizontal;
+  indicator.width = "36"
+  indicator.classList.add("drag-icon");
+  element.append(indicator);
+  indicator.addEventListener("mousedown", (event) => elementDragging(event, element));
 }
 
 function elementDragging(event, element) {
+  console.log(element.parentElement);
   event.preventDefault();
   event.stopPropagation();
+  document.body.style.setProperty("cursor", "grabbing");
   document.onmousemove = dragElement;
   document.onmouseup = endDragElement;
 
@@ -19,7 +27,6 @@ function elementDragging(event, element) {
   const hoveredTable = new Element(grabbedItem.parentElement.parentElement);
 
   let newIndex = parseInt(grabbedItem.objectIndex);
-  console.log({ newIndex });
 
   const placeholder = elementCard.cloneNode(true);
   placeholder.id = "placeholder";
@@ -41,12 +48,24 @@ function elementDragging(event, element) {
 
     hoveredItem.setElement = e.srcElement;
     hoveredItem.parentElement.append(placeholder);
+    const taskContainerBox = hoveredTable.domElement.querySelector(".task-container").getBoundingClientRect();
+    const taskContainerBoxHeight = taskContainerBox.height - 8;
 
-    newIndex = parseInt(hoveredItem.objectIndex);
+    function getTableLength() {
+      let length = hoveredItem.parentElement.childElementCount - 1;
+      if (hoveredItem.parentObject.children.includes(grabbedItem.object)) {
+        return length;
+      } else {
+        return length + 1;
+      }
+    }
 
+    const tableLength = getTableLength();
+
+    newIndex = (Math.floor((e.y - taskContainerBox.top) / ((taskContainerBoxHeight / tableLength))));
+    console.log(newIndex);
 
     const targetBox = e.srcElement.getBoundingClientRect();
-
     const y = e.y - targetBox.top;
 
     if (y > targetBox.height / 2) {
@@ -56,8 +75,6 @@ function elementDragging(event, element) {
       // From top //
       placeholder.style.setProperty("order", hoveredItem.objectIndex);
     }
-    hoveredItem.parentElement.append(placeholder);
-    console.log({ newIndex });
   }
 
   function tableHover(e) {
@@ -65,10 +82,10 @@ function elementDragging(event, element) {
 
     hoveredItem.setElement = e.srcElement;
     hoveredItem.parentElement.append(placeholder);
-    const hoveredItemIndex = hoveredItem.objectIndex;
     const tableCount = parseInt(controller.getActiveProject().children.length);
 
     newIndex = (Math.floor(e.x / (window.innerWidth / tableCount)));
+    console.log(newIndex);
 
     const targetBox = e.srcElement.getBoundingClientRect();
 
@@ -81,7 +98,6 @@ function elementDragging(event, element) {
       placeholder.style.setProperty("order", hoveredItem.objectIndex)
     }
     placeholder.style.setProperty("display", "block");
-    console.log({ newIndex });
   }
 
   function mouseLeave(e) {
@@ -131,6 +147,7 @@ function elementDragging(event, element) {
     document.onmousemove = null;
     document.onmouseup = null;
     resetDisplay();
+    document.body.style.removeProperty("cursor");
   }
 }
 
