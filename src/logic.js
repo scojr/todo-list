@@ -22,6 +22,15 @@ export const controller = {
   getProjectByIndex: function (index) {
     return projects[index];
   },
+
+  moveChild: function (child, toObject, newChildIndex) {
+    console.log({ child, toObject, newChildIndex })
+    const childIndex = child.parentObject.children.indexOf(child);
+    console.log({ childIndex })
+    const objectToMove = child.parentObject.children.splice(childIndex, 1)[0];
+    objectToMove.setParent(toObject);
+    toObject.children.splice(newChildIndex, 0, objectToMove);
+  }
 };
 
 // Behaviors
@@ -57,13 +66,6 @@ class Project {
   get children() {
     return this.#children;
   }
-
-  relocateChild(childObject, newIndex) {
-    console.log({ childObject, newIndex })
-    const objectIndex = childObject.parentObject.children.indexOf(childObject);
-    childObject.parentObject.children.splice(objectIndex, 1);
-    this.children.splice(newIndex, 0, childObject);
-  }
 }
 
 Object.assign(Project.prototype, CanMakeTable, HasDescription);
@@ -72,6 +74,10 @@ class Table extends Project {
   constructor(title, parent) {
     super(title);
     this.parentObject = parent;
+    this.id = Math.random();
+  }
+  setParent(object) {
+    this.parentObject = object;
   }
 
 }

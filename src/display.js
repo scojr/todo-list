@@ -22,6 +22,9 @@ function makeCard(object) {
 }
 
 export function resetDisplay() {
+  console.log("----Active Project----")
+  console.log(controller.getActiveProject())
+  console.log("----------------------")
   while (dom.container.lastElementChild) {
     dom.container.removeChild(dom.container.lastElementChild);
   }
@@ -42,7 +45,7 @@ export function displayHeader() {
 }
 
 // Container //
-displayTablesOf(controller.getProjectByIndex(0))
+displayTablesOf(controller.getActiveProject())
 
 function displayTablesOf(project) {
   for (const table of project.children) {
