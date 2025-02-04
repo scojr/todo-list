@@ -14,6 +14,7 @@ function makeCard(object) {
   container.style.setProperty("order", myIndex);
   container.classList.add(objectType);
   const header = dom.make("div");
+  enableDragAndDrop(header);
   header.classList.add(objectType + "-header");
   const title = dom.make("h2", object.title);
   header.appendChild(title);
@@ -50,12 +51,10 @@ displayTablesOf(controller.getActiveProject())
 function displayTablesOf(project) {
   for (const table of project.children) {
     const tableContainer = makeCard(table);
-    enableDragAndDrop(tableContainer);
     const taskContainer = dom.make("div");
     taskContainer.classList.add("task-container")
     for (const task of table.children) {
       const newTask = makeCard(task);
-      enableDragAndDrop(newTask);
       taskContainer.appendChild(newTask);
 
     }

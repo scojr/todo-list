@@ -256,7 +256,15 @@ button:hover {
 
 .task,
 .table:not(#placeholder) {
-  pointer-events: all;
+  pointer-events: auto;
+}
+
+.table>.task-container {
+  pointer-events: none;
+}
+
+.table>.task-container>.task {
+  pointer-events: auto;
 }
 
 .task:hover,

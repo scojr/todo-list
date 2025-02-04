@@ -12,95 +12,106 @@ function elementDragging(event, element) {
   document.onmousemove = dragElement;
   document.onmouseup = endDragElement;
 
-  const grabbedItem = new Element(element);
-  const hoveredItem = new Element(element);
+  const elementCard = element.parentElement;
+
+  const grabbedItem = new Element(element.parentElement);
+  const hoveredItem = new Element(element.parentElement);
   const hoveredTable = new Element(grabbedItem.parentElement.parentElement);
 
   let newIndex = parseInt(grabbedItem.objectIndex);
   console.log({ newIndex });
 
-  const placeholder = element.cloneNode(true);
+  const placeholder = elementCard.cloneNode(true);
   placeholder.id = "placeholder";
   hoveredItem.parentElement.appendChild(placeholder);
 
-  const draggedElement = element.cloneNode(true);
+  const draggedElement = elementCard.cloneNode(true);
   draggedElement.id = "dragging";
   draggedElement.setAttribute("data-index", "null");
   draggedElement.style.setProperty("pointer-events", "none");
-  draggedElement.style.setProperty("width", element.clientWidth + "px");
+  draggedElement.style.setProperty("width", elementCard.clientWidth + "px");
   dom.container.appendChild(draggedElement);
   draggedElement.style.setProperty("--mouse-x", (event.clientX - draggedElement.clientWidth / 2) + "px")
   draggedElement.style.setProperty("--mouse-y", (event.clientY - 12) + "px")
 
-  element.style.setProperty("display", "none");
+  elementCard.style.setProperty("display", "none");
 
   function taskHover(e) {
     e.stopPropagation();
+
     hoveredItem.setElement = e.srcElement;
-    console.log(hoveredItem);
-    console.log(e);
-    const targetBox = e.target.getBoundingClientRect();
+    hoveredItem.parentElement.append(placeholder);
+
+    newIndex = parseInt(hoveredItem.objectIndex);
+
+
+    const targetBox = e.srcElement.getBoundingClientRect();
+
     const y = e.y - targetBox.top;
 
-    if (hoveredItem.objectIndex && hoveredItem.type === "task") {
-      console.log("is task");
-      if (y > targetBox.height / 2) {
-        // Mouse enters from bottom //
-        if (newIndex === parseInt(hoveredItem.objectIndex)) {
-          newIndex = parseInt(hoveredItem.objectIndex) - 1;
-        } else {
-          newIndex = parseInt(hoveredItem.objectIndex);
-        }
-        placeholder.style.setProperty("order", hoveredItem.objectIndex - 1);
-      } else {
-        // Mouse enters from top //
-        newIndex = parseInt(hoveredItem.objectIndex);
-        placeholder.style.setProperty("order", hoveredItem.objectIndex);
-      }
+    if (y > targetBox.height / 2) {
+      // Mouse enters from bottom //
+      placeholder.style.setProperty("order", hoveredItem.objectIndex - 1);
+    } else {
+      // From top //
+      placeholder.style.setProperty("order", hoveredItem.objectIndex);
     }
+    hoveredItem.parentElement.append(placeholder);
+    console.log({ newIndex });
   }
 
   function tableHover(e) {
     e.stopPropagation();
-    hoveredItem.setElement = e.srcElement;
-    console.log(hoveredItem);
-    const targetBox = e.target.getBoundingClientRect();
-    const x = e.x - targetBox.left;
 
-    if (hoveredItem.objectIndex && hoveredItem.type === "table") {
-      console.log("is table");
-      if (x > targetBox.height / 2) {
-        // Mouse enters from bottom //
-        if (newIndex === parseInt(hoveredItem.objectIndex)) {
-          newIndex = parseInt(hoveredItem.objectIndex) - 1;
-        } else {
-          newIndex = parseInt(hoveredItem.objectIndex);
-        }
-        placeholder.style.setProperty("order", hoveredItem.objectIndex - 1);
-      } else {
-        // Mouse enters from top //
-        newIndex = parseInt(hoveredItem.objectIndex);
-        placeholder.style.setProperty("order", hoveredItem.objectIndex);
-      }
+    hoveredItem.setElement = e.srcElement;
+    hoveredItem.parentElement.append(placeholder);
+    const hoveredItemIndex = hoveredItem.objectIndex;
+    const tableCount = parseInt(controller.getActiveProject().children.length);
+
+    newIndex = (Math.floor(e.x / (window.innerWidth / tableCount)));
+
+    const targetBox = e.srcElement.getBoundingClientRect();
+
+    const x = e.x - targetBox.left;
+    if (x > targetBox.width / 2) {
+      // From Left //
+      placeholder.style.setProperty("order", hoveredItem.objectIndex - 1)
+    } else {
+      // From right //
+      placeholder.style.setProperty("order", hoveredItem.objectIndex)
     }
+    placeholder.style.setProperty("display", "block");
+    console.log({ newIndex });
+  }
+
+  function mouseLeave(e) {
+    e.stopPropagation();
+    hoveredItem.setElement = null;
+    hoveredTable.setElement = null;
+    placeholder.style.setProperty("display", "none");
   }
 
   function taskTableHover(e) {
     e.stopPropagation();
-    const table = e.srcElement;
-    hoveredTable.setElement = table;
-    table.querySelector(".task-container").append(placeholder);
+    const targetBox = e.srcElement.getBoundingClientRect();
+    const y = e.y - targetBox.top;
+    const position = Math.floor((parseInt(e.layerY) + 65) / 58) - 5;
+    hoveredTable.setElement = e.srcElement;
+    e.srcElement.querySelector(".task-container").append(placeholder);
+    placeholder.style.setProperty("order", position);
+    placeholder.style.setProperty("display", "block");
   }
 
   function dragElement(dragEvent) {
-    let activeTables = document.querySelectorAll(".table:not(#placeholder)")
-    let activeTasks = document.querySelectorAll(".task:not(#placeholder)")
+    let activeTables = document.querySelectorAll(".table")
+    let activeTasks = document.querySelectorAll(".task")
     if (grabbedItem.type === "task") {
       for (const task of activeTasks) {
         task.addEventListener("mouseenter", taskHover);
       }
       for (const table of activeTables) {
         table.addEventListener("mouseenter", taskTableHover);
+        table.addEventListener("mouseleave", mouseLeave);
       }
     }
     if (grabbedItem.type === "table") {
@@ -113,25 +124,8 @@ function elementDragging(event, element) {
   }
 
   function endDragElement() {
-    console.log({ grabbedItem });
-    console.log({ hoveredItem });
-    console.log({ hoveredTable });
-    if (hoveredItem.domElement) {
+    if (hoveredItem.domElement || hoveredTable.domElement) {
       controller.moveChild(grabbedItem.object, hoveredTable.object, newIndex);
-
-      // hoveredItem.parentObject.spliceChild(
-      //   placeholderIndex,
-      //   grabbedObjectCopy
-      // );
-
-      // grabbedItem.parentObject.killChild(grabbedItem.objectIndex);
-
-
-      // grabbedItem.parentObject.transferChild(
-      //   grabbedItem.object,
-      //   newParentIndex,
-      //   placeholderIndex,
-      // );
     }
     document.onmousedown = null;
     document.onmousemove = null;
