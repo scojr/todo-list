@@ -3,6 +3,7 @@ import { dom } from "./dom-interface";
 import { getCurrentDate } from "./date.js";
 import { enableDragAndDrop } from "./drag-and-drop.js";
 import edit from "./icons/edit.svg";
+import plus from "./icons/plus.svg";
 
 function makeCard(object) {
   const container = dom.make("div");
@@ -67,6 +68,13 @@ function appendButtons() {
   const buttons = dom.make("div");
   buttons.classList.add("table-buttons");
 
+  const addButton = dom.make("button");
+  const addIcon = dom.make("img");
+  addIcon.src = plus;
+  addIcon.width = 24;
+  addIcon.height = 24;
+  addButton.appendChild(addIcon);
+
   const editButton = dom.make("button");
   const editIcon = dom.make("img");
   editIcon.src = edit;
@@ -74,14 +82,7 @@ function appendButtons() {
   editIcon.height = 24;
   editButton.appendChild(editIcon);
 
-  // const collapseButton = dom.make("button");
-  // const collapseIcon = dom.make("img");
-  // collapseIcon.src = chevron;
-  // collapseIcon.width = 24;
-  // collapseIcon.height = 24;
-  // collapseButton.appendChild(collapseIcon);
-
-  buttons.append(editButton);
+  buttons.append(editButton, addButton);
 
   return buttons;
 }
