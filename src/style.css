@@ -212,7 +212,6 @@ button:hover {
 }
 
 .table-header {
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -357,6 +356,21 @@ button:hover {
   display: none;
 }
 
+.table-buttons {
+  display: flex;
+  opacity: 15%;
+}
+
+.table-header:hover {
+  .table-buttons {
+    opacity: 50%;
+  }
+
+  .table-buttons:hover {
+    opacity: 100%;
+  }
+}
+
 input[type="color"] {
   height: 24px;
   width: 24px;
@@ -416,6 +430,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     color: transparent;
     mix-blend-mode: darken;
   }
+}
+
+#placeholder:not(.task) .table-buttons {
+  opacity: 0%;
 }
 
 #placeholder .table-header {

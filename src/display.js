@@ -2,8 +2,7 @@ import { controller } from "./logic";
 import { dom } from "./dom-interface";
 import { getCurrentDate } from "./date.js";
 import { enableDragAndDrop } from "./drag-and-drop.js";
-// import chevron from "./icons/chevron-down.svg";
-// import dragHorizontal from "./icons/drag-horizontal.svg";
+import edit from "./icons/edit.svg";
 
 function makeCard(object) {
   const container = dom.make("div");
@@ -51,6 +50,7 @@ displayTablesOf(controller.getActiveProject())
 function displayTablesOf(project) {
   for (const table of project.children) {
     const tableContainer = makeCard(table);
+    tableContainer.querySelector(".table-header").appendChild(appendButtons())
     const taskContainer = dom.make("div");
     taskContainer.classList.add("task-container")
     for (const task of table.children) {
@@ -61,4 +61,27 @@ function displayTablesOf(project) {
     tableContainer.appendChild(taskContainer);
     dom.container.appendChild(tableContainer);
   };
+}
+
+function appendButtons() {
+  const buttons = dom.make("div");
+  buttons.classList.add("table-buttons");
+
+  const editButton = dom.make("button");
+  const editIcon = dom.make("img");
+  editIcon.src = edit;
+  editIcon.width = 24;
+  editIcon.height = 24;
+  editButton.appendChild(editIcon);
+
+  // const collapseButton = dom.make("button");
+  // const collapseIcon = dom.make("img");
+  // collapseIcon.src = chevron;
+  // collapseIcon.width = 24;
+  // collapseIcon.height = 24;
+  // collapseButton.appendChild(collapseIcon);
+
+  buttons.append(editButton);
+
+  return buttons;
 }

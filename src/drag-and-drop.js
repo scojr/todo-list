@@ -13,7 +13,6 @@ export function enableDragAndDrop(element) {
 }
 
 function elementDragging(event, element) {
-  console.log(element.parentElement);
   event.preventDefault();
   event.stopPropagation();
   document.body.style.setProperty("cursor", "grabbing");
@@ -63,7 +62,6 @@ function elementDragging(event, element) {
     const tableLength = getTableLength();
 
     newIndex = (Math.floor((e.y - taskContainerBox.top) / ((taskContainerBoxHeight / tableLength))));
-    console.log(newIndex);
 
     const targetBox = e.srcElement.getBoundingClientRect();
     const y = e.y - targetBox.top;
@@ -85,7 +83,6 @@ function elementDragging(event, element) {
     const tableCount = parseInt(controller.getActiveProject().children.length);
 
     newIndex = (Math.floor(e.x / (window.innerWidth / tableCount)));
-    console.log(newIndex);
 
     const targetBox = e.srcElement.getBoundingClientRect();
 
@@ -111,7 +108,7 @@ function elementDragging(event, element) {
     e.stopPropagation();
     const targetBox = e.srcElement.getBoundingClientRect();
     const y = e.y - targetBox.top;
-    const position = Math.floor((parseInt(e.layerY) + 65) / 58) - 5;
+    const position = Math.floor((parseInt(e.layerY) + 65) / 58) - 3;
     hoveredTable.setElement = e.srcElement;
     e.srcElement.querySelector(".task-container").append(placeholder);
     placeholder.style.setProperty("order", position);
