@@ -2,6 +2,7 @@ import { controller } from "./logic";
 import { dom } from "./dom-interface";
 import { getCurrentDate } from "./date.js";
 import { enableDragAndDrop } from "./drag-and-drop.js";
+import chevron from "./icons/chevron-down.svg";
 import edit from "./icons/edit.svg";
 import plus from "./icons/plus.svg";
 
@@ -29,6 +30,8 @@ export function resetDisplay() {
   while (dom.container.lastElementChild) {
     dom.container.removeChild(dom.container.lastElementChild);
   }
+  dom.projectTitle.textContent = controller.getActiveProject().title;
+  dom.projectDescription.textContent = controller.getActiveProject().description;
   displayTablesOf(controller.getActiveProject());
 }
 
@@ -37,16 +40,21 @@ export function displayHeader() {
   const projects = controller.getProjects();
   for (const project of projects) {
     const li = dom.make("li", project.title);
-    const stylingSpan = dom.make("span");
-    li.appendChild(stylingSpan);
+    if (project === controller.getActiveProject()) li.classList.add("active-project");
     dom.projectList.appendChild(li);
     dom.headerDay.textContent = `${getCurrentDate.weekday()}`;
     dom.headerDate.textContent = `${getCurrentDate.month()} ${getCurrentDate.day()} ${getCurrentDate.year()}`;
   }
+  const collapseButton = dom.make("button");
+  const collapseIcon = dom.make("img");
+  collapseIcon.src = chevron;
+  collapseIcon.width = 24;
+  collapseIcon.height = 24;
+  collapseButton.appendChild(collapseIcon);
+  dom.projectList.appendChild(collapseButton);
 }
 
 // Container //
-displayTablesOf(controller.getActiveProject())
 
 function displayTablesOf(project) {
   for (const table of project.children) {
@@ -60,8 +68,14 @@ function displayTablesOf(project) {
 
     }
     tableContainer.appendChild(taskContainer);
+    if (table.color) setTableColor(table, tableContainer);
     dom.container.appendChild(tableContainer);
   };
+}
+
+function setTableColor(object, element) {
+  const color = object.color;
+  element.querySelector(".table-header").style.setProperty("background-color", "#" + color);
 }
 
 function appendButtons() {

@@ -11,10 +11,12 @@ const make = function (tag, textContent) {
 export const dom = {
   container: get(".container"),
   header: get(".header"),
+  headerContainer: get(".header-container"),
   projectList: get(".project-list"),
   headerDate: get(".header.date"),
   headerDay: get(".header.day"),
-
+  projectTitle: get(".project-title"),
+  projectDescription: get(".project-description"),
   get,
   make,
 }

@@ -2,7 +2,7 @@ import { format } from "date-fns";
 
 export const getCurrentDate = (function () {
   function weekday() {
-    return format(new Date(), "eeee")
+    return format(new Date(), "iii")
   }
 
   function day() {
@@ -10,7 +10,7 @@ export const getCurrentDate = (function () {
   }
 
   function month() {
-    return format(new Date(), "MMMM")
+    return format(new Date(), "MMM")
   }
 
   function year() {

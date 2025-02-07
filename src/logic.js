@@ -34,16 +34,23 @@ export const controller = {
 };
 
 // Behaviors
-const CanMakeTable = {
-  newTable(title) {
-    const child = new Table(title, this);
-    this.children.push(child);
-  }
-}
 
 const CanMakeTask = {
   newTask(title) {
     const child = new Task(title, this);
+    this.children.push(child);
+  }
+}
+
+const HasCustomColor = {
+  newColor(hex) {
+    this.color = hex;
+  }
+}
+
+const CanMakeTable = {
+  newTable(title) {
+    const child = new Table(title, this);
     this.children.push(child);
   }
 }
@@ -82,7 +89,7 @@ class Table extends Project {
 
 }
 
-Object.assign(Table.prototype, CanMakeTask);
+Object.assign(Table.prototype, CanMakeTask, HasCustomColor);
 
 class Task extends Table {
   constructor(title, parent) {
@@ -170,6 +177,7 @@ class Task extends Table {
 // For Testing
 
 const tableTemplate = ["Ideas", "To Do", "Doing", "Done"];
+const tableColors = ["ffe600", "00ff00", "00ccff", "ff6600"]
 
 const taskTemplate1 = ["animation", "notepad", "dark mode", "custom themes",];
 const taskTemplate2 = ["deadlines", "priority status", "labels", "project form", "folder form", "localStorage saving", "project data to json", "color",];
@@ -178,8 +186,9 @@ const taskTemplate4 = ["drag & drop todos", "basic styling",];
 const taskTemplates = [taskTemplate1, taskTemplate2, taskTemplate3, taskTemplate4];
 
 controller.newProject("Todo List App", "", true);
-controller.newProject("Lorem ipsum", "", true);
-controller.newProject("magna aliqua", "", true);
+projects[0].description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
+controller.newProject("Placeholder One", "", true);
+controller.newProject("Placeholder Two", "", true);
 
 activeProject = projects[0];
 
@@ -188,4 +197,9 @@ for (const table of tableTemplate) {
   for (const taskTemplate of taskTemplates[tableTemplate.indexOf(table)]) {
     controller.getProjectByIndex(0).children[tableTemplate.indexOf(table)].newTask(taskTemplate);
   }
+}
+
+for (const color of tableColors) {
+  const index = tableColors.indexOf(color);
+  controller.getActiveProject().children[index].newColor(color);
 }

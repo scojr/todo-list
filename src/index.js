@@ -1,8 +1,8 @@
 import "./style.css";
 import { controller } from "./logic";
-import { displayHeader } from "./display";
+import { displayHeader, resetDisplay } from "./display";
 displayHeader();
-
+resetDisplay();
 // if localstorage
 //   fill projects from localstorage and display
 // else
