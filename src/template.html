@@ -32,6 +32,30 @@
   <div class="container" data-type="container">
   </div>
   <img src="./icons/trash.svg" alt="Trash Bin" width="128" height="128" class="trash">
+  <div class="table-plus"><img src="./icons/table-plus.svg" alt="Add Table" width="128" height="128"
+      class="table-plus-img"><span>Add<br>Table</span></div>
+  <div class="modal-background">
+    <div class="modal-container new-table">
+      <div class="table-header">
+        <h2>New Table Title</h2>
+      </div>
+      <section>
+        <form class="modal-form">
+          <div class="modal-input">
+            <input type="text" placeholder="New Table Title" name="newEntry" id="newEntry" aria-label="Title">
+            <div class="modal-buttons">
+              <input type="color" id="color" aria-label="Color">
+              <input type="date" id="deadline" aria-label="Deadline">
+            </div>
+          </div>
+          <div class="modal-buttons-dialogue">
+            <button class="modal-add-button">Confirm</button>
+            <button class="modal-add-button">Cancel</button>
+          </div>
+      </section>
+      </form>
+    </div>
+  </div>
 </body>
 
 </html>

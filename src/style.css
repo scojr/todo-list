@@ -194,6 +194,56 @@ button:hover {
   margin: 12px 48px;
 }
 
+.modal-container {
+  position: absolute;
+  min-width: 20vw;
+}
+
+.modal-container.new-table {
+  bottom: 30vh;
+  left: 48px;
+}
+
+.modal-form {
+  background-color: var(--task-container);
+  border: 3px solid black;
+  padding: 8px;
+  box-shadow: black 6px 6px 0px 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-container input[type=text] {
+  border: 3px solid black;
+  box-shadow: black 4px 4px 0px 0px;
+  flex: 1;
+  padding: 8px;
+}
+
+.modal-input {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-buttons-dialogue button {
+  width: 49%;
+  margin-bottom: 6px;
+}
+
+.modal-add-button {
+  background-color: var(--background);
+  border: 3px solid black;
+  box-shadow: black 4px 4px 0px 0px;
+  margin-bottom: 1px;
+  height: 36px;
+}
+
 .task-container {
   width: 100%;
   background-color: var(--task-container);
@@ -314,6 +364,45 @@ button:hover {
   bottom: 48px;
   opacity: 25%;
   display: none;
+}
+
+.table-plus {
+  display: flex;
+  align-items: last baseline;
+  position: absolute;
+  left: 48px;
+  bottom: 48px;
+  opacity: 25%;
+  z-index: 1;
+}
+
+.table-plus span {
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1em;
+  visibility: hidden;
+}
+
+.table-plus:hover {
+  cursor: pointer;
+  opacity: 100%;
+
+  >span {
+    visibility: visible;
+  }
+}
+
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
 }
 
 #dragging {
