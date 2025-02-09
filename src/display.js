@@ -24,6 +24,7 @@ function makeCard(object) {
 }
 
 export function resetDisplay() {
+  // controller.saveToLocalStorage();
   console.log("----Active Project----")
   console.log(controller.getActiveProject())
   console.log("----------------------")
