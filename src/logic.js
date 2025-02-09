@@ -30,7 +30,23 @@ export const controller = {
     const objectToMove = child.parentObject.children.splice(childIndex, 1)[0];
     objectToMove.setParent(toObject);
     toObject.children.splice(newChildIndex, 0, objectToMove);
-  }
+  },
+
+  saveToLocalStorage: function () {
+    localStorage.setItem("myProjects",);
+    localStorage.setItem("myProjects",);
+    localStorage.setItem("myProjects",);
+    for (const project of projects) {
+      localStorage.setItem("myProjects", JSON.stringify(project));
+      console.log(JSON.stringify(project));
+      for (const table of project.children) {
+        console.log(JSON.stringify(table));
+        for (const task of table.children) {
+          console.log(JSON.stringify(task));
+        }
+      }
+    }
+  },
 };
 
 // Behaviors
@@ -42,12 +58,6 @@ const CanMakeTask = {
   }
 }
 
-const HasCustomColor = {
-  newColor(hex) {
-    this.color = hex;
-  }
-}
-
 const CanMakeTable = {
   newTable(title) {
     const child = new Table(title, this);
@@ -55,9 +65,27 @@ const CanMakeTable = {
   }
 }
 
+const HasCustomColor = {
+  newColor(hex) {
+    this.color = hex;
+  }
+}
+
+const HasTitle = {
+  newTitle(string) {
+    this.title = string;
+  }
+}
+
 const HasDescription = {
   newDescription(string) {
     this.description = string;
+  }
+}
+
+const HasDeadline = {
+  newDescription(date) {
+    this.deadline = date;
   }
 }
 
@@ -97,87 +125,10 @@ class Task extends Table {
   }
 }
 
-// class Card {
-//   constructor(name) {
-//     this.name = name;
-//   }
-
-//   #deadline = undefined;
-//   #priority = false;
-
-//   set deadline(date) {
-//     if (parseDate(date)) {
-//       this.#deadline = date;
-//     } else {
-//       console.log("YYYY-MM-DD Format Required")
-//     }
-//   }
-
-//   set priority(boolean) {
-//     if (typeof (boolean) === "boolean") {
-//       this.#priority = boolean;
-//     } else {
-//       this.#priority = false;
-//     }
-//   }
-// }
-
-// class Project extends Card {
-//   #folders = [];
-
-//   get folders() {
-//     return this.#folders;
-//   }
-
-//   insert(folder) {
-//     this.#folders.push(folder);
-//   }
-
-//   newFolder(name) {
-//     const folder = new Folder(name);
-//     this.insert(folder);
-//   }
-// }
-
-// class Folder extends Card {
-//   #todos = [];
-
-//   get todos() {
-//     return this.#todos;
-//   }
-
-//   insert(todoItem) {
-//     this.#todos.push(todoItem);
-//   }
-
-//   spliceTodo(todo, index) {
-//     this.#todos.splice(index, 0, todo[0]);
-//   }
-
-//   transferTodo(todoIndex, toFolderIndex, newTodoIndex) {
-//     const toFolder = getActiveProject().folders[toFolderIndex];
-//     const todoCopy = this.#todos.slice(todoIndex, parseInt(todoIndex) + 1);
-//     this.#todos.splice(todoIndex, 1);
-//     toFolder.spliceTodo(todoCopy, newTodoIndex);
-//   }
-
-//   newTodo(name) {
-//     const todo = new Todo(name);
-//     this.insert(todo);
-//   }
-// }
-
-// class Todo extends Card {
-//   #unique = Math.random();
-//   makeUnique() {
-//     this.#unique = Math.random();
-//   }
-// }
-
 // For Testing
 
 const tableTemplate = ["Ideas", "To Do", "Doing", "Done"];
-const tableColors = ["ffe600", "00ff00", "00ccff", "ff6600"]
+const tableColors = ["#ffe600", "#00ff00", "#00ccff", "#ff6600"]
 
 const taskTemplate1 = ["animation", "notepad", "dark mode", "custom themes",];
 const taskTemplate2 = ["deadlines", "priority status", "labels", "project form", "folder form", "localStorage saving", "project data to json", "color",];
@@ -203,3 +154,5 @@ for (const color of tableColors) {
   const index = tableColors.indexOf(color);
   controller.getActiveProject().children[index].newColor(color);
 }
+
+const placeholderProjectsJson = '[{ "title": "Todo List App", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua" }, { "title": "Placeholder One" }, { "title": "Placeholder Two" }]'

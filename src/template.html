@@ -32,9 +32,20 @@
   <div class="container" data-type="container">
   </div>
   <img src="./icons/trash.svg" alt="Trash Bin" width="128" height="128" class="trash">
-  <div class="table-plus"><img src="./icons/table-plus.svg" alt="Add Table" width="128" height="128"
+  <div class="table-plus"><img src="./icons/table-plus.svg" alt="Add Table" width="64" height="64"
       class="table-plus-img"><span>Add<br>Table</span></div>
   <div class="modal-background">
+    <div class="new-task-modal">
+      <input type="text" placeholder="New Table Title" name="newEntry" id="newEntry" aria-label="Title">
+      <button><img src="./icons/plus.svg" alt="Plus icon" width="36" height="36"></button>
+    </div>
+    <div class="edit-table-modal">
+      <input type="color" id="color" aria-label="Table color">
+      <input type="date" id="deadline" aria-label="Deadline">
+      <button><img src="./icons/trash.svg" alt="Trash"></button>
+    </div>
+  </div>
+  <!-- <div class="modal-background">
     <div class="modal-container new-table">
       <div class="table-header">
         <h2>New Table Title</h2>
@@ -49,13 +60,13 @@
             </div>
           </div>
           <div class="modal-buttons-dialogue">
-            <button class="modal-add-button">Confirm</button>
-            <button class="modal-add-button">Cancel</button>
+            <button class="modal-button modal-confirm-button">Confirm</button>
+            <button class="modal-button modal-cancel-button">Cancel</button>
           </div>
       </section>
       </form>
     </div>
-  </div>
+  </div> -->
 </body>
 
 </html>

@@ -17,6 +17,10 @@ export const dom = {
   headerDay: get(".header.day"),
   projectTitle: get(".project-title"),
   projectDescription: get(".project-description"),
+  newTaskModal: get(".new-task"),
+  modalContainer: get(".modal-container"),
+  modalBackground: get(".modal-background"),
+  tablePlusButton: get(".table-plus"),
   get,
   make,
 }

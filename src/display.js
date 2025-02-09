@@ -75,7 +75,7 @@ function displayTablesOf(project) {
 
 function setTableColor(object, element) {
   const color = object.color;
-  element.querySelector(".table-header").style.setProperty("background-color", "#" + color);
+  element.querySelector(".table-header").style.setProperty("background-color", color);
 }
 
 function appendButtons() {
@@ -83,6 +83,7 @@ function appendButtons() {
   buttons.classList.add("table-buttons");
 
   const addButton = dom.make("button");
+  addButton.classList.add("add-button");
   const addIcon = dom.make("img");
   addIcon.src = plus;
   addIcon.width = 24;
@@ -90,6 +91,7 @@ function appendButtons() {
   addButton.appendChild(addIcon);
 
   const editButton = dom.make("button");
+  editButton.classList.add("edit-button");
   const editIcon = dom.make("img");
   editIcon.src = edit;
   editIcon.width = 24;

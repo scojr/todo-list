@@ -112,6 +112,11 @@ button:hover {
   z-index: 0;
 }
 
+.header.buttons button {
+  display: flex;
+  gap: 8px;
+}
+
 .header.buttons {
   display: flex;
   justify-content: end;
@@ -167,7 +172,7 @@ button:hover {
   cursor: pointer;
 }
 
-.container-header {
+.header.buttons .container-header {
   margin: 12px 48px;
   display: flex;
   align-items: last baseline;
@@ -194,54 +199,64 @@ button:hover {
   margin: 12px 48px;
 }
 
-.modal-container {
+.edit-table-modal {
   position: absolute;
-  min-width: 20vw;
+  --task-module-left: 0;
+  --task-module-top: 0;
+  --task-module-width: 0;
+  top: var(--task-module-top);
+  left: var(--task-module-left);
+  width: var(--task-module-width);
 }
 
-.modal-container.new-table {
-  bottom: 30vh;
-  left: 48px;
-}
-
-.modal-form {
+.new-task-modal,
+.edit-table-modal {
+  margin-top: 12px;
   background-color: var(--task-container);
   border: 3px solid black;
-  padding: 8px;
+  padding: 8px 0px 12px 8px;
   box-shadow: black 6px 6px 0px 0px;
   display: flex;
-  flex-direction: column;
+  gap: 8px;
+  justify-content: flex-end;
+  width: 100%;
+  visibility: hidden;
 }
 
-.modal-container input[type=text] {
+.new-task-modal>input {
+  z-index: 2;
+}
+
+.new-task-modal>button {
+  flex-shrink: 0;
+  margin-right: 4px;
+  z-index: 2;
+}
+
+.edit-table-modal {
+  flex-direction: column;
+  width: min-content;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  z-index: 2;
+}
+
+.edit-table-modal::before {
+  content: "";
+  height: 100%;
+  width: 5px;
+  background-color: white;
+  position: absolute;
+  right: 32px;
+}
+
+.new-task-modal input[type=text] {
   border: 3px solid black;
   box-shadow: black 4px 4px 0px 0px;
-  flex: 1;
   padding: 8px;
-}
-
-.modal-input {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.modal-buttons {
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-buttons-dialogue button {
-  width: 49%;
-  margin-bottom: 6px;
-}
-
-.modal-add-button {
-  background-color: var(--background);
-  border: 3px solid black;
-  box-shadow: black 4px 4px 0px 0px;
-  margin-bottom: 1px;
-  height: 36px;
+  width: 100%;
+  flex-shrink: 1;
 }
 
 .task-container {
@@ -377,10 +392,11 @@ button:hover {
 }
 
 .table-plus span {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: 800;
   line-height: 1em;
-  visibility: hidden;
+  opacity: 0%;
+  transition: opacity 0.3s;
 }
 
 .table-plus:hover {
@@ -388,7 +404,7 @@ button:hover {
   opacity: 100%;
 
   >span {
-    visibility: visible;
+    opacity: 100%;
   }
 }
 
@@ -402,6 +418,7 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
   visibility: hidden;
 }
 
