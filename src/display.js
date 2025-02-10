@@ -7,6 +7,7 @@ import edit from "./icons/edit.svg";
 import plus from "./icons/plus.svg";
 
 function makeCard(object) {
+  controller.saveToLocalStorage();
   const container = dom.make("div");
   const myIndex = object.parentObject.children.indexOf(object);
   container.dataset.index = myIndex;
@@ -24,7 +25,6 @@ function makeCard(object) {
 }
 
 export function resetDisplay() {
-  // controller.saveToLocalStorage();
   console.log("----Active Project----")
   console.log(controller.getActiveProject())
   console.log("----------------------")

@@ -36,6 +36,7 @@ export const controller = {
     const savedProjects = JSON.parse(localStorage.getItem("myProjects"));
     const savedTables = JSON.parse(localStorage.getItem("myTables"));
     const savedTasks = JSON.parse(localStorage.getItem("myTasks"));
+    const myActiveProject = localStorage.getItem(activeProject);
 
     const parsedProjects = [];
     const parsedTables = [];
@@ -71,6 +72,7 @@ export const controller = {
         }
       }
     }
+    controller.setActiveProject(0);
   },
 
   saveToLocalStorage: function () {
@@ -89,6 +91,52 @@ export const controller = {
     localStorage.setItem("myProjects", JSON.stringify(myProjects));
     localStorage.setItem("myTables", JSON.stringify(myTables));
     localStorage.setItem("myTasks", JSON.stringify(myTasks));
+    localStorage.setItem("activeProject", projects.indexOf(this.getActiveProject()));
+    console.log("Succesfully saved data to localStorage");
+  },
+
+  loadDefaultProject: function () {
+    console.log("localStorage data could not be found or parsed.");
+
+    const savedProjects = JSON.parse(JSON.stringify(defaultTemplate.myProjects));
+    const savedTables = JSON.parse(JSON.stringify(defaultTemplate.myTables));
+    const savedTasks = JSON.parse(JSON.stringify(defaultTemplate.myTasks));
+
+    const parsedProjects = [];
+    const parsedTables = [];
+    const parsedTasks = [];
+
+    for (const task of savedTasks) {
+      const parsedTask = JSON.parse(task);
+      parsedTasks.push(parsedTask);
+    }
+
+    for (const project of savedProjects) {
+      const parsedProject = JSON.parse(project);
+      parsedProjects.push(parsedProject);
+      const newProject = new Project(parsedProject.title, parsedProject.description);
+      projects.push(newProject);
+    }
+
+    for (const table of savedTables) {
+      const parsedTable = JSON.parse(table);
+      parsedTables.push(parsedTable);
+      for (const project of parsedProjects) {
+        const index = parsedProjects.indexOf(project);
+        if (parsedTable.parentId === project.id) {
+          const newTable = new Table(parsedTable.title, projects[index]);
+          newTable.color = parsedTable.color;
+          projects[index].insert(newTable);
+          for (const task of parsedTasks) {
+            if (task.parentId === parsedTable.id) {
+              const newTask = new Task(task.title, newTable);
+              newTable.insert(newTask);
+            }
+          }
+        }
+      }
+    }
+    controller.setActiveProject(defaultTemplate.activeProject);
   },
 };
 
@@ -129,6 +177,7 @@ class Project {
   }
   insert(object) {
     this.children.push(object);
+    controller.saveToLocalStorage();
   }
 }
 
@@ -142,10 +191,12 @@ class Table {
   }
   children = [];
   setParent(object) {
-    this.parentObject = object;
+    this.parentId = object.id;
+    controller.saveToLocalStorage();
   }
   insert(object) {
     this.children.push(object);
+    controller.saveToLocalStorage();
   }
   get parentObject() {
     const parent = projects.find(obj => obj.id === this.parentId);
@@ -162,6 +213,7 @@ class Task {
   }
   setParent(object) {
     this.parentId = object.id;
+    controller.saveToLocalStorage();
   }
   get parentObject() {
     const parent = controller.getActiveProject().children.find(obj => obj.id === this.parentId);
@@ -172,19 +224,15 @@ class Task {
 
 // For Testing
 
-// const tableTemplate = ["Ideas", "To Do", "Doing", "Done"];
-// const tableColors = ["#ffe600", "#00ff00", "#00ccff", "#ff6600"]
+// const tableTemplate = ["To Do", "Doing", "Done"];
+// const tableColors = ["#ffe600", "#00ff00", "#00ccff"]
 
-// const taskTemplate1 = ["animation", "notepad", "dark mode", "custom themes",];
-// const taskTemplate2 = ["deadlines", "priority status", "labels", "project form", "folder form", "localStorage saving", "project data to json", "color",];
-// const taskTemplate3 = ["todo form",];
-// const taskTemplate4 = ["drag & drop todos", "basic styling",];
-// const taskTemplates = [taskTemplate1, taskTemplate2, taskTemplate3, taskTemplate4];
+// const taskTemplate1 = ["Animations", "Notepad", "Dark Mode", "Task Labels", "UI Redesign"];
+// const taskTemplate2 = ["Deadlines", "Form input",];
+// const taskTemplate3 = ["Drag & Drop", "Basic Styling", "localStorage Saving",];
+// const taskTemplates = [taskTemplate1, taskTemplate2, taskTemplate3];
 
-// controller.newProject("Todo List App", "", true);
-// projects[0].description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
-// controller.newProject("Placeholder One", "", true);
-// controller.newProject("Placeholder Two", "", true);
+// controller.newProject("To Do List Webapp", "Here's an example use case of my To Do List webapp. Drag & Drop tasks between tables to keep a visual track of your work. Everything is customizable, from the Project to the Tables and the Tasks inside them. Any modifications you make will be saved when you return!");
 
 // activeProject = projects[0];
 
@@ -200,4 +248,11 @@ class Task {
 //   controller.getActiveProject().children[index].newColor(color);
 // }
 
-// const placeholderProjectsJson = '[{ "title": "Todo List App", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua" }, { "title": "Placeholder One" }, { "title": "Placeholder Two" }]'
+// controller.saveToLocalStorage();
+
+const defaultTemplate = {
+  myProjects: ["{\"children\":[{\"children\":[{\"title\":\"Animations\",\"parentId\":0.9747654657543479},{\"title\":\"Notepad\",\"parentId\":0.9747654657543479},{\"title\":\"Dark Mode\",\"parentId\":0.9747654657543479},{\"title\":\"Task Labels\",\"parentId\":0.9747654657543479},{\"title\":\"UI Redesign\",\"parentId\":0.9747654657543479}],\"title\":\"To Do\",\"parentId\":0.6093726341126866,\"id\":0.9747654657543479,\"color\":\"#ffe600\"},{\"children\":[{\"title\":\"Deadlines\",\"parentId\":0.055323889647122204},{\"title\":\"Form input\",\"parentId\":0.055323889647122204}],\"title\":\"Doing\",\"parentId\":0.6093726341126866,\"id\":0.055323889647122204,\"color\":\"#00ff00\"},{\"children\":[{\"title\":\"Drag & Drop\",\"parentId\":0.04907452836744297},{\"title\":\"Basic Styling\",\"parentId\":0.04907452836744297},{\"title\":\"localStorage Saving\",\"parentId\":0.04907452836744297}],\"title\":\"Done\",\"parentId\":0.6093726341126866,\"id\":0.04907452836744297,\"color\":\"#00ccff\"}],\"title\":\"To Do List Webapp\",\"description\":\"Here's an example use case of my To Do List webapp. Drag & Drop tasks between tables to keep a visual track of your work. Everything is customizable, from the Project to the Tables and the Tasks inside them. Any modifications you make will be saved when you return!\",\"id\":0.6093726341126866}"],
+  myTables: ["{\"children\":[{\"title\":\"Animations\",\"parentId\":0.9747654657543479},{\"title\":\"Notepad\",\"parentId\":0.9747654657543479},{\"title\":\"Dark Mode\",\"parentId\":0.9747654657543479},{\"title\":\"Task Labels\",\"parentId\":0.9747654657543479},{\"title\":\"UI Redesign\",\"parentId\":0.9747654657543479}],\"title\":\"To Do\",\"parentId\":0.6093726341126866,\"id\":0.9747654657543479,\"color\":\"#ffe600\"}", "{\"children\":[{\"title\":\"Deadlines\",\"parentId\":0.055323889647122204},{\"title\":\"Form input\",\"parentId\":0.055323889647122204}],\"title\":\"Doing\",\"parentId\":0.6093726341126866,\"id\":0.055323889647122204,\"color\":\"#00ff00\"}", "{\"children\":[{\"title\":\"Drag & Drop\",\"parentId\":0.04907452836744297},{\"title\":\"Basic Styling\",\"parentId\":0.04907452836744297},{\"title\":\"localStorage Saving\",\"parentId\":0.04907452836744297}],\"title\":\"Done\",\"parentId\":0.6093726341126866,\"id\":0.04907452836744297,\"color\":\"#00ccff\"}"],
+  myTasks: ["{\"title\":\"Animations\",\"parentId\":0.9747654657543479}", "{\"title\":\"Notepad\",\"parentId\":0.9747654657543479}", "{\"title\":\"Dark Mode\",\"parentId\":0.9747654657543479}", "{\"title\":\"Task Labels\",\"parentId\":0.9747654657543479}", "{\"title\":\"UI Redesign\",\"parentId\":0.9747654657543479}", "{\"title\":\"Deadlines\",\"parentId\":0.055323889647122204}", "{\"title\":\"Form input\",\"parentId\":0.055323889647122204}", "{\"title\":\"Drag & Drop\",\"parentId\":0.04907452836744297}", "{\"title\":\"Basic Styling\",\"parentId\":0.04907452836744297}", "{\"title\":\"localStorage Saving\",\"parentId\":0.04907452836744297}"],
+  activeProject: 0,
+}
