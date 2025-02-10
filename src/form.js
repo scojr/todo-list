@@ -4,8 +4,6 @@ import { resetDisplay } from "./display";
 
 const container = dom.modalContainer;
 
-const editButtons = document.querySelectorAll(".edit-button");
-const addButtons = document.querySelectorAll(".add-button");
 
 const modalBackground = document.querySelector(".modal-background");
 const newTaskModal = document.querySelector(".new-task-modal");
@@ -13,12 +11,27 @@ const editTableModal = document.querySelector(".edit-table-modal");
 
 const colorInput = document.querySelector("input[type=color]")
 
-for (const button of editButtons) {
-  button.addEventListener("click", editTableButton);
+export function addFormEventListeners() {
+
+  const trashButtons = document.querySelectorAll(".trash-button");
+  const colorInput = document.querySelectorAll(".color-input");
+
+  // for (const button of trashButtons) {
+  //   button.addEventListener("click", deleteTable);
+  // }
+
+  for (const button of colorInput) {
+    button.addEventListener("input", colorTable);
+  }
+
 }
 
-for (const button of addButtons) {
-  button.addEventListener("click", addTaskButton);
+
+function colorTable(e) {
+  const tableElement = e.srcElement.parentElement.parentElement.parentElement.parentElement;
+  const tableObject = controller.getActiveProject().children[tableElement.dataset.index];
+  tableElement.querySelector(".table-header").style.setProperty("background-color", e.target.value);
+  tableObject.color = e.target.value;
 }
 
 dom.tablePlusButton.addEventListener("click", (e) => {
@@ -29,7 +42,6 @@ modalBackground.addEventListener("mousedown", (event) => {
   if (!newTaskModal.matches(":hover") && !editTableModal.matches(":hover")) {
     closeModal();
     console.log(event);
-    console.log("hover?")
   }
 })
 
@@ -64,6 +76,7 @@ function addBlankTable() {
 }
 
 function editTableButton(event) {
+
   const tableElement = event.srcElement.parentElement.parentElement.parentElement.parentElement;
   const tableObject = controller.getActiveProject().children[tableElement.dataset.index];
   const tableBox = event.srcElement.parentElement.parentElement.parentElement.parentElement.getBoundingClientRect();
@@ -74,11 +87,18 @@ function editTableButton(event) {
   console.log(tableElement);
   console.log(tableObject);
 
-  colorInput.addEventListener("input", (e) => {
-    tableElement.querySelector(".table-header").style.setProperty("background-color", e.target.value)
-    tableObject.setColor = e.target.value;
-  })
+  colorInput.addEventListener("input", editTableColor);
+
+  function editTableColor(e) {
+    tableElement.querySelector(".table-header").style.setProperty("background-color", e.target.value);
+    tableObject.color = e.target.value;
+    console.log({ tableObject });
+  }
+
 }
+
+
+
 
 function addTaskButton(event) {
   const tableElement = event.srcElement.parentElement.parentElement.parentElement.parentElement;
@@ -95,4 +115,5 @@ function closeModal(e) {
   editTableModal.style.setProperty("visibility", "hidden");
   newTaskModal.style.setProperty("visibility", "hidden");
   modalBackground.style.setProperty("visibility", "hidden");
+  resetDisplay();
 }

@@ -2,9 +2,11 @@ import { controller } from "./logic";
 import { dom } from "./dom-interface";
 import { getCurrentDate } from "./date.js";
 import { enableDragAndDrop } from "./drag-and-drop.js";
+import { addFormEventListeners } from "./form.js";
 import chevron from "./icons/chevron-down.svg";
 import edit from "./icons/edit.svg";
 import plus from "./icons/plus.svg";
+
 
 function makeCard(object) {
   controller.saveToLocalStorage();
@@ -34,6 +36,7 @@ export function resetDisplay() {
   dom.projectTitle.textContent = controller.getActiveProject().title;
   dom.projectDescription.textContent = controller.getActiveProject().description;
   displayTablesOf(controller.getActiveProject());
+  addFormEventListeners();
 }
 
 // Header //
@@ -60,9 +63,9 @@ export function displayHeader() {
 function displayTablesOf(project) {
   for (const table of project.children) {
     const tableContainer = makeCard(table);
-    tableContainer.querySelector(".table-header").appendChild(appendButtons())
+    tableContainer.querySelector(".table-header").appendChild(appendButtons(table.color));
     const taskContainer = dom.make("div");
-    taskContainer.classList.add("task-container")
+    taskContainer.classList.add("task-container");
     for (const task of table.children) {
       const newTask = makeCard(task);
       taskContainer.appendChild(newTask);
@@ -79,27 +82,36 @@ function setTableColor(object, element) {
   element.querySelector(".table-header").style.setProperty("background-color", color);
 }
 
-function appendButtons() {
+function appendButtons(color) {
   const buttons = dom.make("div");
   buttons.classList.add("table-buttons");
 
-  const addButton = dom.make("button");
-  addButton.classList.add("add-button");
+  const trashButton = dom.make("button");
+  trashButton.classList.add("trash-button");
   const addIcon = dom.make("img");
   addIcon.src = plus;
   addIcon.width = 24;
   addIcon.height = 24;
-  addButton.appendChild(addIcon);
+  trashButton.appendChild(addIcon);
 
-  const editButton = dom.make("button");
-  editButton.classList.add("edit-button");
-  const editIcon = dom.make("img");
-  editIcon.src = edit;
-  editIcon.width = 24;
-  editIcon.height = 24;
-  editButton.appendChild(editIcon);
 
-  buttons.append(editButton, addButton);
+
+  const colorIcon = dom.make("img");
+  colorIcon.classList.add("color-icon");
+  colorIcon.src = edit;
+  colorIcon.width = 24;
+  colorIcon.height = 24;
+
+  const colorInput = dom.make("input");
+  colorInput.type = "color";
+  colorInput.classList.add("color-input");
+  colorInput.value = color;
+
+  const colorInputContainer = dom.make("div");
+  colorInputContainer.classList.add("color-input-container");
+  colorInputContainer.append(colorInput, colorIcon);
+
+  buttons.append(colorInputContainer, trashButton);
 
   return buttons;
 }

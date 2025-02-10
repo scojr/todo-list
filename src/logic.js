@@ -36,7 +36,7 @@ export const controller = {
     const savedProjects = JSON.parse(localStorage.getItem("myProjects"));
     const savedTables = JSON.parse(localStorage.getItem("myTables"));
     const savedTasks = JSON.parse(localStorage.getItem("myTasks"));
-    const myActiveProject = localStorage.getItem(activeProject);
+    const myActiveProject = localStorage.getItem("activeProject");
 
     const parsedProjects = [];
     const parsedTables = [];
@@ -72,7 +72,7 @@ export const controller = {
         }
       }
     }
-    controller.setActiveProject(0);
+    controller.setActiveProject(myActiveProject);
   },
 
   saveToLocalStorage: function () {
@@ -177,7 +177,6 @@ class Project {
   }
   insert(object) {
     this.children.push(object);
-    controller.saveToLocalStorage();
   }
 }
 
@@ -192,11 +191,9 @@ class Table {
   children = [];
   setParent(object) {
     this.parentId = object.id;
-    controller.saveToLocalStorage();
   }
   insert(object) {
     this.children.push(object);
-    controller.saveToLocalStorage();
   }
   get parentObject() {
     const parent = projects.find(obj => obj.id === this.parentId);
@@ -213,7 +210,6 @@ class Task {
   }
   setParent(object) {
     this.parentId = object.id;
-    controller.saveToLocalStorage();
   }
   get parentObject() {
     const parent = controller.getActiveProject().children.find(obj => obj.id === this.parentId);
@@ -251,7 +247,7 @@ class Task {
 // controller.saveToLocalStorage();
 
 const defaultTemplate = {
-  myProjects: ["{\"children\":[{\"children\":[{\"title\":\"Animations\",\"parentId\":0.9747654657543479},{\"title\":\"Notepad\",\"parentId\":0.9747654657543479},{\"title\":\"Dark Mode\",\"parentId\":0.9747654657543479},{\"title\":\"Task Labels\",\"parentId\":0.9747654657543479},{\"title\":\"UI Redesign\",\"parentId\":0.9747654657543479}],\"title\":\"To Do\",\"parentId\":0.6093726341126866,\"id\":0.9747654657543479,\"color\":\"#ffe600\"},{\"children\":[{\"title\":\"Deadlines\",\"parentId\":0.055323889647122204},{\"title\":\"Form input\",\"parentId\":0.055323889647122204}],\"title\":\"Doing\",\"parentId\":0.6093726341126866,\"id\":0.055323889647122204,\"color\":\"#00ff00\"},{\"children\":[{\"title\":\"Drag & Drop\",\"parentId\":0.04907452836744297},{\"title\":\"Basic Styling\",\"parentId\":0.04907452836744297},{\"title\":\"localStorage Saving\",\"parentId\":0.04907452836744297}],\"title\":\"Done\",\"parentId\":0.6093726341126866,\"id\":0.04907452836744297,\"color\":\"#00ccff\"}],\"title\":\"To Do List Webapp\",\"description\":\"Here's an example use case of my To Do List webapp. Drag & Drop tasks between tables to keep a visual track of your work. Everything is customizable, from the Project to the Tables and the Tasks inside them. Any modifications you make will be saved when you return!\",\"id\":0.6093726341126866}"],
+  myProjects: ["{\"children\":[{\"children\":[{\"title\":\"Animations\",\"parentId\":0.9747654657543479},{\"title\":\"Notepad\",\"parentId\":0.9747654657543479},{\"title\":\"Dark Mode\",\"parentId\":0.9747654657543479},{\"title\":\"Task Labels\",\"parentId\":0.9747654657543479},{\"title\":\"UI Redesign\",\"parentId\":0.9747654657543479}],\"title\":\"To Do\",\"parentId\":0.6093726341126866,\"id\":0.9747654657543479,\"color\":\"#ffe600\"},{\"children\":[{\"title\":\"Deadlines\",\"parentId\":0.055323889647122204},{\"title\":\"Form input\",\"parentId\":0.055323889647122204}],\"title\":\"Doing\",\"parentId\":0.6093726341126866,\"id\":0.055323889647122204,\"color\":\"#00ff00\"},{\"children\":[{\"title\":\"Drag & Drop\",\"parentId\":0.04907452836744297},{\"title\":\"Basic Styling\",\"parentId\":0.04907452836744297},{\"title\":\"localStorage Saving\",\"parentId\":0.04907452836744297}],\"title\":\"Done\",\"parentId\":0.6093726341126866,\"id\":0.04907452836744297,\"color\":\"#00ccff\"}],\"title\":\"To Do List Webapp\",\"description\":\"Here's an example use case of my To Do List webapp. Drag & Drop tasks between tables to keep a track of your work visually. Everything is customizable, from the Project to the Tables and the Tasks inside them. Any modifications you make will be saved when you return!\",\"id\":0.6093726341126866}"],
   myTables: ["{\"children\":[{\"title\":\"Animations\",\"parentId\":0.9747654657543479},{\"title\":\"Notepad\",\"parentId\":0.9747654657543479},{\"title\":\"Dark Mode\",\"parentId\":0.9747654657543479},{\"title\":\"Task Labels\",\"parentId\":0.9747654657543479},{\"title\":\"UI Redesign\",\"parentId\":0.9747654657543479}],\"title\":\"To Do\",\"parentId\":0.6093726341126866,\"id\":0.9747654657543479,\"color\":\"#ffe600\"}", "{\"children\":[{\"title\":\"Deadlines\",\"parentId\":0.055323889647122204},{\"title\":\"Form input\",\"parentId\":0.055323889647122204}],\"title\":\"Doing\",\"parentId\":0.6093726341126866,\"id\":0.055323889647122204,\"color\":\"#00ff00\"}", "{\"children\":[{\"title\":\"Drag & Drop\",\"parentId\":0.04907452836744297},{\"title\":\"Basic Styling\",\"parentId\":0.04907452836744297},{\"title\":\"localStorage Saving\",\"parentId\":0.04907452836744297}],\"title\":\"Done\",\"parentId\":0.6093726341126866,\"id\":0.04907452836744297,\"color\":\"#00ccff\"}"],
   myTasks: ["{\"title\":\"Animations\",\"parentId\":0.9747654657543479}", "{\"title\":\"Notepad\",\"parentId\":0.9747654657543479}", "{\"title\":\"Dark Mode\",\"parentId\":0.9747654657543479}", "{\"title\":\"Task Labels\",\"parentId\":0.9747654657543479}", "{\"title\":\"UI Redesign\",\"parentId\":0.9747654657543479}", "{\"title\":\"Deadlines\",\"parentId\":0.055323889647122204}", "{\"title\":\"Form input\",\"parentId\":0.055323889647122204}", "{\"title\":\"Drag & Drop\",\"parentId\":0.04907452836744297}", "{\"title\":\"Basic Styling\",\"parentId\":0.04907452836744297}", "{\"title\":\"localStorage Saving\",\"parentId\":0.04907452836744297}"],
   activeProject: 0,

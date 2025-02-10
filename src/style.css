@@ -455,33 +455,56 @@ button:hover {
   display: none;
 }
 
+.color-input-container {
+  position: relative;
+  display: flex;
+}
+
+.color-input-container:hover {
+  cursor: pointer;
+}
+
+.color-icon {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  pointer-events: none;
+}
+
+
 .table-buttons {
+  position: relative;
   display: flex;
   gap: 8px;
 }
 
-.table-buttons>button {
+.table-buttons>button,
+.table-buttons>div {
   opacity: 0%;
   transition-property: opacity;
   transition-duration: 0.3s;
 }
 
 .table-header:hover {
-  .table-buttons>button {
+
+  .table-buttons button,
+  .table-buttons div {
     opacity: 50%;
+    cursor: pointer;
   }
 
-  .table-buttons button:hover {
+
+  .table-buttons button:hover,
+  .table-buttons div:hover {
     opacity: 100%;
   }
 }
 
-
 input[type="color"] {
-  height: 24px;
-  width: 24px;
+  height: 26px;
+  width: 26px;
   border-radius: 100%;
-  border: 3px solid black;
+  flex-shrink: 0;
 }
 
 input[type="color"]::-webkit-color-swatch-wrapper {
