@@ -301,7 +301,8 @@ button:hover {
   font-size: 1.8rem;
 }
 
-.task {
+.task,
+.table-task-input {
   position: relative;
   font-size: 1.2rem;
   padding: 2px 6px;
@@ -310,6 +311,13 @@ button:hover {
   height: 46px;
   background-color: var(--tasks);
 }
+
+.table-task-input {
+  box-shadow: black 2px 2px 0px 0px inset;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+
 
 .task,
 .table:not(#placeholder) {

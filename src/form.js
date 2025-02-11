@@ -15,6 +15,7 @@ export function addFormEventListeners() {
 
   const editButtons = document.querySelectorAll(".edit-button");
   const colorInput = document.querySelectorAll(".color-input");
+  const addTaskButton = document.querySelectorAll(".add-task-button");
 
   for (const button of editButtons) {
     button.addEventListener("click", editTable);
@@ -24,23 +25,67 @@ export function addFormEventListeners() {
     button.addEventListener("input", colorTable);
   }
 
+  for (const button of addTaskButton) {
+    button.addEventListener("click", addTaskForm);
+  }
+
+}
+
+function addTaskForm(e) {
+  const tableElement = e.currentTarget.parentElement.parentElement.parentElement;
+  const tableObject = controller.getActiveProject().children[tableElement.dataset.index];
+
+  const taskInput = dom.make("input");
+  taskInput.classList.add("table-task-input");
+  taskInput.type = "text";
+  taskInput.placeholder = "New Task";
+  taskInput.style.order = 9999;
+
+  tableElement.querySelector(".task-container").appendChild(taskInput);
+  taskInput.focus();
+
+  taskInput.addEventListener("blur", onClickAway)
+
+  taskInput.addEventListener("keydown", (e) => {
+    taskInput.removeEventListener("blur", onClickAway);
+    if (e.key === "Enter") {
+      if (taskInput.value) {
+        newTableTask(taskInput.value);
+      } else {
+        taskInput.remove();
+      }
+    } else if (e.key === "Escape") {
+      taskInput.remove();
+    }
+  })
+
+  function onClickAway() {
+    if (taskInput.value) {
+      newTableTask(taskInput.value);
+    } else {
+      taskInput.remove();
+    }
+  }
+
+  function newTableTask(string) {
+    tableObject.newTask(string);
+    resetDisplay();
+  }
 }
 
 
 function colorTable(e) {
-  const tableElement = e.srcElement.parentElement.parentElement.parentElement.parentElement;
+  const tableElement = e.currentTarget.parentElement.parentElement.parentElement.parentElement;
   const tableObject = controller.getActiveProject().children[tableElement.dataset.index];
   tableElement.querySelector(".table-header").style.setProperty("background-color", e.target.value);
   tableObject.color = e.target.value;
 }
 
 function editTable(e) {
-  e.stopPropagation();
-  const tableElement = e.srcElement.parentElement.parentElement.parentElement.parentElement;
+  const tableElement = e.currentTarget.parentElement.parentElement.parentElement;
   const tableObject = controller.getActiveProject().children[tableElement.dataset.index];
-  console.log({ tableElement, tableObject });
-  console.log(e);
 
+  console.log(tableObject);
   const titleInput = dom.make("input");
   titleInput.classList.add("table-text-input");
   titleInput.type = "text";
@@ -90,28 +135,6 @@ modalBackground.addEventListener("mousedown", (event) => {
   }
 })
 
-// textInput.addEventListener("input", (e) => {
-//   header.textContent = e.srcElement.value;
-// })
-
-
-// confirmButton.addEventListener("click", (e) => {
-//   e.preventDefault();
-//   addTable(textInput.value, colorInput.value);
-//   resetDisplay();
-// })
-
-// cancelButton.addEventListener("click", (e) => {
-//   e.preventDefault();
-//   dom.modalBackground.style.setProperty("visibility", "hidden");
-// })
-
-function addTable(title, color) {
-  const index = controller.getActiveProject().children.length;
-  controller.getActiveProject().newTable(title);
-  controller.getActiveProject().children[index].newColor(color);
-}
-
 function addBlankTable() {
   const index = controller.getActiveProject().children.length;
   const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -119,31 +142,6 @@ function addBlankTable() {
   controller.getActiveProject().children[index].newColor(randomColor);
   resetDisplay();
 }
-
-function editTableButton(event) {
-
-  const tableElement = event.srcElement.parentElement.parentElement.parentElement.parentElement;
-  const tableObject = controller.getActiveProject().children[tableElement.dataset.index];
-  const tableBox = event.srcElement.parentElement.parentElement.parentElement.parentElement.getBoundingClientRect();
-  editTableModal.style.setProperty("visibility", "visible");
-  modalBackground.style.setProperty("visibility", "visible");
-  editTableModal.style.setProperty("--task-module-left", tableBox.right - 2 + "px");
-  editTableModal.style.setProperty("--task-module-top", tableBox.y + 45 + "px");
-  console.log(tableElement);
-  console.log(tableObject);
-
-  colorInput.addEventListener("input", editTableColor);
-
-  function editTableColor(e) {
-    tableElement.querySelector(".table-header").style.setProperty("background-color", e.target.value);
-    tableObject.color = e.target.value;
-    console.log({ tableObject });
-  }
-
-}
-
-
-
 
 function addTaskButton(event) {
   const tableElement = event.srcElement.parentElement.parentElement.parentElement.parentElement;

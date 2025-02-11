@@ -7,6 +7,7 @@ import chevron from "./icons/chevron-down.svg";
 import plus from "./icons/plus.svg";
 import palette from "./icons/color.svg";
 import edit from "./icons/edit.svg";
+import plusTask from "./icons/plus-task.svg"
 
 
 function makeCard(object) {
@@ -89,13 +90,12 @@ function appendButtons(color) {
 
   const editButton = dom.make("button");
   editButton.classList.add("edit-button");
-  const addIcon = dom.make("img");
-  addIcon.src = edit;
-  addIcon.width = 24;
-  addIcon.height = 24;
-  editButton.appendChild(addIcon);
-
-
+  const editIcon = dom.make("img");
+  editIcon.src = edit;
+  editIcon.width = 24;
+  editIcon.height = 24;
+  editButton.title = "Edit Title";
+  editButton.appendChild(editIcon);
 
   const colorIcon = dom.make("img");
   colorIcon.classList.add("color-icon");
@@ -107,12 +107,22 @@ function appendButtons(color) {
   colorInput.type = "color";
   colorInput.classList.add("color-input");
   colorInput.value = color;
+  colorInput.title = "Edit Color";
 
   const colorInputContainer = dom.make("div");
   colorInputContainer.classList.add("color-input-container");
   colorInputContainer.append(colorInput, colorIcon);
 
-  buttons.append(colorInputContainer, editButton);
+  const addTaskButton = dom.make("button");
+  addTaskButton.classList.add("add-task-button");
+  const addTaskIcon = dom.make("img");
+  addTaskIcon.src = plusTask;
+  addTaskIcon.width = 24;
+  addTaskIcon.height = 24;
+  addTaskButton.append(addTaskIcon);
+  addTaskButton.title = "Add Task";
+
+  buttons.append(colorInputContainer, editButton, addTaskButton);
 
   return buttons;
 }
