@@ -4,8 +4,9 @@ import { getCurrentDate } from "./date.js";
 import { enableDragAndDrop } from "./drag-and-drop.js";
 import { addFormEventListeners } from "./form.js";
 import chevron from "./icons/chevron-down.svg";
-import edit from "./icons/edit.svg";
 import plus from "./icons/plus.svg";
+import palette from "./icons/color.svg";
+import edit from "./icons/edit.svg";
 
 
 function makeCard(object) {
@@ -51,7 +52,7 @@ export function displayHeader() {
   }
   const collapseButton = dom.make("button");
   const collapseIcon = dom.make("img");
-  collapseIcon.src = chevron;
+  collapseIcon.src = plus;
   collapseIcon.width = 24;
   collapseIcon.height = 24;
   collapseButton.appendChild(collapseIcon);
@@ -86,19 +87,19 @@ function appendButtons(color) {
   const buttons = dom.make("div");
   buttons.classList.add("table-buttons");
 
-  const trashButton = dom.make("button");
-  trashButton.classList.add("trash-button");
+  const editButton = dom.make("button");
+  editButton.classList.add("edit-button");
   const addIcon = dom.make("img");
-  addIcon.src = plus;
+  addIcon.src = edit;
   addIcon.width = 24;
   addIcon.height = 24;
-  trashButton.appendChild(addIcon);
+  editButton.appendChild(addIcon);
 
 
 
   const colorIcon = dom.make("img");
   colorIcon.classList.add("color-icon");
-  colorIcon.src = edit;
+  colorIcon.src = palette;
   colorIcon.width = 24;
   colorIcon.height = 24;
 
@@ -111,7 +112,7 @@ function appendButtons(color) {
   colorInputContainer.classList.add("color-input-container");
   colorInputContainer.append(colorInput, colorIcon);
 
-  buttons.append(colorInputContainer, trashButton);
+  buttons.append(colorInputContainer, editButton);
 
   return buttons;
 }

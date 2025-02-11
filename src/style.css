@@ -117,17 +117,21 @@ button:hover {
   gap: 8px;
 }
 
-.header.buttons {
+.header.buttons,
+.project-list button {
   display: flex;
-  justify-content: end;
+  justify-content: center;
+  align-items: center;
   border-radius: 10px;
   background-color: rgb(0);
   padding: 4px;
-  margin: 0 -4px;
+  margin: auto -4px;
+  height: min-content;
   transition: background-color 0.3s;
 }
 
-.header.buttons:hover {
+.header.buttons:hover,
+.project-list button:hover {
   background-color: rgb(223, 223, 223);
 }
 
@@ -183,12 +187,14 @@ button:hover {
   font-size: 4em;
   font-weight: 800;
   min-width: max-content;
+  margin: 0px 48px 0px;
 }
 
 .project-description {
   font-size: 1rem;
   font-weight: 400;
   max-width: 50vw;
+  margin: 0px 48px 24px;
 }
 
 .container {
@@ -469,6 +475,16 @@ button:hover {
   left: 1px;
   top: 1px;
   pointer-events: none;
+}
+
+.table-text-input,
+.table-text-input:active {
+  box-sizing: border-box;
+  position: absolute;
+  font-size: 1.8rem;
+  background-color: white;
+  width: calc(100% - 23px);
+  box-shadow: black 0px 0px 0px 3px;
 }
 
 

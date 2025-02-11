@@ -13,12 +13,12 @@ const colorInput = document.querySelector("input[type=color]")
 
 export function addFormEventListeners() {
 
-  const trashButtons = document.querySelectorAll(".trash-button");
+  const editButtons = document.querySelectorAll(".edit-button");
   const colorInput = document.querySelectorAll(".color-input");
 
-  // for (const button of trashButtons) {
-  //   button.addEventListener("click", deleteTable);
-  // }
+  for (const button of editButtons) {
+    button.addEventListener("click", editTable);
+  }
 
   for (const button of colorInput) {
     button.addEventListener("input", colorTable);
@@ -33,6 +33,51 @@ function colorTable(e) {
   tableElement.querySelector(".table-header").style.setProperty("background-color", e.target.value);
   tableObject.color = e.target.value;
 }
+
+function editTable(e) {
+  e.stopPropagation();
+  const tableElement = e.srcElement.parentElement.parentElement.parentElement.parentElement;
+  const tableObject = controller.getActiveProject().children[tableElement.dataset.index];
+  console.log({ tableElement, tableObject });
+  console.log(e);
+
+  const titleInput = dom.make("input");
+  titleInput.classList.add("table-text-input");
+  titleInput.type = "text";
+  titleInput.value = tableObject.title;
+
+  const tableTitleElement = tableElement.querySelector("h2");
+
+  tableTitleElement.style.visibility = "hidden";
+  tableElement.querySelector(".table-header").appendChild(titleInput);
+  titleInput.focus();
+
+  titleInput.addEventListener("blur", onClickAway)
+
+  titleInput.addEventListener("keydown", (e) => {
+    titleInput.removeEventListener("blur", onClickAway);
+    if (e.key === "Enter") {
+      newTableTitle(titleInput.value);
+    } else if (e.key === "Escape") {
+      newTableTitle(tableObject.title);
+    }
+  })
+
+  function onClickAway() {
+    if (titleInput.value !== tableObject.title) {
+      newTableTitle(titleInput.value);
+    } else {
+      newTableTitle(tableObject.title);
+    }
+  }
+
+  function newTableTitle(string) {
+    tableObject.title = string;
+    tableTitleElement.style.visibility = "visible";
+    resetDisplay();
+  }
+}
+
 
 dom.tablePlusButton.addEventListener("click", (e) => {
   addBlankTable();
