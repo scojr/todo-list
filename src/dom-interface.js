@@ -21,6 +21,7 @@ export const dom = {
   modalContainer: get(".modal-container"),
   modalBackground: get(".modal-background"),
   tablePlusButton: get(".table-plus"),
+  trash: get(".trash"),
   get,
   make,
 }

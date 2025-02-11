@@ -295,6 +295,7 @@ button:hover {
   background-color: var(--task-header);
   padding: 0px 8px;
   border-radius: 12px 12px 0px 0px;
+  text-wrap: nowrap;
 }
 
 .table-header>h2 {
@@ -317,8 +318,6 @@ button:hover {
   background-color: rgba(0, 0, 0, 0.15);
 }
 
-
-
 .task,
 .table:not(#placeholder) {
   pointer-events: auto;
@@ -330,49 +329,6 @@ button:hover {
 
 .table>.task-container>.task {
   pointer-events: auto;
-}
-
-.todo-footer {
-  margin-top: 6px;
-  margin-bottom: -2px;
-  border-top: 2px dashed black;
-  padding-top: 10px;
-  display: flex;
-  align-items: center;
-}
-
-.todo-footer>button,
-.folder-header>div>button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  width: 40px;
-  flex-shrink: 0;
-  margin-left: 6px;
-  border: 3px solid black;
-  box-shadow: black 2px 2px 0px 0px;
-  border-radius: 100%;
-  font-size: 1.8rem;
-}
-
-.folder-header>div>button {
-  height: 30px;
-  width: 30px;
-  box-shadow: black 1px 1px 0px 0px;
-}
-
-.folder-header>div>button:hover,
-.todo-footer>button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.todo-footer .settings {
-  margin-left: 6px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .drag-icon {
@@ -388,29 +344,69 @@ button:hover {
 }
 
 .trash {
+  visibility: hidden;
   position: absolute;
-  left: 48px;
+  right: 48px;
   bottom: 48px;
-  opacity: 25%;
-  display: none;
+  opacity: 0%;
+  transition: opacity 0.3s;
+  z-index: 2;
+}
+
+.trash.active {
+  visibility: visible;
+  position: absolute;
+  right: 48px;
+  bottom: 48px;
+  opacity: 50%;
+}
+
+.trash.active:hover {
+  opacity: 100%;
+  animation: shake 0.2s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  25% {
+    transform: translate(5px, 5px) rotate(5deg);
+  }
+
+  50% {
+    transform: translate(0, 0) rotate(0eg);
+  }
+
+  75% {
+    transform: translate(-5px, 5px) rotate(-5deg);
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
 }
 
 .table-plus {
   display: flex;
-  align-items: last baseline;
+  align-items: center;
   position: absolute;
-  left: 48px;
-  bottom: 48px;
+  right: 12px;
+  top: 56px;
   opacity: 25%;
   z-index: 1;
 }
 
 .table-plus span {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 800;
   line-height: 1em;
   opacity: 0%;
   transition: opacity 0.3s;
+  text-align: right;
+  margin-right: 8px;
 }
 
 .table-plus:hover {

@@ -116,6 +116,7 @@ function elementDragging(event, element) {
   }
 
   function dragElement(dragEvent) {
+    dom.trash.classList.add("active");
     let activeTables = document.querySelectorAll(".table")
     let activeTasks = document.querySelectorAll(".task")
     if (grabbedItem.type === "task") {
@@ -137,6 +138,7 @@ function elementDragging(event, element) {
   }
 
   function endDragElement() {
+    dom.trash.classList.remove("active");
     if (hoveredItem.domElement || hoveredTable.domElement) {
       controller.moveChild(grabbedItem.object, hoveredTable.object, newIndex);
     }

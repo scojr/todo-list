@@ -123,16 +123,8 @@ function editTable(e) {
   }
 }
 
-
 dom.tablePlusButton.addEventListener("click", (e) => {
   addBlankTable();
-})
-
-modalBackground.addEventListener("mousedown", (event) => {
-  if (!newTaskModal.matches(":hover") && !editTableModal.matches(":hover")) {
-    closeModal();
-    console.log(event);
-  }
 })
 
 function addBlankTable() {
@@ -140,23 +132,5 @@ function addBlankTable() {
   const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
   controller.getActiveProject().newTable("New Table");
   controller.getActiveProject().children[index].newColor(randomColor);
-  resetDisplay();
-}
-
-function addTaskButton(event) {
-  const tableElement = event.srcElement.parentElement.parentElement.parentElement.parentElement;
-  const tableObject = controller.getActiveProject().children[tableElement.dataset.index];
-  console.log(tableObject);
-  tableElement.appendChild(newTaskModal);
-  newTaskModal.style.setProperty("visibility", "visible");
-  modalBackground.style.setProperty("visibility", "visible");
-  console.log(tableElement);
-  console.log(newTaskModal);
-}
-
-function closeModal(e) {
-  editTableModal.style.setProperty("visibility", "hidden");
-  newTaskModal.style.setProperty("visibility", "hidden");
-  modalBackground.style.setProperty("visibility", "hidden");
   resetDisplay();
 }
