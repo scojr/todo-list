@@ -139,15 +139,68 @@ function elementDragging(event, element) {
 
   function endDragElement() {
     dom.trash.classList.remove("active");
-    if (hoveredItem.domElement || hoveredTable.domElement) {
+    if (dom.trash.matches(":hover")) {
+      trash();
+    } else if (hoveredItem.domElement || hoveredTable.domElement) {
       controller.moveChild(grabbedItem.object, hoveredTable.object, newIndex);
+      reset();
     }
-    document.onmousedown = null;
-    document.onmousemove = null;
-    document.onmouseup = null;
-    resetDisplay();
-    document.body.style.removeProperty("cursor");
   }
+
+  function trash() {
+    console.log("trash");
+    if (deleteConfirmationCheck(grabbedItem.type)) {
+      document.onmousedown = null;
+      document.onmousemove = null;
+      document.onmouseup = null;
+      document.body.style.removeProperty("cursor");
+      if (dom.confirmElementContainer.lastElementChild) dom.confirmElementContainer.lastElementChild.remove();
+      dom.confirmDeleteBackground.style.visibility = "visible";
+
+      dom.confirmElementContainer.append(draggedElement);
+      draggedElement.id = "deleting";
+
+      const confirmButton = dom.confirmDeleteContainer.querySelector(".delete-confirmation-button");
+      const cancelButton = dom.confirmDeleteContainer.querySelector(".delete-cancel-button");
+
+      cancelButton.addEventListener("click", deleteCancelClick);
+      confirmButton.addEventListener("click", deleteConfirmClick);
+      dom.confirmDeleteBackground.addEventListener("click", (e) => {
+        if (!dom.confirmDeleteContainer.matches(":hover")) {
+          deleteCancelClick(e)
+        }
+      })
+
+      function deleteConfirmClick(e) {
+        e.preventDefault();
+        dom.confirmDeleteBackground.style.visibility = "hidden";
+        grabbedItem.parentObject.deleteChild(grabbedItem.objectIndex);
+        reset();
+        confirmButton.removeEventListener("click", deleteConfirmClick);
+        cancelButton.removeEventListener("click", deleteCancelClick);
+      }
+
+      function deleteCancelClick(e) {
+        e.preventDefault();
+        dom.confirmDeleteBackground.style.visibility = "hidden";
+        cancelButton.removeEventListener("click", this);
+        reset();
+        confirmButton.removeEventListener("click", deleteConfirmClick);
+        cancelButton.removeEventListener("click", deleteCancelClick);
+      }
+    } else {
+      grabbedItem.parentObject.deleteChild(grabbedItem.objectIndex);
+      reset();
+    }
+  }
+}
+
+function reset() {
+  document.onmousedown = null;
+  document.onmousemove = null;
+  document.onmouseup = null;
+  resetDisplay();
+  document.body.style.removeProperty("cursor");
 }
 
 class Element {
@@ -185,5 +238,12 @@ function getObjectOf(element) {
   }
   else {
     return controller.getActiveProject();
+  }
+}
+
+function deleteConfirmationCheck(elementType) {
+  const inputs = dom.confirmDeleteContainer.querySelectorAll("input");
+  for (const input of inputs) {
+    if (input.dataset.inputType === elementType && input.checked) return true;
   }
 }

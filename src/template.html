@@ -35,28 +35,36 @@
   <div class="table-plus"><span>Add<br>Table</span><img src="./icons/table-plus.svg" alt="Add Table" width="64"
       height="64" class="table-plus-img"></div>
 
-  <!-- <div class="modal-background">
-    <div class="modal-container new-table">
-      <div class="table-header">
-        <h2>New Table Title</h2>
+  <div class="modal-background">
+    <div class="modal-container delete-confirmation">
+      <svg class="alert-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-alert-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <h2>Permanently delete this item?</h2>
+      <div class="modal-element-holder">
       </div>
-      <section>
-        <form class="modal-form">
-          <div class="modal-input">
-            <input type="text" placeholder="New Table Title" name="newEntry" id="newEntry" aria-label="Title">
-            <div class="modal-buttons">
-              <input type="color" id="color" aria-label="Color">
-              <input type="date" id="deadline" aria-label="Deadline">
-            </div>
-          </div>
-          <div class="modal-buttons-dialogue">
-            <button class="modal-button modal-confirm-button">Confirm</button>
-            <button class="modal-button modal-cancel-button">Cancel</button>
-          </div>
-      </section>
-      </form>
+      <div class="modal-show-again">
+        <div>
+          <p>Show this message when deleting...</p>
+        </div>
+        <div class="inputs">
+          <input type="checkbox" name="show-again-tasks" id="show-again-tasks" data-input-type="task" checked>
+          <label for="show-again-tasks">Tasks</label>
+          <input type="checkbox" name="show-again-tables" id="show-again-tables" data-input-type="table" checked>
+          <label for="show-again-tables">Tables</label>
+          <input type="checkbox" name="show-again-projects" id="show-again-projects" data-input-type="project" checked>
+          <label for="show-again-projects">Projects</label>
+        </div>
+      </div>
+      <div class="modal-buttons"><button class="delete-cancel-button">Cancel</button>
+        <button class="delete-confirmation-button">Yes</button>
+      </div>
     </div>
-  </div> -->
+  </div>
 </body>
 
 </html>

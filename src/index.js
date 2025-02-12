@@ -1,9 +1,6 @@
 import "./style.css";
 import { controller } from "./logic";
-import { displayHeader, resetDisplay } from "./display";
-
-
-// controller.loadDefaultProject();
+import { displayHeader, resetDisplay, display } from "./display";
 
 if (JSON.parse(localStorage.getItem("myProjects") !== null)) {
   controller.loadFromLocalStorage();
@@ -12,5 +9,5 @@ if (JSON.parse(localStorage.getItem("myProjects") !== null)) {
 }
 
 displayHeader();
-resetDisplay();
+display();
 

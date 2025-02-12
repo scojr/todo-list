@@ -29,12 +29,16 @@ function makeCard(object) {
 }
 
 export function resetDisplay() {
-  console.log("----Active Project----")
-  console.log(controller.getActiveProject())
-  console.log("----------------------")
   while (dom.container.lastElementChild) {
     dom.container.removeChild(dom.container.lastElementChild);
   }
+  display();
+}
+
+export function display() {
+  console.log("----Active Project----")
+  console.log(controller.getActiveProject())
+  console.log("----------------------")
   dom.projectTitle.textContent = controller.getActiveProject().title;
   dom.projectDescription.textContent = controller.getActiveProject().description;
   displayTablesOf(controller.getActiveProject());
@@ -65,7 +69,8 @@ export function displayHeader() {
 function displayTablesOf(project) {
   for (const table of project.children) {
     const tableContainer = makeCard(table);
-    tableContainer.querySelector(".table-header").appendChild(appendButtons(table.color));
+    const tableColor = table.color;
+    tableContainer.querySelector(".table-header").appendChild(appendButtons(tableColor));
     const taskContainer = dom.make("div");
     taskContainer.classList.add("task-container");
     for (const task of table.children) {

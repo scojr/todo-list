@@ -162,6 +162,12 @@ const HasCustomColor = {
   }
 }
 
+const CanDeleteChild = {
+  deleteChild(index) {
+    this.children.splice(index, 1);
+  }
+}
+
 // Classes
 
 class Project {
@@ -180,7 +186,7 @@ class Project {
   }
 }
 
-Object.assign(Project.prototype, CanMakeTable);
+Object.assign(Project.prototype, CanMakeTable, CanDeleteChild);
 
 class Table {
   constructor(title, parent) {
@@ -201,7 +207,7 @@ class Table {
   }
 }
 
-Object.assign(Table.prototype, CanMakeTask, HasCustomColor);
+Object.assign(Table.prototype, CanMakeTask, HasCustomColor, CanDeleteChild);
 
 class Task {
   constructor(title, parent) {

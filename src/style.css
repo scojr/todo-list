@@ -83,9 +83,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: var(--background);
-  user-select: none;
   overflow: hidden;
-  cursor: default;
 }
 
 h2 {
@@ -397,6 +395,8 @@ button:hover {
   top: 56px;
   opacity: 25%;
   z-index: 1;
+  transition-property: opacity;
+  transition-duration: 0.3s;
 }
 
 .table-plus span {
@@ -404,7 +404,7 @@ button:hover {
   font-weight: 800;
   line-height: 1em;
   opacity: 0%;
-  transition: opacity 0.3s;
+  transition: opacity 0.5s;
   text-align: right;
   margin-right: 8px;
 }
@@ -429,7 +429,88 @@ button:hover {
   justify-content: center;
   align-items: center;
   z-index: 1;
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.3);
   visibility: hidden;
+}
+
+.modal-container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto min-content 1fr;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--task-container);
+  border: 3px solid black;
+  box-shadow: black 6px 6px 0px 0px;
+  padding: 12px;
+  width: max-content;
+
+  h2 {
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
+  }
+}
+
+.modal-container svg {
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+  margin-right: 12px;
+}
+
+.modal-element-holder {
+  position: relative;
+  grid-row: 2 / 3;
+  grid-column: 2 / 5;
+  min-height: 60px;
+  max-height: 120px;
+  overflow: hidden;
+}
+
+.modal-element-holder:has(.table)::after {
+  position: absolute;
+  content: "";
+  box-shadow: var(--task-container) 0px -50px 20px -20px inset;
+  height: 100%;
+  width: 100%;
+  left: 0px;
+  top: 0px;
+}
+
+.modal-show-again {
+  align-items: baseline;
+
+  grid-row: 3 / 4;
+  grid-column: 2 / 3;
+
+  font-size: 0.9rem;
+
+  label {
+    margin-right: 12px;
+  }
+}
+
+.modal-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  gap: 24px;
+
+  grid-row: 4 / 5;
+  grid-column: 1 / 3;
+
+  button {
+    border: 3px solid black;
+    box-shadow: black 4px 4px 0px 0px;
+    margin-top: 12px;
+    width: 30%;
+    height: 40px;
+  }
+
+  button:hover {
+    box-shadow: black 2px 2px 0px 0px inset;
+    background-color: rgba(0, 0, 0, 0.15);
+  }
 }
 
 #dragging {
