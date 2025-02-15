@@ -75,25 +75,77 @@ function elementDragging(event, element) {
     }
   }
 
+  // function tableHover(e) {
+  //   e.stopPropagation();
+
+  //   hoveredItem.setElement = e.srcElement;
+  //   hoveredItem.parentElement.append(placeholder);
+  //   const tableCount = parseInt(controller.getActiveProject().children.length);
+
+  //   newIndex = (Math.floor(e.x / (window.innerWidth / tableCount)));
+
+  //   const targetBox = e.srcElement.getBoundingClientRect();
+
+  //   const x = e.x - targetBox.left;
+  //   if (x > targetBox.width / 2) {
+  //     // From Left //
+  //     placeholder.style.setProperty("order", hoveredItem.objectIndex - 1)
+  //   } else {
+  //     // From right //
+  //     placeholder.style.setProperty("order", hoveredItem.objectIndex)
+  //   }
+  //   placeholder.style.setProperty("display", "block");
+  // }
+
   function tableHover(e) {
     e.stopPropagation();
-
     hoveredItem.setElement = e.srcElement;
     hoveredItem.parentElement.append(placeholder);
-    const tableCount = parseInt(controller.getActiveProject().children.length);
-
-    newIndex = (Math.floor(e.x / (window.innerWidth / tableCount)));
+    // const tableCount = parseInt(controller.getActiveProject().children.length);
+    // newIndex = (Math.floor(e.x / (window.innerWidth / tableCount)));
 
     const targetBox = e.srcElement.getBoundingClientRect();
 
     const x = e.x - targetBox.left;
-    if (x > targetBox.width / 2) {
-      // From Left //
-      placeholder.style.setProperty("order", hoveredItem.objectIndex - 1)
-    } else {
-      // From right //
-      placeholder.style.setProperty("order", hoveredItem.objectIndex)
+
+    const elementIndex = parseInt(e.srcElement.dataset.index);
+
+    let maxIndex = getMaxIndex();
+
+    let rightCompensation = 0;
+
+    function getMaxIndex() {
+      const projectLength = controller.getActiveProject().children.length - 1;
+
+      if (grabbedItem.index === projectLength)
+        return projectLength - 1;
+      else {
+        return projectLength;
+      }
     }
+
+    if (x > targetBox.width / 2) {
+      rightCompensation = 1;
+      // From right //
+      if (elementIndex === maxIndex && placeholder.style.order < maxIndex) {
+        console.log("is max right");
+        placeholder.style.setProperty("order", hoveredItem.objectIndex);
+      } else {
+        placeholder.style.setProperty("order", hoveredItem.objectIndex - 1);
+      }
+    } else {
+      rightCompensation = 0;
+      // From Left //
+      if (elementIndex === 0 && placeholder.style.order > 0) {
+        console.log("is max left");
+        placeholder.style.setProperty("order", hoveredItem.objectIndex - 1);
+      } else {
+        placeholder.style.setProperty("order", hoveredItem.objectIndex)
+      }
+    }
+    newIndex = parseInt(placeholder.style.order) + rightCompensation;
+    console.log(placeholder.style.order);
+    console.log({ newIndex });
     placeholder.style.setProperty("display", "block");
   }
 
