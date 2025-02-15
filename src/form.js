@@ -1,6 +1,6 @@
 import { dom } from "./dom-interface";
 import { controller } from "./logic";
-import { resetDisplay } from "./display";
+import { displayHeader, refreshHeader, resetDisplay } from "./display";
 
 const container = dom.modalContainer;
 
@@ -133,4 +133,61 @@ function addBlankTable() {
   controller.getActiveProject().newTable("New Table");
   controller.getActiveProject().children[index].newColor(randomColor);
   resetDisplay();
+}
+
+// New project form
+
+export function newProjectClick() {
+  dom.newProjectBackground.style.visibility = "visible";
+  const cancelButton = dom.newProjectContainer.querySelector(".new-project-cancel");
+  const submitButton = dom.newProjectContainer.querySelector(".new-project-submit");
+
+  submitButton.addEventListener("click", addProject);
+
+  function addProject() {
+    const titleInput = dom.newProjectContainer.querySelector("input[type='text']")
+    const descriptionInput = dom.newProjectContainer.querySelector("textarea")
+    const deadlineInput = dom.newProjectContainer.querySelector("input[type='date']")
+    const templateInput = dom.newProjectContainer.querySelector("input[type='checkbox']")
+
+    if (titleInput.value) {
+      console.log(titleInput.value);
+      console.log(descriptionInput.value);
+      controller.newProject(titleInput.value, descriptionInput.value)
+
+      const newArray = controller.getProjects()[controller.getProjects().length - 1];
+
+      if (deadlineInput.value) {
+        newArray.deadline = deadlineInput.value;
+      }
+
+      if (templateInput.value === "true") {
+        const tableTitleTemplate = ["Ideas", "To Do", "Doing", "Done"]
+        const tableColorTemplate = ["#ffe600", "#00ff00", "#00ccff", "#ff8000"]
+
+        for (const title of tableTitleTemplate) {
+          newArray.newTable(title);
+          newArray.children[tableTitleTemplate.indexOf(title)].color = tableColorTemplate[tableTitleTemplate.indexOf(title)]
+        }
+      }
+
+    }
+
+
+    refreshHeader();
+
+    closeForm();
+  }
+
+  cancelButton.addEventListener("click", closeForm);
+  dom.newProjectBackground.addEventListener("click", (e) => {
+    if (!dom.newProjectContainer.matches(":hover")) {
+      closeForm();
+    }
+  });
+
+  function closeForm(e) {
+    dom.newProjectBackground.style.visibility = "hidden";
+    cancelButton.removeEventListener("click", closeForm);
+  }
 }

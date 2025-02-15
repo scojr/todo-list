@@ -3,6 +3,7 @@ import { dom } from "./dom-interface";
 import { getCurrentDate } from "./date.js";
 import { enableDragAndDrop } from "./drag-and-drop.js";
 import { addFormEventListeners } from "./form.js";
+import { newProjectClick } from "./form.js";
 import chevron from "./icons/chevron-down.svg";
 import plus from "./icons/plus.svg";
 import palette from "./icons/color.svg";
@@ -46,22 +47,42 @@ export function display() {
 }
 
 // Header //
+export function refreshHeader() {
+  while (dom.projectList.lastElementChild) {
+    dom.projectList.removeChild(dom.projectList.lastElementChild);
+  }
+  displayHeader();
+}
+
 export function displayHeader() {
+  dom.headerDay.textContent = `${getCurrentDate.weekday()}`;
+  dom.headerDate.textContent = `${getCurrentDate.month()} ${getCurrentDate.day()} ${getCurrentDate.year()}`;
   const projects = controller.getProjects();
   for (const project of projects) {
     const li = dom.make("li", project.title);
+    li.dataset.index = projects.indexOf(project);
+    li.classList.add("header-project-button");
+    li.addEventListener("click", () => {
+      changeActiveProject(li.dataset.index)
+    });
     if (project === controller.getActiveProject()) li.classList.add("active-project");
     dom.projectList.appendChild(li);
-    dom.headerDay.textContent = `${getCurrentDate.weekday()}`;
-    dom.headerDate.textContent = `${getCurrentDate.month()} ${getCurrentDate.day()} ${getCurrentDate.year()}`;
   }
-  const collapseButton = dom.make("button");
-  const collapseIcon = dom.make("img");
-  collapseIcon.src = plus;
-  collapseIcon.width = 24;
-  collapseIcon.height = 24;
-  collapseButton.appendChild(collapseIcon);
-  dom.projectList.appendChild(collapseButton);
+  const addProjectButton = dom.make("button");
+  addProjectButton.classList.add("add-project-button");
+  addProjectButton.addEventListener("click", newProjectClick)
+  const addProjectIcon = dom.make("img");
+  addProjectIcon.src = plus;
+  addProjectIcon.width = 24;
+  addProjectIcon.height = 24;
+  addProjectButton.appendChild(addProjectIcon);
+  dom.projectList.appendChild(addProjectButton);
+}
+
+function changeActiveProject(index) {
+  controller.setActiveProject(index);
+  resetDisplay();
+  refreshHeader();
 }
 
 // Container //

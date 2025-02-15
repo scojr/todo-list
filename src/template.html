@@ -32,10 +32,13 @@
   <div class="container" data-type="container">
   </div>
   <img src="./icons/trash.svg" alt="Trash Bin" width="150" height="150" class="trash">
-  <div class="table-plus"><span>Add<br>Table</span><img src="./icons/table-plus.svg" alt="Add Table" width="64"
-      height="64" class="table-plus-img"></div>
+  <div class="container-buttons"><button class="project-edit"><span>Edit<br>Project</span><img
+        src="./icons/folder-edit.svg" alt="Edit Project" width="64" height="64" class="edit-project-img"></button>
+    <button class="table-plus"><span>Add<br>Table</span><img src="./icons/table-plus.svg" alt="Add Table" width="64"
+        height="64" class="table-plus-img"></button>
+  </div>
 
-  <div class="modal-background">
+  <div class="modal-background delete-confirmation">
     <div class="modal-container delete-confirmation">
       <svg class="alert-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -63,6 +66,35 @@
       <div class="modal-buttons"><button class="delete-cancel-button">Cancel</button>
         <button class="delete-confirmation-button">Yes</button>
       </div>
+    </div>
+  </div>
+
+  <div class="modal-background new-project">
+    <div class="modal-container new-project">
+      <div class="new-project-header">
+        <img src="./icons/folder.svg" alt="folder icon" width="64" height="64">
+        <h2>New Project</h2>
+      </div>
+      <form method="dialog">
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title">
+        <label for="description">Description</label>
+        <textarea name="description" id="description"></textarea>
+        <div class="flex-row">
+          <label for="deadline">Deadline <img class="tooltip" src="./icons/help.svg" alt="folder icon" width="18"
+              height="18"></label>
+          <input type="date" name="deadline" id="deadline">
+        </div>
+        <div class="flex-row">
+          <label for="template">Default Template <img class="tooltip" src="./icons/help.svg" alt="folder icon"
+              width="18" height="18"></label>
+          <input type="checkbox" name="template" id="template">
+        </div>
+        <div class="modal-buttons">
+          <button class="new-project-submit">Create project</button>
+          <button class="new-project-cancel">Cancel</button>
+        </div>
+      </form>
     </div>
   </div>
 </body>
