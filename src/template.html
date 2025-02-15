@@ -10,8 +10,8 @@
 <body>
   <div class="header-container">
     <div class="header buttons">
-      <button><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      <button class="menu-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
           class="feather feather-menu">
           <line x1="3" y1="12" x2="21" y2="12"></line>
           <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -59,8 +59,6 @@
           <label for="show-again-tasks">Tasks</label>
           <input type="checkbox" name="show-again-tables" id="show-again-tables" data-input-type="table" checked>
           <label for="show-again-tables">Tables</label>
-          <input type="checkbox" name="show-again-projects" id="show-again-projects" data-input-type="project" checked>
-          <label for="show-again-projects">Projects</label>
         </div>
       </div>
       <div class="modal-buttons"><button class="delete-cancel-button">Cancel</button>
@@ -117,6 +115,11 @@
   <div class="new-project-tooltip">
     <p>
     </p>
+  </div>
+
+  <div class="header-menu">
+    <button class="manage-confirm">Manage confirmations</button>
+    <button class="clear-local">Clear localStorage</button>
   </div>
 
 </body>

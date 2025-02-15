@@ -203,7 +203,7 @@ export function newProjectClick() {
       }
 
       if (templateInput.checked) {
-        const tableTitleTemplate = ["Ideas", "To Do", "Doing", "Done"]
+        const tableTitleTemplate = ["Ideas", "Todo", "Doing", "Done"]
         const tableColorTemplate = ["#ffe600", "#00ff00", "#00ccff", "#ff8000"]
 
         for (const title of tableTitleTemplate) {

@@ -26,6 +26,8 @@ export const dom = {
   confirmElementContainer: get(".modal-element-holder"),
   tablePlusButton: get(".table-plus"),
   projectEditButton: get(".project-edit"),
+  headerMenuButton: get(".menu-button"),
+  headerMenu: get(".header-menu"),
   trash: get(".trash"),
   get,
   make,
