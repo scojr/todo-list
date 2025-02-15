@@ -1,6 +1,8 @@
 import { dom } from "./dom-interface";
 import { controller } from "./logic";
 import { displayHeader, refreshHeader, resetDisplay } from "./display";
+import newFolderIcon from "./icons/folder.svg";
+import editFolderIcon from "./icons/folder-edit.svg";
 
 const container = dom.modalContainer;
 
@@ -135,20 +137,55 @@ function addBlankTable() {
   resetDisplay();
 }
 
+// Project form
+
+const headerText = dom.newProjectContainer.querySelector("h2");
+const headerIcon = dom.newProjectContainer.querySelector("img");
+
+const cancelButton = dom.newProjectContainer.querySelector(".new-project-cancel");
+const submitButton = dom.newProjectContainer.querySelector(".new-project-submit");
+const deleteButton = dom.newProjectContainer.querySelector(".new-project-delete");
+
+const titleInput = dom.newProjectContainer.querySelector("input[type='text']");
+const descriptionInput = dom.newProjectContainer.querySelector("textarea");
+const deadlineInput = dom.newProjectContainer.querySelector("input[type='date']");
+const templateInput = dom.newProjectContainer.querySelector("input[type='checkbox']");
+const templateLabel = dom.newProjectContainer.querySelector(".template-label");
+
+const invalidMessage = dom.newProjectContainer.querySelector(".project-invalid-message");
+
+function closeForm(e) {
+  dom.newProjectBackground.style.visibility = "hidden";
+  cancelButton.removeEventListener("click", closeForm);
+  invalidMessage.style.display = "none";
+  deleteButton.style.display = "none";
+
+  titleInput.value = ""
+  descriptionInput.value = ""
+  deadlineInput.value = ""
+  templateInput.checked = true;
+  resetDisplay();
+}
+
+cancelButton.addEventListener("click", closeForm);
+dom.newProjectBackground.addEventListener("mousedown", (e) => {
+  if (!dom.newProjectContainer.matches(":hover")) {
+    closeForm();
+  }
+});
+
+deleteButton.addEventListener("click", deleteProjectConfirm);
+
 // New project form
 
 export function newProjectClick() {
+  headerText.textContent = "New Project";
+  headerIcon.src = newFolderIcon;
   dom.newProjectBackground.style.visibility = "visible";
-  const cancelButton = dom.newProjectContainer.querySelector(".new-project-cancel");
-  const submitButton = dom.newProjectContainer.querySelector(".new-project-submit");
 
   submitButton.addEventListener("click", addProject);
 
   function addProject() {
-    const titleInput = dom.newProjectContainer.querySelector("input[type='text']")
-    const descriptionInput = dom.newProjectContainer.querySelector("textarea")
-    const deadlineInput = dom.newProjectContainer.querySelector("input[type='date']")
-    const templateInput = dom.newProjectContainer.querySelector("input[type='checkbox']")
 
     if (titleInput.value) {
       console.log(titleInput.value);
@@ -169,25 +206,86 @@ export function newProjectClick() {
           newArray.newTable(title);
           newArray.children[tableTitleTemplate.indexOf(title)].color = tableColorTemplate[tableTitleTemplate.indexOf(title)]
         }
+
+      }
+      refreshHeader();
+      closeForm();
+      submitButton.removeEventListener("click", addProject);
+    } else {
+      invalidMessage.style.display = "inline";
+    }
+  }
+}
+
+// Edit project form
+
+dom.projectEditButton.addEventListener("click", editProjectClick);
+
+function editProjectClick() {
+
+  headerText.textContent = "Edit Project";
+  headerIcon.src = editFolderIcon;
+  dom.newProjectBackground.style.visibility = "visible";
+  deleteButton.style.display = "inline";
+
+  titleInput.value = controller.getActiveProject().title;
+  descriptionInput.value = controller.getActiveProject().description;
+
+  if (controller.getActiveProject().deadline) {
+    deadlineInput.value = controller.getActiveProject().deadline;
+  }
+  templateLabel.style.display = "none";
+  templateInput.style.display = "none";
+
+  submitButton.addEventListener("click", editProject);
+
+  function editProject() {
+    const activeProject = controller.getActiveProject();
+    if (titleInput.value) {
+      console.log("valid title");
+      activeProject.title = titleInput.value;
+      activeProject.description = descriptionInput.value;
+
+      if (deadlineInput.value) {
+        activeProject.deadline = deadlineInput.value;
       }
 
-    }
-
-
-    refreshHeader();
-
-    closeForm();
-  }
-
-  cancelButton.addEventListener("click", closeForm);
-  dom.newProjectBackground.addEventListener("click", (e) => {
-    if (!dom.newProjectContainer.matches(":hover")) {
+      refreshHeader();
       closeForm();
+      submitButton.removeEventListener("click", editProject);
+    } else if (!titleInput.value) {
+      console.log("invalid title");
+      invalidMessage.style.display = "inline";
     }
-  });
-
-  function closeForm(e) {
-    dom.newProjectBackground.style.visibility = "hidden";
-    cancelButton.removeEventListener("click", closeForm);
   }
+}
+
+// Delete project confirmation
+
+const confirmProjectDeleteButton = dom.confirmDeleteProjectContainer.querySelector(".delete-project-confirmation-button");
+const cancelProjectDeleteButton = dom.confirmDeleteProjectContainer.querySelector(".delete-project-cancel-button");
+
+cancelProjectDeleteButton.addEventListener("click", () => {
+  dom.confirmDeleteProjectBackground.style.visibility = "hidden";
+})
+
+dom.confirmDeleteProjectBackground.addEventListener("mousedown", (e) => {
+  if (!dom.confirmDeleteProjectContainer.matches(":hover")) {
+    dom.confirmDeleteProjectBackground.style.visibility = "hidden";
+  }
+});
+
+confirmProjectDeleteButton.addEventListener("click", () => {
+  const currentProjectIndex = controller.getProjects().indexOf(controller.getActiveProject());
+
+  controller.getProjects().splice(currentProjectIndex, 1);
+  dom.confirmDeleteProjectBackground.style.visibility = "hidden";
+  controller.setActiveProject(currentProjectIndex - 1);
+  refreshHeader();
+  resetDisplay();
+})
+
+function deleteProjectConfirm() {
+  closeForm();
+  dom.confirmDeleteProjectBackground.style.visibility = "visible";
 }
