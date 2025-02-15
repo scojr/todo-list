@@ -650,6 +650,23 @@ input[type="checkbox"] {
   transform: translate(-50%, -140%);
 }
 
+.new-project-tooltip {
+  pointer-events: none;
+  opacity: 0%;
+  background-color: var(--task-container);
+  border: 2px solid black;
+  box-shadow: black 4px 4px 0px 0px;
+  padding: 4px;
+  font-size: 0.8rem;
+  max-width: 300px;
+  z-index: 1;
+  position: absolute;
+  visibility: hidden;
+  left: 0;
+  top: 0;
+  transition: opacity 0.3s;
+}
+
 #newtask {
   width: 100%;
   border: 3px solid black;

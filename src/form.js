@@ -87,7 +87,6 @@ function editTable(e) {
   const tableElement = e.currentTarget.parentElement.parentElement.parentElement;
   const tableObject = controller.getActiveProject().children[tableElement.dataset.index];
 
-  console.log(tableObject);
   const titleInput = dom.make("input");
   titleInput.classList.add("table-text-input");
   titleInput.type = "text";
@@ -195,8 +194,6 @@ export function newProjectClick() {
   function addProject() {
 
     if (titleInput.value) {
-      console.log(titleInput.value);
-      console.log(descriptionInput.value);
       controller.newProject(titleInput.value, descriptionInput.value)
 
       const newArray = controller.getProjects()[controller.getProjects().length - 1];
@@ -216,9 +213,9 @@ export function newProjectClick() {
 
       }
       controller.setActiveProject(controller.getProjects().length - 1);
+      submitButton.removeEventListener("click", addProject);
       refreshHeader();
       closeForm();
-      submitButton.removeEventListener("click", addProject);
     } else {
       invalidMessage.style.display = "inline";
     }
@@ -250,26 +247,24 @@ function editProjectClick() {
     deadlineInput.value = controller.getActiveProject().deadline;
   }
 
-  submitButton.addEventListener("click", editProject);
+  submitButton.addEventListener("click", applyProjectEdits);
+}
 
-  function editProject() {
-    const activeProject = controller.getActiveProject();
-    if (titleInput.value) {
-      console.log("valid title");
-      activeProject.title = titleInput.value;
-      activeProject.description = descriptionInput.value;
+function applyProjectEdits() {
+  const activeProject = controller.getActiveProject();
+  if (titleInput.value) {
+    activeProject.title = titleInput.value;
+    activeProject.description = descriptionInput.value;
 
-      if (deadlineInput.value) {
-        activeProject.deadline = deadlineInput.value;
-      }
-
-      refreshHeader();
-      closeForm();
-      submitButton.removeEventListener("click", editProject);
-    } else if (!titleInput.value) {
-      console.log("invalid title");
-      invalidMessage.style.display = "inline";
+    if (deadlineInput.value) {
+      activeProject.deadline = deadlineInput.value;
     }
+
+    submitButton.removeEventListener("click", applyProjectEdits);
+    refreshHeader();
+    closeForm();
+  } else if (!titleInput.value) {
+    invalidMessage.style.display = "inline";
   }
 }
 
@@ -301,4 +296,37 @@ confirmProjectDeleteButton.addEventListener("click", () => {
 function deleteProjectConfirm() {
   closeForm();
   dom.confirmDeleteProjectBackground.style.visibility = "visible";
+}
+
+// Tooltip hover
+
+const templateTooltip = dom.newProjectContainer.querySelector(".template-tooltip");
+const deadlineTooltip = dom.newProjectContainer.querySelector(".deadline-tooltip");
+const tooltipMessage = dom.get(".new-project-tooltip");
+
+templateTooltip.addEventListener("mouseover", (e) => {
+  const message = "Auto fill the project with tables 'Ideas', 'To Do', 'Doing', and 'Done'. <br>Project will be empty if left unchecked.";
+
+  tooltipHover(e, message)
+});
+deadlineTooltip.addEventListener("mouseover", (e) => {
+  const message = "Not yet implemented :)";
+
+  tooltipHover(e, message)
+});
+
+templateTooltip.addEventListener("mouseout", tooltipOut);
+deadlineTooltip.addEventListener("mouseout", tooltipOut);
+
+
+function tooltipHover(e, text) {
+  tooltipMessage.querySelector("p").innerHTML = text;
+  tooltipMessage.style.visibility = "visible";
+  tooltipMessage.style.opacity = "100%";
+  tooltipMessage.style.left = e.clientX + "px";
+  tooltipMessage.style.top = e.clientY + "px";
+}
+
+function tooltipOut(e) {
+  tooltipMessage.style.opacity = "0%";
 }
