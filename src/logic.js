@@ -224,43 +224,8 @@ class Task {
 
 }
 
-// For Testing
-
-// const tableTemplate = ["To Do", "Doing", "Done"];
-// const tableColors = ["#ffe600", "#00ff00", "#00ccff"]
-
-// const taskTemplate1 = ["Animations", "Notepad", "Dark Mode", "Task Labels", "UI Redesign"];
-// const taskTemplate2 = ["Deadlines", "Form input",];
-// const taskTemplate3 = ["Drag & Drop", "Basic Styling", "localStorage Saving",];
-// const taskTemplates = [taskTemplate1, taskTemplate2, taskTemplate3];
-
-// controller.newProject("To Do List Webapp", "Here's an example use case of my To Do List webapp. Drag & Drop tasks between tables to keep a visual track of your work. Everything is customizable, from the Project to the Tables and the Tasks inside them. Any modifications you make will be saved when you return!");
-
-// activeProject = projects[0];
-
-// for (const table of tableTemplate) {
-//   controller.getProjectByIndex(0).newTable(table);
-//   for (const taskTemplate of taskTemplates[tableTemplate.indexOf(table)]) {
-//     controller.getProjectByIndex(0).children[tableTemplate.indexOf(table)].newTask(taskTemplate);
-//   }
-// }
-
-// for (const color of tableColors) {
-//   const index = tableColors.indexOf(color);
-//   controller.getActiveProject().children[index].newColor(color);
-// }
-
-// controller.saveToLocalStorage();
-
 const defaultTemplate = {
   myProjects: ["{\"children\":[{\"children\":[{\"title\":\"Animations\",\"parentId\":0.9747654657543479},{\"title\":\"Notepad\",\"parentId\":0.9747654657543479},{\"title\":\"Dark Mode\",\"parentId\":0.9747654657543479},{\"title\":\"Task Labels\",\"parentId\":0.9747654657543479},{\"title\":\"UI Redesign\",\"parentId\":0.9747654657543479}],\"title\":\"To Do\",\"parentId\":0.6093726341126866,\"id\":0.9747654657543479,\"color\":\"#ffe600\"},{\"children\":[{\"title\":\"Deadlines\",\"parentId\":0.055323889647122204},{\"title\":\"Form input\",\"parentId\":0.055323889647122204}],\"title\":\"Doing\",\"parentId\":0.6093726341126866,\"id\":0.055323889647122204,\"color\":\"#00ff00\"},{\"children\":[{\"title\":\"Drag & Drop\",\"parentId\":0.04907452836744297},{\"title\":\"Basic Styling\",\"parentId\":0.04907452836744297},{\"title\":\"localStorage Saving\",\"parentId\":0.04907452836744297}],\"title\":\"Done\",\"parentId\":0.6093726341126866,\"id\":0.04907452836744297,\"color\":\"#00ccff\"}],\"title\":\"To Do List Webapp\",\"description\":\"Stay organized with a visual Kanban-style To Do list that'll help you track tasks and their status within your projects. Drag and Drop to reorganize tables and the tasks inside them. Start fresh with a new project, or tweak this one to fit your needs. Everything from projects to tasks are customizable, and your changes will be saved for when you come back!\",\"id\":0.6093726341126866}"],
-  myTables: ["{\"children\":[{\"title\":\"Animations\",\"parentId\":0.9747654657543479},{\"title\":\"Notepad\",\"parentId\":0.9747654657543479},{\"title\":\"Dark Mode\",\"parentId\":0.9747654657543479},{\"title\":\"Task Labels\",\"parentId\":0.9747654657543479},{\"title\":\"UI Redesign\",\"parentId\":0.9747654657543479}],\"title\":\"To Do\",\"parentId\":0.6093726341126866,\"id\":0.9747654657543479,\"color\":\"#ffe600\"}", "{\"children\":[{\"title\":\"Deadlines\",\"parentId\":0.055323889647122204},{\"title\":\"Form input\",\"parentId\":0.055323889647122204}],\"title\":\"Doing\",\"parentId\":0.6093726341126866,\"id\":0.055323889647122204,\"color\":\"#00ff00\"}", "{\"children\":[{\"title\":\"Drag & Drop\",\"parentId\":0.04907452836744297},{\"title\":\"Basic Styling\",\"parentId\":0.04907452836744297},{\"title\":\"localStorage Saving\",\"parentId\":0.04907452836744297}],\"title\":\"Done\",\"parentId\":0.6093726341126866,\"id\":0.04907452836744297,\"color\":\"#00ccff\"}"],
-  myTasks: ["{\"title\":\"Animations\",\"parentId\":0.9747654657543479}", "{\"title\":\"Notepad\",\"parentId\":0.9747654657543479}", "{\"title\":\"Dark Mode\",\"parentId\":0.9747654657543479}", "{\"title\":\"Task Labels\",\"parentId\":0.9747654657543479}", "{\"title\":\"UI Redesign\",\"parentId\":0.9747654657543479}", "{\"title\":\"Deadlines\",\"parentId\":0.055323889647122204}", "{\"title\":\"Form input\",\"parentId\":0.055323889647122204}", "{\"title\":\"Drag & Drop\",\"parentId\":0.04907452836744297}", "{\"title\":\"Basic Styling\",\"parentId\":0.04907452836744297}", "{\"title\":\"localStorage Saving\",\"parentId\":0.04907452836744297}"],
-  activeProject: 0,
-}
-
-const blankTemplate = {
-  myProjects: ["{\"children\":[{\"children\":[{\"title\":\"Animations\",\"parentId\":0.9747654657543479},{\"title\":\"Notepad\",\"parentId\":0.9747654657543479},{\"title\":\"Dark Mode\",\"parentId\":0.9747654657543479},{\"title\":\"Task Labels\",\"parentId\":0.9747654657543479},{\"title\":\"UI Redesign\",\"parentId\":0.9747654657543479}],\"title\":\"To Do\",\"parentId\":0.6093726341126866,\"id\":0.9747654657543479,\"color\":\"#ffe600\"},{\"children\":[{\"title\":\"Deadlines\",\"parentId\":0.055323889647122204},{\"title\":\"Form input\",\"parentId\":0.055323889647122204}],\"title\":\"Doing\",\"parentId\":0.6093726341126866,\"id\":0.055323889647122204,\"color\":\"#00ff00\"},{\"children\":[{\"title\":\"Drag & Drop\",\"parentId\":0.04907452836744297},{\"title\":\"Basic Styling\",\"parentId\":0.04907452836744297},{\"title\":\"localStorage Saving\",\"parentId\":0.04907452836744297}],\"title\":\"Done\",\"parentId\":0.6093726341126866,\"id\":0.04907452836744297,\"color\":\"#00ccff\"}],\"title\":\"To Do List Webapp\",\"description\":\"Stay organized with a visual Kanban-style layout that helps you track tasks and their status within your projects. Drag and Drop to reorganize tables and the tasks inside them. Start fresh with a new project, or tweak this one to fit your needs. Everything from projects to tasks are customizable, and your changes will be saved for when you come back!\",\"id\":0.6093726341126866}"],
   myTables: ["{\"children\":[{\"title\":\"Animations\",\"parentId\":0.9747654657543479},{\"title\":\"Notepad\",\"parentId\":0.9747654657543479},{\"title\":\"Dark Mode\",\"parentId\":0.9747654657543479},{\"title\":\"Task Labels\",\"parentId\":0.9747654657543479},{\"title\":\"UI Redesign\",\"parentId\":0.9747654657543479}],\"title\":\"To Do\",\"parentId\":0.6093726341126866,\"id\":0.9747654657543479,\"color\":\"#ffe600\"}", "{\"children\":[{\"title\":\"Deadlines\",\"parentId\":0.055323889647122204},{\"title\":\"Form input\",\"parentId\":0.055323889647122204}],\"title\":\"Doing\",\"parentId\":0.6093726341126866,\"id\":0.055323889647122204,\"color\":\"#00ff00\"}", "{\"children\":[{\"title\":\"Drag & Drop\",\"parentId\":0.04907452836744297},{\"title\":\"Basic Styling\",\"parentId\":0.04907452836744297},{\"title\":\"localStorage Saving\",\"parentId\":0.04907452836744297}],\"title\":\"Done\",\"parentId\":0.6093726341126866,\"id\":0.04907452836744297,\"color\":\"#00ccff\"}"],
   myTasks: ["{\"title\":\"Animations\",\"parentId\":0.9747654657543479}", "{\"title\":\"Notepad\",\"parentId\":0.9747654657543479}", "{\"title\":\"Dark Mode\",\"parentId\":0.9747654657543479}", "{\"title\":\"Task Labels\",\"parentId\":0.9747654657543479}", "{\"title\":\"UI Redesign\",\"parentId\":0.9747654657543479}", "{\"title\":\"Deadlines\",\"parentId\":0.055323889647122204}", "{\"title\":\"Form input\",\"parentId\":0.055323889647122204}", "{\"title\":\"Drag & Drop\",\"parentId\":0.04907452836744297}", "{\"title\":\"Basic Styling\",\"parentId\":0.04907452836744297}", "{\"title\":\"localStorage Saving\",\"parentId\":0.04907452836744297}"],
   activeProject: 0,

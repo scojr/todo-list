@@ -546,7 +546,7 @@ button:hover,
   flex-direction: column;
   justify-content: left;
   min-width: 400px;
-  width: 25%;
+  width: min-content;
 }
 
 .modal-container.new-project>form {
@@ -554,7 +554,7 @@ button:hover,
   grid-template-rows: repeat(8, min-content);
   width: 100%;
   align-items: center;
-  justify-content: center;
+  justify-content: stretch;
 }
 
 .new-project .modal-buttons {

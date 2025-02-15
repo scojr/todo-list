@@ -156,7 +156,6 @@ const invalidMessage = dom.newProjectContainer.querySelector(".project-invalid-m
 
 function closeForm(e) {
   dom.newProjectBackground.style.visibility = "hidden";
-  cancelButton.removeEventListener("click", closeForm);
   invalidMessage.style.display = "none";
   deleteButton.style.display = "none";
 
@@ -181,9 +180,17 @@ deleteButton.addEventListener("click", deleteProjectConfirm);
 export function newProjectClick() {
   headerText.textContent = "New Project";
   headerIcon.src = newFolderIcon;
+  invalidMessage.style.display = "none";
   dom.newProjectBackground.style.visibility = "visible";
 
+  titleInput.focus();
+
+  submitButton.textContent = "Create Project";
   submitButton.addEventListener("click", addProject);
+
+
+  templateLabel.style.display = "block";
+  templateInput.style.display = "block";
 
   function addProject() {
 
@@ -198,7 +205,7 @@ export function newProjectClick() {
         newArray.deadline = deadlineInput.value;
       }
 
-      if (templateInput.value === "true") {
+      if (templateInput.checked) {
         const tableTitleTemplate = ["Ideas", "To Do", "Doing", "Done"]
         const tableColorTemplate = ["#ffe600", "#00ff00", "#00ccff", "#ff8000"]
 
@@ -208,6 +215,7 @@ export function newProjectClick() {
         }
 
       }
+      controller.setActiveProject(controller.getProjects().length - 1);
       refreshHeader();
       closeForm();
       submitButton.removeEventListener("click", addProject);
@@ -225,8 +233,15 @@ function editProjectClick() {
 
   headerText.textContent = "Edit Project";
   headerIcon.src = editFolderIcon;
+
+  invalidMessage.style.display = "none";
+  templateLabel.style.display = "none";
+  templateInput.style.display = "none";
+
   dom.newProjectBackground.style.visibility = "visible";
   deleteButton.style.display = "inline";
+
+  submitButton.textContent = "Apply Changes";
 
   titleInput.value = controller.getActiveProject().title;
   descriptionInput.value = controller.getActiveProject().description;
@@ -234,8 +249,6 @@ function editProjectClick() {
   if (controller.getActiveProject().deadline) {
     deadlineInput.value = controller.getActiveProject().deadline;
   }
-  templateLabel.style.display = "none";
-  templateInput.style.display = "none";
 
   submitButton.addEventListener("click", editProject);
 

@@ -4,7 +4,6 @@ import { getCurrentDate } from "./date.js";
 import { enableDragAndDrop } from "./drag-and-drop.js";
 import { addFormEventListeners } from "./form.js";
 import { newProjectClick } from "./form.js";
-import chevron from "./icons/chevron-down.svg";
 import plus from "./icons/plus.svg";
 import palette from "./icons/color.svg";
 import edit from "./icons/edit.svg";
