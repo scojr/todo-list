@@ -15,7 +15,7 @@ function makeCard(object) {
   const container = dom.make("div");
   const myIndex = object.parentObject.children.indexOf(object);
   container.dataset.index = myIndex;
-  const objectType = object.constructor.name.toLowerCase()
+  const objectType = object.is;
   container.dataset.type = objectType;
   container.style.setProperty("order", myIndex);
   container.classList.add(objectType);

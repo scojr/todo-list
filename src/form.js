@@ -145,13 +145,15 @@ const cancelButton = dom.newProjectContainer.querySelector(".new-project-cancel"
 const submitButton = dom.newProjectContainer.querySelector(".new-project-submit");
 const deleteButton = dom.newProjectContainer.querySelector(".new-project-delete");
 
-const titleInput = dom.newProjectContainer.querySelector("input[type='text']");
+const titleInput = dom.newProjectContainer.querySelector(".new-project-title-input");
 const descriptionInput = dom.newProjectContainer.querySelector("textarea");
 const deadlineInput = dom.newProjectContainer.querySelector("input[type='date']");
 const templateInput = dom.newProjectContainer.querySelector("input[type='checkbox']");
 const templateLabel = dom.newProjectContainer.querySelector(".template-label");
 
 const invalidMessage = dom.newProjectContainer.querySelector(".project-invalid-message");
+
+let isEditCheck = false;
 
 function closeForm(e) {
   dom.newProjectBackground.style.visibility = "hidden";
@@ -192,32 +194,33 @@ export function newProjectClick() {
   templateInput.style.display = "block";
 
   function addProject() {
+    if (isEditCheck === false) {
+      if (titleInput.value) {
+        submitButton.removeEventListener("click", addProject);
+        controller.newProject(titleInput.value, descriptionInput.value)
 
-    if (titleInput.value) {
-      controller.newProject(titleInput.value, descriptionInput.value)
+        const newArray = controller.getProjects()[controller.getProjects().length - 1];
 
-      const newArray = controller.getProjects()[controller.getProjects().length - 1];
-
-      if (deadlineInput.value) {
-        newArray.deadline = deadlineInput.value;
-      }
-
-      if (templateInput.checked) {
-        const tableTitleTemplate = ["Ideas", "Todo", "Doing", "Done"]
-        const tableColorTemplate = ["#ffe600", "#00ff00", "#00ccff", "#ff8000"]
-
-        for (const title of tableTitleTemplate) {
-          newArray.newTable(title);
-          newArray.children[tableTitleTemplate.indexOf(title)].color = tableColorTemplate[tableTitleTemplate.indexOf(title)]
+        if (deadlineInput.value) {
+          newArray.deadline = deadlineInput.value;
         }
 
+        if (templateInput.checked) {
+          const tableTitleTemplate = ["Ideas", "Todo", "Doing", "Done"]
+          const tableColorTemplate = ["#ffe600", "#00ff00", "#00ccff", "#ff8000"]
+
+          for (const title of tableTitleTemplate) {
+            newArray.newTable(title);
+            newArray.children[tableTitleTemplate.indexOf(title)].color = tableColorTemplate[tableTitleTemplate.indexOf(title)]
+          }
+
+        }
+        controller.setActiveProject(controller.getProjects().length - 1);
+        refreshHeader();
+        closeForm();
+      } else {
+        invalidMessage.style.display = "inline";
       }
-      controller.setActiveProject(controller.getProjects().length - 1);
-      submitButton.removeEventListener("click", addProject);
-      refreshHeader();
-      closeForm();
-    } else {
-      invalidMessage.style.display = "inline";
     }
   }
 }
@@ -227,6 +230,7 @@ export function newProjectClick() {
 dom.projectEditButton.addEventListener("click", editProjectClick);
 
 function editProjectClick() {
+  isEditCheck = true;
 
   headerText.textContent = "Edit Project";
   headerIcon.src = editFolderIcon;
@@ -251,20 +255,22 @@ function editProjectClick() {
 }
 
 function applyProjectEdits() {
-  const activeProject = controller.getActiveProject();
-  if (titleInput.value) {
-    activeProject.title = titleInput.value;
-    activeProject.description = descriptionInput.value;
+  if (isEditCheck === true) {
+    const activeProject = controller.getActiveProject();
+    if (titleInput.value) {
+      submitButton.removeEventListener("click", applyProjectEdits);
+      activeProject.title = titleInput.value;
+      activeProject.description = descriptionInput.value;
 
-    if (deadlineInput.value) {
-      activeProject.deadline = deadlineInput.value;
+      if (deadlineInput.value) {
+        activeProject.deadline = deadlineInput.value;
+      }
+      refreshHeader();
+      closeForm();
+      isEditCheck = false;
+    } else if (!titleInput.value) {
+      invalidMessage.style.display = "inline";
     }
-
-    submitButton.removeEventListener("click", applyProjectEdits);
-    refreshHeader();
-    closeForm();
-  } else if (!titleInput.value) {
-    invalidMessage.style.display = "inline";
   }
 }
 

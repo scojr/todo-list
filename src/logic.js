@@ -175,6 +175,7 @@ class Project {
     this.title = title;
     this.description = description;
     this.id = Math.random();
+    this.is = "project";
   }
   children = [];
   deadline;
@@ -193,6 +194,7 @@ class Table {
     this.title = title;
     this.parentId = parent.id;
     this.id = Math.random();
+    this.is = "table";
   }
   children = [];
   setParent(object) {
@@ -213,6 +215,7 @@ class Task {
   constructor(title, parent) {
     this.title = title;
     this.parentId = parent.id
+    this.is = "task";
   }
   setParent(object) {
     this.parentId = object.id;

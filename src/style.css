@@ -110,6 +110,7 @@ button:hover,
   z-index: 0;
   border-bottom: 3px solid black;
   max-height: 47px;
+  user-select: none;
 }
 
 .header.buttons button {
@@ -240,6 +241,7 @@ button:hover,
   display: flex;
   flex-direction: column;
   gap: 12px;
+  user-select: none;
 }
 
 .table:not(.table-buttons) {
@@ -260,6 +262,7 @@ button:hover,
   padding: 0px 8px;
   border-radius: 12px 12px 0px 0px;
   text-wrap: nowrap;
+  user-select: none;
 }
 
 .table-header>h2 {
@@ -610,7 +613,7 @@ button:hover,
 
 .new-project {
 
-  input[type="text"],
+  .new-project-title-input,
   textarea {
     box-shadow: black 2px 2px 0px 0px inset;
     border: 3px solid black;
@@ -718,9 +721,6 @@ input[type="checkbox"] {
   padding: 0px 8px;
 }
 
-.footer-toggle>.todo-footer {
-  display: none;
-}
 
 .color-input-container {
   position: relative;
