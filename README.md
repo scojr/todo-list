@@ -1,4 +1,4 @@
-# webpack-template
+# Todo List
 
 A Kanban-style todo list. Organize the tasks of your projects visually by dragging and dropping elements between customizable tables.
 
